@@ -23,4 +23,14 @@ class Ajax extends MY_Controller {
     {
         parent::__construct();
     }
+		public function upload_newtypelink($n_id){
+			if (isset($_POST["change"])) {
+				$data["n_link"] = $_POST["change"];
+				$this->db->where("n_id",$n_id)
+								 ->update("client_table",$data);
+
+			} else{
+				echo "bad!!";
+			}
+		}
 }

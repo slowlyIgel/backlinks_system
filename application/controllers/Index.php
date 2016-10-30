@@ -38,23 +38,24 @@ class Index extends MY_Controller {
 		$this->session->set_userdata($login);
 		header("location: /");
 	}
-	public function explode_link(){
+	public function explode_link($n_id){
 		$this->db->select("n_link")
 						 ->from("client_table")
-						 ->where("n_id",79);
+						 ->where("n_id",$n_id);
 		$data = $this->db->get()->result_array();
 		$finaldata["original_data"] = $data[0]["n_link"];
+
 		// 區分群組
 		$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["n_link"]);
 		// 區分群組名稱
 		foreach ($eachgroup as $key => $unseperatename_group) {
 			list($eachgroup2[$key]["groupname"],$eachgroup2[$key]["grouplink"]) = explode("Seperate%%GROUPNMAE%%Here",$unseperatename_group);
-			$eachgroup2[$key]["groupname"] = preg_replace('/<!--(.*[^-->])(-->.*)/','${1}',$eachgroup2[$key]["groupname"] );
+			$eachgroup2[$key]["groupname"] = preg_replace('/<!--([^-]*)-(.*)/','${1}',$eachgroup2[$key]["groupname"] );
 			$finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
 		}
 		// 區分群組內連結和錨文本
 		foreach ($eachgroup2 as $key => $find_grouplink) {
-			preg_match_all("/>(.*[^<\/a])<\/a/",$find_grouplink["grouplink"],$anchor);
+			preg_match_all("/>([^<]*)<\/a/",$find_grouplink["grouplink"],$anchor);
 			preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$links);
 			foreach ($links[1] as $key2 => $value) {
 				$finaldata["group"][$key]["grouplink"][$key2]["link"] = $value;
@@ -62,6 +63,7 @@ class Index extends MY_Controller {
 			}
 
 		}
+		$finaldata["n_id"] = $n_id;
 		$this->twig->display("changeLinkSytle",$finaldata);
 	}
 }
