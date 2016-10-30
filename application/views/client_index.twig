@@ -1,0 +1,17 @@
+{% extends 'page_model.twig' %}
+{% block header %}
+<ul>
+  <li><a href="#">搜尋</a></li>
+  <li><a href="#">客戶搜尋</a></li>
+  <li><a href="#">客戶資料匯入</a></li>
+  <li><a href="#">外鏈歷史紀錄匯入</a></li>
+</ul>
+{% endblock %}
+{% block main_stage %}
+<div>
+  客戶名稱   網址    最近下外鏈日期  操作等級    <a href="/index/explode/600">連結管理</a>    刪除
+</div>
+{% endblock %}
+{% block style %}
+header li{display:inline-block;}
+{% endblock %}

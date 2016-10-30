@@ -30,7 +30,7 @@ class Index extends MY_Controller {
 			$this->twig->display("login_page");
 		} else {
 			echo "ready to start backlinks";
-			$this->twig->display("page_model");
+			$this->twig->display("client_index");
 		}
 	}
 	public function login($loginID){

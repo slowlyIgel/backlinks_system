@@ -5,9 +5,10 @@
     <title></title>
     <style media="screen">
       .outer{width: 90%;margin: auto;}
-      .side{width: 25%;float: left;}
-      .main{width: 75%;background-color: #eee;height: 300px;float: left;}
+      .side{width: 20%;float: left;}
+      .main{width: 75%;background-color: #eee;min-height: 300px;float: left;padding: 15px;}
       ul{list-style: none;}
+      {% block style %}{% endblock %}
     </style>
   </head>
   <body>
