@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .outer{width: 90%;margin: auto;}
+      .side{width: 25%;float: left;}
+      .main{width: 75%;background-color: #eee;height: 300px;float: left;}
+      ul{list-style: none;}
+    </style>
+  </head>
+  <body>
+  <header>
+    page_name
+    {% block header %}
+    {% endblock %}
+  </header>
+  <div class="outer">
+    <section class="side">
+      <ul>
+        <li><a href="#">客戶管理</a></li>
+        <li><a href="#">外鏈管理</a></li>
+        <li><a href="#">網站檢查</a></li>
+        <li><a href="#">產業分類</a></li>
+        <li><a href="#">資源站管理</a></li>
+        <li><a href="#">權限/人員管理</a></li>
+        <li><a href="#">登出</a></li>
+
+      </ul>
+    </section>
+    <section class="main">
+      {% block main_stage %}{% endblock %}
+    </section>
+  </div>
+  </body>
+</html>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  {% block script_stage %}{% endblock %}
+</script>

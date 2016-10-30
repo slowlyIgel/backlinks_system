@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {% block meta %}
+        <meta name="title" content="{{allPageInfo["meta"]["wi_tdk"]["title"]}}">
+        <meta name="description" content="{{allPageInfo["meta"]["wi_tdk"]["Describes"]}}">
+    {% endblock %}
+  </head>
+  <body>
+    {% block header %}
+    {% for function,function_name in allPageInfo["navbar"]["fs_sort_array"] %}
+    {% if function == "products" %}
+    <a href="/{{function}}/{{allPageInfo["navbar"]["fs_layer"]["products"]}}">{{function_name}}</a>
+    {% elseif function == "news" %}
+    <a href="/{{function}}/{{allPageInfo["navbar"]["fs_layer"]["news"]}}">{{function_name}}</a>
+    {% else %}
+    <a href="/{{function}}">{{function_name}}</a>
+    {% endif %}
+
+
+    {% endfor %}
+      <div class="banner">
+        {% for eachbanner in allPageInfo["banner"]["slider-large"] %}
+        <img src="{{eachbanner}}" alt="" />
+        {% endfor %}
+      </div>
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+    <div>
+      <h2>footer</h2>
+      <p>公司名稱:{{webinfo["wi_webs_name"]}}</p>
+      <p>電話:{{webinfo["wi_telephone"]}}</p>
+      <p>傳真:{{webinfo["wi_fax"]}}</p>
+      <p>地址:{{webinfo["wi_address"]}}</p>
+      <p>信箱:{{webinfo["wi_email"]}}</p>
+    </div>
+    {% endblock %}
+  </body>
+</html>
+
+{% block forscript %}{% endblock %}

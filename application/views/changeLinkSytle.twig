@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .linkgroup{border:1px solid #aaa;width:60%;margin: 20px auto;padding:5px;}
+    </style>
+  </head>
+  <body>
+    <textarea name="name" rows="40" cols="100">{{original_data}}</textarea><br>
+
+    {% for eachgroup in group %}
+    <div class="linkgroup">
+      群組名稱：<input type="text" name="name" value="{{eachgroup["groupname"]}}"><br>
+      內容：<br>
+      {% for link in eachgroup["grouplink"] %}
+      <input type="text" name="name" value="{{link["link"]}}" style="width:65%;">
+      <input type="text" name="name" value="{{link["anchor"]}}" style="width:30%;"><br>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    {{test}}
+  </body>
+</html>
