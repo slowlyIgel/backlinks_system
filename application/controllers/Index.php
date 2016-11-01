@@ -74,4 +74,9 @@ class Index extends MY_Controller {
 	public function client_search(){
 		$this->twig->display("client_search");
 	}
+	public function logout(){
+		$this->session->sess_destroy();
+		header("location: /");
+
+	}
 }
