@@ -29,7 +29,6 @@ class Index extends MY_Controller {
 		if (!isset($this->session->admin)) {
 			$this->twig->display("login_page");
 		} else {
-			echo "ready to start backlinks";
 			$this->twig->display("client_index");
 		}
 	}
@@ -43,6 +42,10 @@ class Index extends MY_Controller {
 						 ->from("client_table")
 						 ->where("n_id",$n_id);
 		$data = $this->db->get()->result_array();
+
+		$this->db->from("type_backlink");
+		$backlink_type = $this->db->get()->result_array();
+		$finaldata["backlink_type"] = $backlink_type;
 		$finaldata["original_data"] = $data[0]["n_link"];
 
 		// 區分群組
@@ -50,20 +53,25 @@ class Index extends MY_Controller {
 		// 區分群組名稱
 		foreach ($eachgroup as $key => $unseperatename_group) {
 			list($eachgroup2[$key]["groupname"],$eachgroup2[$key]["grouplink"]) = explode("Seperate%%GROUPNMAE%%Here",$unseperatename_group);
-			$eachgroup2[$key]["groupname"] = preg_replace('/<!--([^-]*)-(.*)/','${1}',$eachgroup2[$key]["groupname"] );
+			$eachgroup2[$key]["groupname"] = preg_replace('/(.*)--([^-]*)-(.*)/','${2}',$eachgroup2[$key]["groupname"] );
 			$finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
 		}
 		// 區分群組內連結和錨文本
 		foreach ($eachgroup2 as $key => $find_grouplink) {
 			preg_match_all("/>([^<]*)<\/a/",$find_grouplink["grouplink"],$anchor);
-			preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$links);
-			foreach ($links[1] as $key2 => $value) {
-				$finaldata["group"][$key]["grouplink"][$key2]["link"] = $value;
+			preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$urls);
+			preg_match_all("/title=\"([^\"]*)\"/",$find_grouplink["grouplink"],$titles);
+			foreach ($urls[1] as $key2 => $value) {
+				$finaldata["group"][$key]["grouplink"][$key2]["urls"] = $value;
 				$finaldata["group"][$key]["grouplink"][$key2]["anchor"] = $anchor[1][$key2];
+				$finaldata["group"][$key]["grouplink"][$key2]["titles"] = $titles[1][$key2];
 			}
 
 		}
 		$finaldata["n_id"] = $n_id;
 		$this->twig->display("changeLinkSytle",$finaldata);
+	}
+	public function client_search(){
+		$this->twig->display("client_search");
 	}
 }

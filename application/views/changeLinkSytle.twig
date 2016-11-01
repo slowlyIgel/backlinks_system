@@ -4,33 +4,48 @@
     <meta charset="utf-8">
     <title></title>
     <style media="screen">
-      .linkgroup{border:1px solid #aaa;margin: 20px auto;padding:4%;}
+      .linkgroup{border:1px solid #aaa;margin: 20px auto;padding:4%;position: relative;}
+      .eachlinkingroup{width: 75%;}
+      .remarks{width: 20%;position: absolute;right: 3%;top:25%;z-index: -99;}
     </style>
   </head>
   <body>
     n_id:<span id="n_id">{{n_id}}</span>
-    <!-- <textarea id="original" rows="30" cols="100">{{original_data}}</textarea><br>
-    <button type="button" name="button" onclick="changeLinkSytle()">submit</button><br>
-    Seperate%%GROUP%%Here<br>
-    Seperate%%GROUPNMAE%%Here -->
-    <div style="width:60%;margin:50px auto;">
-    {% for eachgroup in group %}
+
+    <div style="width:80%;margin:50px auto;">
+    {% for groupkey,eachgroup in group %}
     <div class="linkgroup">
-      <button type="button" style="float:right;" onclick="deletegroup(this)">刪除此群組</button>
+      <!-- <button type="button" style="float:right;" onclick="deletegroup(this)">刪除此群組</button> -->
       <button type="button" style="float:right;" onclick="addnewinGroup(this)">新增</button>
-      群組名稱：<input type="text" name="groupname" value="{{eachgroup["groupname"]}}"><br>
+      <input type="checkbox" name="thisweek" value="{{groupkey}}"><label>本週下外鏈</label>
+      {% for eachbacklink_type in backlink_type %}
+      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
+      {% endfor %}
+      <br>群組名稱：<input type="text" name="groupname" value="{{eachgroup["groupname"]}}"><br>
       內容：<br>
       {% for link in eachgroup["grouplink"] %}
       <div class="eachlinkingroup">
-        <input type="text" name="link" value="{{link["link"]}}" style="width:60%;">
+        <input type="text" name="link" value="{{link["urls"]}}" style="width:60%;">
+        <input type="text" name="titles" value="{{link["titles"]}}" style="width:30%;">
         <input type="text" name="anchor" value="{{link["anchor"]}}" style="width:30%;">
         <button type="button" onclick="removethisline(this)">刪除</button><br>
       </div>
       {% endfor %}
+      <div class="remarks">
+        備註：<br>
+        <textarea name="name" style="width:90%;height:100px;"></textarea>
+      </div>
     </div>
     {% endfor %}
     <button type="button" onclick="addgroup(this)">新增群組</button>
     <button type="button" style="float:right;" onclick="submit()">儲存</button>
+  </div>
+  <button type="button" name="button" style="display:block;margin:50px auto;" onclick="showhelp()">怪怪的顯示不出來嗎，走這裡整頓一下救救jessica</button>
+  <div class="realyneedhelp" style="display:none;">
+    <textarea id="original" rows="30" cols="100">{{original_data}}</textarea><br>
+    <button type="button" name="button" onclick="changeLinkSytle()">submit</button><br>
+    Seperate%%GROUP%%Here<br>
+    Seperate%%GROUPNMAE%%Here
   </div>
   </body>
 </html>
@@ -56,7 +71,8 @@
       finalstorage += $(this).children("input[name=groupname]").val();
       finalstorage += "Seperate%%GROUPNMAE%%Here";
       $(this).children(".eachlinkingroup").each(function(){
-        finalstorage += "<a href=\""+$(this).children("input[name=link]").val()+"\">";
+        finalstorage += "<a href=\""+$(this).children("input[name=link]").val()+"\" ";
+        finalstorage += "title=\""+$(this).children("input[name=titles]").val()+"\" >";
         finalstorage += $(this).children("input[name=anchor]").val()+"</a>";
       });
       if (!$(this).is($(".linkgroup").last())) {
@@ -74,5 +90,8 @@
   }
   function deletegroup(field){
     $(field).parents(".linkgroup").remove();
+  }
+  function showhelp(){
+    $(".realyneedhelp").show();
   }
 </script>
