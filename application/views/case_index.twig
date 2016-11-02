@@ -1,0 +1,35 @@
+{% extends 'case_model.twig' %}
+{% block header %}
+<ul>
+  <li><a href="#">搜尋</a></li>
+  <li><a href="/index/case_search">客戶搜尋</a></li>
+  <li><a href="#">客戶資料匯入</a></li>
+  <li><a href="#">外鏈歷史紀錄匯入</a></li>
+</ul>
+{% endblock %}
+{% block main_stage %}
+{% for eachcase in everycase %}
+<div class="caseindex_btnarea" case_id="{{eachcase["n_id"]}}">
+  <button type="button" onclick="goto_casedataedit(this)">{{eachcase["n_name"]}}</button>
+  <button type="button" name="button" disabled>最近下外鏈日期</button>
+  <button type="button" name="button" disabled>操作等級</button>
+  <button type="button" onclick="goto_caseLinkedit(this)">連結管理</button>
+  <button type="button" name="button">刪除</button><br>
+</div>
+{% endfor %}
+{% endblock %}
+
+
+{% block script_stage %}
+<script type="text/javascript">
+function goto_caseLinkedit(field){
+  var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
+  location.href = "/index/explode_link/"+case_id;
+}
+
+function goto_casedataedit(field){
+  var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
+  location.href = "/index/casedata_edit/"+case_id;
+}
+</script>
+{% endblock %}

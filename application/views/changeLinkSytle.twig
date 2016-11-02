@@ -15,7 +15,6 @@
     <div style="width:80%;margin:50px auto;">
     {% for groupkey,eachgroup in group %}
     <div class="linkgroup">
-      <!-- <button type="button" style="float:right;" onclick="deletegroup(this)">刪除此群組</button> -->
       <button type="button" style="float:right;" onclick="addnewinGroup(this)">新增</button>
       <input type="checkbox" name="thisweek" value="{{groupkey}}"><label>本週下外鏈</label>
       {% for eachbacklink_type in backlink_type %}
@@ -40,7 +39,7 @@
     <button type="button" onclick="addgroup(this)">新增群組</button>
     <button type="button" style="float:right;" onclick="submit()">儲存</button>
   </div>
-  <button type="button" name="button" style="display:block;margin:50px auto;" onclick="showhelp()">怪怪的顯示不出來嗎，走這裡整頓一下救救jessica</button>
+  <button type="button" name="button" style="display:block;margin:50px auto;" onclick="showhelp()">怪怪的顯示不出來嗎，走這裡</button>
   <div class="realyneedhelp" style="display:none;">
     <textarea id="original" rows="30" cols="100">{{original_data}}</textarea><br>
     <button type="button" name="button" onclick="changeLinkSytle()">submit</button><br>
@@ -87,9 +86,6 @@
   function addgroup(field){
     var group = "<div class=\"linkgroup\"><button type=\"button\" style=\"float:right;\" onclick=\"deletegroup(this)\">刪除此群組</button><button type=\"button\" name=\"button\" style=\"float:right;\" onclick=\"addnewinGroup(this)\">新增</button>群組名稱：<input type=\"text\" name=\"groupname\" value=\"\"><br>內容：<br><div class=\"eachlinkingroup\"><input type=\"text\" name=\"link\" value=\"\" style=\"width:60%;\"><input type=\"text\" name=\"anchor\" value=\"\" style=\"width:30%;\"><button type=\"button\" onclick=\"removethisline(this)\">刪除</button><br></div></div>";
     $(group).insertBefore(field);
-  }
-  function deletegroup(field){
-    $(field).parents(".linkgroup").remove();
   }
   function showhelp(){
     $(".realyneedhelp").show();

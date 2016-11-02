@@ -29,7 +29,10 @@ class Index extends MY_Controller {
 		if (!isset($this->session->admin)) {
 			$this->twig->display("login_page");
 		} else {
-			$this->twig->display("client_index");
+			$this->db->select("n_id,n_name")
+							 ->from("client_table");
+			$finaldata["everycase"] = $this->db->get()->result_array();
+			$this->twig->display("case_index",$finaldata);
 		}
 	}
 	public function login($loginID){
@@ -71,8 +74,23 @@ class Index extends MY_Controller {
 		$finaldata["n_id"] = $n_id;
 		$this->twig->display("changeLinkSytle",$finaldata);
 	}
-	public function client_search(){
-		$this->twig->display("client_search");
+	public function case_search(){
+		$this->twig->display("case_search");
+	}
+	public function casedata_edit($id){
+		$this->db->select("n_id, n_name, web_links, ga_code")
+						 ->from("client_table")
+						 ->where("n_id",$id);
+		$finaldata["casedata"] = $this->db->get()->result_array();
+
+		$this->db->select("auto_industryID, industry_name")
+						 ->from("type_industry");
+		$finaldata["industry_tpye"] = $this->db->get()->result_array();
+
+		$this->db->from("type_level");
+		$finaldata["level_tpye"] = $this->db->get()->result_array();
+
+		$this->twig->display("casedata_edit",$finaldata);
 	}
 	public function logout(){
 		$this->session->sess_destroy();
