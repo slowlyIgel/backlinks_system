@@ -1,10 +1,8 @@
 {% extends 'case_model.twig' %}
 {% block style %}
-header li{display:inline-block;}
 .case_data ul{display:inline-block; width:20%;}
 .case_data ul:first-child{display:inline-block; width:40%;}
 .case_data ul input{width:100%;}
-
 {% endblock %}
 {% block main_stage %}
 <div class="case_data">
@@ -46,7 +44,18 @@ header li{display:inline-block;}
 
 
 <div class="backlink_history">
-  歷史紀錄們
+  <table>
+    <tr>
+      <th>日期</th>
+      <th>群組</th>
+      <th>類型</th>
+    </tr>
+    <tr>
+      <td>日期</td>
+      <td>群組</td>
+      <td>類型</td>
+    </tr>
+  </table>
 </div>
 {% endblock %}
 {% block script_stage %}

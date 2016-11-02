@@ -40,40 +40,6 @@ class Index extends MY_Controller {
 		$this->session->set_userdata($login);
 		header("location: /");
 	}
-	public function explode_link($n_id){
-		$this->db->select("n_link")
-						 ->from("client_table")
-						 ->where("n_id",$n_id);
-		$data = $this->db->get()->result_array();
-
-		$this->db->from("type_backlink");
-		$backlink_type = $this->db->get()->result_array();
-		$finaldata["backlink_type"] = $backlink_type;
-		$finaldata["original_data"] = $data[0]["n_link"];
-
-		// 區分群組
-		$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["n_link"]);
-		// 區分群組名稱
-		foreach ($eachgroup as $key => $unseperatename_group) {
-			list($eachgroup2[$key]["groupname"],$eachgroup2[$key]["grouplink"]) = explode("Seperate%%GROUPNMAE%%Here",$unseperatename_group);
-			$eachgroup2[$key]["groupname"] = preg_replace('/(.*)--([^-]*)-(.*)/','${2}',$eachgroup2[$key]["groupname"] );
-			$finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
-		}
-		// 區分群組內連結和錨文本
-		foreach ($eachgroup2 as $key => $find_grouplink) {
-			preg_match_all("/>([^<]*)<\/a/",$find_grouplink["grouplink"],$anchor);
-			preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$urls);
-			preg_match_all("/title=\"([^\"]*)\"/",$find_grouplink["grouplink"],$titles);
-			foreach ($urls[1] as $key2 => $value) {
-				$finaldata["group"][$key]["grouplink"][$key2]["urls"] = $value;
-				$finaldata["group"][$key]["grouplink"][$key2]["anchor"] = $anchor[1][$key2];
-				$finaldata["group"][$key]["grouplink"][$key2]["titles"] = $titles[1][$key2];
-			}
-
-		}
-		$finaldata["n_id"] = $n_id;
-		$this->twig->display("changeLinkSytle",$finaldata);
-	}
 	public function case_search(){
 		$this->twig->display("case_search");
 	}
@@ -90,7 +56,73 @@ class Index extends MY_Controller {
 		$this->db->from("type_level");
 		$finaldata["level_tpye"] = $this->db->get()->result_array();
 
-		$this->twig->display("casedata_edit",$finaldata);
+		$this->twig->display("case_dataedit",$finaldata);
+	}
+	// 完結刪
+	public function explode_link($n_id){
+			$this->db->select("n_link")
+							 ->from("client_table")
+							 ->where("n_id",$n_id);
+			$data = $this->db->get()->result_array();
+
+			$this->db->from("type_backlink");
+			$backlink_type = $this->db->get()->result_array();
+			$finaldata["backlink_type"] = $backlink_type;
+			$finaldata["original_data"] = $data[0]["n_link"];
+
+			// 區分群組
+			$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["n_link"]);
+			// 區分群組名稱
+			foreach ($eachgroup as $key => $unseperatename_group) {
+				list($eachgroup2[$key]["groupname"],$eachgroup2[$key]["grouplink"]) = explode("Seperate%%GROUPNMAE%%Here",$unseperatename_group);
+				$eachgroup2[$key]["groupname"] = preg_replace('/(.*)--([^-]*)-(.*)/','${2}',$eachgroup2[$key]["groupname"] );
+				$finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
+			}
+			// 區分群組內連結和錨文本
+			foreach ($eachgroup2 as $key => $find_grouplink) {
+				preg_match_all("/>([^<]*)<\/a/",$find_grouplink["grouplink"],$anchor);
+				preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$urls);
+				preg_match_all("/title=\"([^\"]*)\"/",$find_grouplink["grouplink"],$titles);
+				foreach ($urls[1] as $key2 => $value) {
+					$finaldata["group"][$key]["grouplink"][$key2]["urls"] = $value;
+					$finaldata["group"][$key]["grouplink"][$key2]["anchor"] = $anchor[1][$key2];
+					$finaldata["group"][$key]["grouplink"][$key2]["titles"] = $titles[1][$key2];
+				}
+
+			}
+			$finaldata["n_id"] = $n_id;
+			$this->twig->display("changeLinkSytle",$finaldata);
+		}
+
+	public function case_linkgroupedit($case_id){
+		// 所有外鏈群組資料
+		$this->db->select("n_link, n_name")
+						 ->from("client_table")
+						 ->where("n_id",$case_id);
+		$data = $this->db->get()->result_array();
+		// 可下外鏈種類資料
+		$this->db->from("type_backlink");
+		$backlink_type = $this->db->get()->result_array();
+		$finaldata["backlink_type"] = $backlink_type;
+		$finaldata["original_data"] = $data[0]["n_link"];
+
+		// 區分群組
+		$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["n_link"]);
+		foreach ($eachgroup as $groupkey => $everyUrlinGroup) {
+			preg_match_all("/<a([^>]*)>([^<]*)<\/a>/",$everyUrlinGroup,$eachUrl[$groupkey]);
+			foreach ($eachUrl[$groupkey][2] as $eachUrlKeyinGroup => $eachUrlValueinGroup) {
+				$finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrlValueinGroup;
+				preg_match("/href=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$urls);
+				preg_match("/title=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$titles);
+				$finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
+				$finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["title"] = $titles[1];
+			}
+			list($UrlPartinGroup[$groupkey],$RemarkPartinGroup[$groupkey]) = explode("Seperate%%REMARK%%Here",$everyUrlinGroup);
+			$finaldata["group"][$groupkey]["remark"] = $RemarkPartinGroup[$groupkey];
+		}
+		$finaldata["case_id"] = $case_id;
+		$finaldata["case_name"] = $data[0]["n_name"];
+		$this->twig->display("case_linkgroupedit",$finaldata);
 	}
 	public function logout(){
 		$this->session->sess_destroy();
