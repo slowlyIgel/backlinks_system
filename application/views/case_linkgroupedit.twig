@@ -63,13 +63,13 @@ tr td:first-child{width:50%;}
 {% endblock %}
 {% block addition %}
 <div class="submit_link">
-  <table>
+  <table id="submit_preview">
     <tr>
       <th>群組</th>
       <th>種類</th>
     </tr>
   </table>
-  <button type="button">提交</button>
+  <button type="button" onclick="submit_thisweek()">提交</button>
 </div>
 {% endblock %}
 {% block script_stage %}
@@ -122,11 +122,26 @@ $("input[name=backlink_tpye]").click(function(){
   var group_id = $(this).parents(".eachLinkGroup").attr("group_id");
   var group_name = Number($(this).parents(".eachLinkGroup").attr("group_id")) + 1;
   if ($(this).is(":checked")) {
-    $(".submit_link").children("table").append("<tr><td group_id="+group_id+">群組"+group_name+"</td><td type_id="+type_value+">"+type_name+"</td><tr>");
+    $("#submit_preview").append("<tr submit_id="+group_name+"_"+type_value+"><td group_id="+group_id+">群組"+group_name+"</td><td type_id="+type_value+">"+type_name+"</td><tr>");
   } else{
-
+    $("#submit_preview").find("tr[submit_id="+group_name+"_"+type_value+"]").remove();
   }
 });
+
+  function submit_thisweek(){
+    var case_id = $("#case_id").attr("case_id");
+    var thisweekRecord = "[";
+    $("tr[submit_id]").each(function(){
+      thisweekRecord += '{"case_id":'+case_id+',"backlinkGroup_id":'+$(this).children("td[group_id]").attr("group_id")+',"linktype_thisweek":'+$(this).children("td[type_id]").attr("type_id")+'}';
+      if (!$(this).is($("tr[submit_id]").last())) {
+        thisweekRecord += ",";
+      }
+    });
+    thisweekRecord += "]";
+    $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(data){
+      console.log(data);
+    });
+  }
 
 </script>
 {% endblock %}

@@ -33,4 +33,16 @@ class Ajax extends MY_Controller {
 				echo "bad!!";
 			}
 		}
+
+		public function submit_thisweek_record(){
+			if ($_POST) {
+				$everyRecord = json_decode($_POST["everyRecord"],true);
+				foreach ($everyRecord as $key => $eachRecord) {
+					$everyRecord[$key]["submit_time"] = intval(date("YW"));
+					$everyRecord[$key]["export"] = 0;
+					$this->db->insert("backlink_submit_record",$everyRecord[$key]);
+				}
+				echo "good";
+			}
+		}
 }
