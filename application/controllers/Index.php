@@ -44,15 +44,26 @@ class Index extends MY_Controller {
 		$this->twig->display("case_search");
 	}
 	public function casedata_edit($id){
+		//案件資料
 		$this->db->select("n_id, n_name, web_links, ga_code")
 						 ->from("client_table")
 						 ->where("n_id",$id);
 		$finaldata["casedata"] = $this->db->get()->result_array();
 
+		// 案件已下外鏈紀錄
+		$this->db->select("backlink_submit_record.backlinkGroup_id, backlink_submit_record.submit_time, type_backlink.BacklinkType_name")
+						 ->from("backlink_submit_record")
+						 ->join("type_backlink","backlink_submit_record.linktype_thisweek = type_backlink.auto_backlinkID")
+						 ->where("backlink_submit_record.case_id",$id)
+						 ->where("backlink_submit_record.export",1);
+		$finaldata["linkRecord"] = $this->db->get()->result_array();
+
+		// 共用的產業分類
 		$this->db->select("auto_industryID, industry_name")
 						 ->from("type_industry");
 		$finaldata["industry_tpye"] = $this->db->get()->result_array();
 
+		// 共用的等級分類
 		$this->db->from("type_level");
 		$finaldata["level_tpye"] = $this->db->get()->result_array();
 

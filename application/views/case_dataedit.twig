@@ -3,6 +3,7 @@
 .case_data ul{display:inline-block; width:20%;}
 .case_data ul:first-child{display:inline-block; width:40%;}
 .case_data ul input{width:100%;}
+table tr td{padding:5px;text-align:center;}
 {% endblock %}
 {% block main_stage %}
 <div class="case_data">
@@ -46,15 +47,17 @@
 <div class="backlink_history">
   <table>
     <tr>
-      <th>日期</th>
+      <th>日期(週)</th>
       <th>群組</th>
       <th>類型</th>
     </tr>
+    {% for eachRecord in linkRecord %}
     <tr>
-      <td>日期</td>
-      <td>群組</td>
-      <td>類型</td>
+      <td>{{eachRecord["submit_time"]}}</td>
+      <td>群組{{eachRecord["backlinkGroup_id"] + 1}}</td>
+      <td>{{eachRecord["BacklinkType_name"]}}</td>
     </tr>
+    {% endfor %}
   </table>
 </div>
 {% endblock %}

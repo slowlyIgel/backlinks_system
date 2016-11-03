@@ -129,18 +129,22 @@ $("input[name=backlink_tpye]").click(function(){
 });
 
   function submit_thisweek(){
-    var case_id = $("#case_id").attr("case_id");
-    var thisweekRecord = "[";
-    $("tr[submit_id]").each(function(){
-      thisweekRecord += '{"case_id":'+case_id+',"backlinkGroup_id":'+$(this).children("td[group_id]").attr("group_id")+',"linktype_thisweek":'+$(this).children("td[type_id]").attr("type_id")+'}';
-      if (!$(this).is($("tr[submit_id]").last())) {
-        thisweekRecord += ",";
-      }
-    });
-    thisweekRecord += "]";
-    $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(data){
-      console.log(data);
-    });
+    if ($("input[name=backlink_tpye]:checked").length > 0 ) {
+      var case_id = $("#case_id").attr("case_id");
+      var thisweekRecord = "[";
+      $("tr[submit_id]").each(function(){
+        thisweekRecord += '{"case_id":'+case_id+',"backlinkGroup_id":'+$(this).children("td[group_id]").attr("group_id")+',"linktype_thisweek":'+$(this).children("td[type_id]").attr("type_id")+'}';
+        if (!$(this).is($("tr[submit_id]").last())) {
+          thisweekRecord += ",";
+        }
+      });
+      thisweekRecord += "]";
+      $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(){
+        location.href = "/";
+      });
+    } else {
+      alert("你還沒選膩");
+    }
   }
 
 </script>
