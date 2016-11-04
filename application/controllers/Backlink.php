@@ -22,11 +22,34 @@ class Backlink extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
+				$this->db->from("type_backlink");
+				$backlink_type = $this->db->get()->result_array();
+				$this->finaldata["backlink_type"] = $backlink_type;
+
     }
 
 	public function index()
 	{
-		echo "backlink side";
+		$lastmonday = strtotime("Monday last Week",time());
+		$lastsunday = strtotime("Monday this Week",time());
+
+		$this->db->select("backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id, backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.case_name, case_table.case_backlink")
+						 ->from("backlink_submit_record")
+						 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")
+						 ->where("backlink_submit_record.submit_time >",$lastmonday)
+						 ->where("backlink_submit_record.submit_time <",$lastsunday);
+		$data= $this->db->get()->result_array();
+		foreach ($data as $key => $value) {
+			$findRemark = explode("Seperate%%GROUP%%Here",$value["case_backlink"]);
+			foreach ($findRemark as $key2 => $value2) {
+				list($groupPart[],$reallyRemark[]) = explode("Seperate%%REMARK%%Here",$value2);
+			}
+			unset($data[$key]["case_backlink"]);
+			$data[$key]["case_backlinkRemark"] = $reallyRemark[ $data[$key]["backlinkGroup_id"] ];
+		}
+		$this->finaldata["everySubmitRecord"] = $data;
+		$this->twig->display("backlink_all",$this->finaldata);
+
 	}
 
 	public function testtime(){
@@ -36,7 +59,7 @@ class Backlink extends MY_Controller {
 		echo $lastmonday."<br>";
 		$sunday = strtotime("Sunday last Week",time());
 		echo $sunday."<br>";
-		$lastSunday = date("Y-n-d H:i:s",strtotime("Sunday last Week",time()));
+		$lastSunday = date("Y-n-d H:i:s",strtotime("Monday this Week",time()));
 		echo $lastSunday;
 
 	}

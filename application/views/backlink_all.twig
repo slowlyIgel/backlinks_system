@@ -1,0 +1,26 @@
+{% extends 'backlink_model.twig' %}
+{% block main_stage %}
+<table>
+  <tr>
+    <th></th>
+    <th>案件名稱</th>
+    <th>外鏈群組</th>
+    <th>外鏈類型</th>
+    <th>案件產業</th>
+    <th>群組備註</th>
+  </tr>
+  {% for eachSubmitRecord in everySubmitRecord %}
+  <tr>
+    <th></th>
+
+    <th>{{backlink_type[ eachSubmitRecord["linktype_thisweek"] ]["BacklinkType_name"]}}</th>
+
+  </tr>
+
+  {% endfor %}
+</table>
+
+
+
+
+{% endblock %}

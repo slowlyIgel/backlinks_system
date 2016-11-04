@@ -1,0 +1,9 @@
+{% extends 'page_model.twig' %}
+{% block header %}
+<ul>
+  <li><a href="#">總覽</a></li>
+  {% for eachbacklink_type in backlink_type %}
+  <li><a href="#">{{eachbacklink_type["BacklinkType_name"]}}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
