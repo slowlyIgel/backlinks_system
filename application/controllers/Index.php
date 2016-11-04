@@ -140,4 +140,7 @@ class Index extends MY_Controller {
 		header("location: /");
 
 	}
+	public function testtime(){
+
+	}
 }
