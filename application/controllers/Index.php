@@ -57,6 +57,9 @@ class Index extends MY_Controller {
 						 ->where("backlink_submit_record.case_id",$id)
 						 ->where("backlink_submit_record.export",1);
 		$this->finaldata["linkRecord"] = $this->db->get()->result_array();
+		foreach ($this->finaldata["linkRecord"]  as $key => $eachRecord) {
+			$this->finaldata["linkRecord"][$key]["submit_time"] = date("Y-n-d",$eachRecord["submit_time"]);
+		}
 
 		// 共用的產業分類
 		$this->db->select("auto_industryID, industry_name")
@@ -69,41 +72,6 @@ class Index extends MY_Controller {
 		$this->finaldata["case_id"] = $id;
 		$this->twig->display("case_dataedit",$this->finaldata);
 	}
-	// 完結刪
-	// public function explode_link($n_id){
-	// 		$this->db->select("case_backlink")
-	// 						 ->from("case_table")
-	// 						 ->where("auto_id",$n_id);
-	// 		$data = $this->db->get()->result_array();
-	//
-	// 		$this->db->from("type_backlink");
-	// 		$backlink_type = $this->db->get()->result_array();
-	// 		$this->finaldata["backlink_type"] = $backlink_type;
-	// 		$this->finaldata["original_data"] = $data[0]["n_link"];
-	//
-	// 		// 區分群組
-	// 		$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["n_link"]);
-	// 		// 區分群組名稱
-	// 		foreach ($eachgroup as $key => $unseperatename_group) {
-	// 			list($eachgroup2[$key]["groupname"],$eachgroup2[$key]["grouplink"]) = explode("Seperate%%GROUPNMAE%%Here",$unseperatename_group);
-	// 			$eachgroup2[$key]["groupname"] = preg_replace('/(.*)--([^-]*)-(.*)/','${2}',$eachgroup2[$key]["groupname"] );
-	// 			$this->finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
-	// 		}
-	// 		// 區分群組內連結和錨文本
-	// 		foreach ($eachgroup2 as $key => $find_grouplink) {
-	// 			preg_match_all("/>([^<]*)<\/a/",$find_grouplink["grouplink"],$anchor);
-	// 			preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$urls);
-	// 			preg_match_all("/title=\"([^\"]*)\"/",$find_grouplink["grouplink"],$titles);
-	// 			foreach ($urls[1] as $key2 => $value) {
-	// 				$this->finaldata["group"][$key]["grouplink"][$key2]["urls"] = $value;
-	// 				$this->finaldata["group"][$key]["grouplink"][$key2]["anchor"] = $anchor[1][$key2];
-	// 				$this->finaldata["group"][$key]["grouplink"][$key2]["titles"] = $titles[1][$key2];
-	// 			}
-	//
-	// 		}
-	// 		$this->finaldata["n_id"] = $n_id;
-	// 		$this->twig->display("changeLinkSytle",$this->finaldata);
-	// 	}
 
 	public function case_linkgroupedit($case_id){
 		// 所有外鏈群組資料
@@ -139,17 +107,6 @@ class Index extends MY_Controller {
 	public function logout(){
 		$this->session->sess_destroy();
 		header("location: /");
-
-	}
-	public function testtime(){
-		$monday = strtotime("Monday last Week",time());
-		echo $monday."<br>";
-		$lastmonday = date("Y-n-d H:i:s",strtotime("Monday last Week",time()));
-		echo $lastmonday."<br>";
-		$sunday = strtotime("Sunday last Week",time());
-		echo $sunday."<br>";
-		$lastSunday = date("Y-n-d H:i:s",strtotime("Sunday last Week",time()));
-		echo $lastSunday;
 
 	}
 }
