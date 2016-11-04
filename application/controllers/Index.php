@@ -45,7 +45,7 @@ class Index extends MY_Controller {
 	}
 	public function casedata_edit($id){
 		//案件資料
-		$this->db->select("auto_id, case_name, case_address, case_gacode")
+		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level")
 						 ->from("case_table")
 						 ->where("auto_id",$id);
 		$finaldata["casedata"] = $this->db->get()->result_array();
@@ -66,7 +66,7 @@ class Index extends MY_Controller {
 		// 共用的等級分類
 		$this->db->from("type_level");
 		$finaldata["level_tpye"] = $this->db->get()->result_array();
-
+		$finaldata["case_id"] = $id;
 		$this->twig->display("case_dataedit",$finaldata);
 	}
 	// 完結刪

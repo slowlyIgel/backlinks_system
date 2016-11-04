@@ -45,4 +45,12 @@ class Ajax extends MY_Controller {
 				echo "good";
 			}
 		}
+
+		public function submit_casedata(){
+			if ($_POST) {
+				$this->db->where("auto_id",$_POST["casedata"]["case_id"])
+								 ->update("case_table",$_POST["casedata"]["data"]);
+								 echo("good");
+			}
+		}
 }
