@@ -9,9 +9,9 @@ table tr td{padding:5px;text-align:center;}
 <div class="case_data">
   {% for casedetail in casedata %}
   <ul>
-    <li><input type="text" value="{{casedetail["n_name"]}}" disabled></li>
-    <li><input type="text" value="{{casedetail["web_links"]}}" disabled></li>
-    <li><input type="text" value="{{casedetail["ga_code"]}}" disabled></li>
+    <li><input type="text" value="{{casedetail["case_name"]}}" disabled></li>
+    <li><input type="text" value="{{casedetail["case_address"]}}" disabled></li>
+    <li><input type="text" value="{{casedetail["case_gacode"]}}" disabled></li>
   </ul>
   <ul>
     <li>T</li>
@@ -21,14 +21,14 @@ table tr td{padding:5px;text-align:center;}
   <ul>
     <li><button type="button">歷史紀錄</button></li>
     <li>
-      <select>
+      <select name="industry">
       {% for each_industry in industry_tpye %}
       <option value="{{each_industry["auto_industryID"]}}">{{each_industry["industry_name"]}}</option>
       {% endfor %}
       </select>
     </li>
     <li>
-      <select>
+      <select name="level">
         {% for each_level in level_tpye %}
         <option value="{{each_level["auto_levelID"]}}">{{each_level["level_name"]}}</option>
         {% endfor %}
