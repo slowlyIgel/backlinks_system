@@ -38,7 +38,7 @@ class Ajax extends MY_Controller {
 			if ($_POST) {
 				$everyRecord = json_decode($_POST["everyRecord"],true);
 				foreach ($everyRecord as $key => $eachRecord) {
-					$everyRecord[$key]["submit_time"] = intval(date("YW"));
+					$everyRecord[$key]["submit_time"] = time();
 					$everyRecord[$key]["export"] = 0;
 					$this->db->insert("backlink_submit_record",$everyRecord[$key]);
 				}
@@ -50,7 +50,7 @@ class Ajax extends MY_Controller {
 			if ($_POST) {
 				$this->db->where("auto_id",$_POST["casedata"]["case_id"])
 								 ->update("case_table",$_POST["casedata"]["data"]);
-								 echo("good");
+								 echo "good";
 			}
 		}
 }

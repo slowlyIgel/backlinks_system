@@ -31,8 +31,8 @@ class Index extends MY_Controller {
 		} else {
 			$this->db->select("auto_id,case_name")
 							 ->from("case_table");
-			$finaldata["everycase"] = $this->db->get()->result_array();
-			$this->twig->display("case_index",$finaldata);
+			$this->finaldata["everycase"] = $this->db->get()->result_array();
+			$this->twig->display("case_index",$this->finaldata);
 		}
 	}
 	public function login($loginID){
@@ -48,7 +48,7 @@ class Index extends MY_Controller {
 		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level")
 						 ->from("case_table")
 						 ->where("auto_id",$id);
-		$finaldata["casedata"] = $this->db->get()->result_array();
+		$this->finaldata["casedata"] = $this->db->get()->result_array();
 
 		// 案件已下外鏈紀錄
 		$this->db->select("backlink_submit_record.backlinkGroup_id, backlink_submit_record.submit_time, type_backlink.BacklinkType_name")
@@ -56,18 +56,18 @@ class Index extends MY_Controller {
 						 ->join("type_backlink","backlink_submit_record.linktype_thisweek = type_backlink.auto_backlinkID")
 						 ->where("backlink_submit_record.case_id",$id)
 						 ->where("backlink_submit_record.export",1);
-		$finaldata["linkRecord"] = $this->db->get()->result_array();
+		$this->finaldata["linkRecord"] = $this->db->get()->result_array();
 
 		// 共用的產業分類
 		$this->db->select("auto_industryID, industry_name")
 						 ->from("type_industry");
-		$finaldata["industry_tpye"] = $this->db->get()->result_array();
+		$this->finaldata["industry_tpye"] = $this->db->get()->result_array();
 
 		// 共用的等級分類
 		$this->db->from("type_level");
-		$finaldata["level_tpye"] = $this->db->get()->result_array();
-		$finaldata["case_id"] = $id;
-		$this->twig->display("case_dataedit",$finaldata);
+		$this->finaldata["level_tpye"] = $this->db->get()->result_array();
+		$this->finaldata["case_id"] = $id;
+		$this->twig->display("case_dataedit",$this->finaldata);
 	}
 	// 完結刪
 	// public function explode_link($n_id){
@@ -78,8 +78,8 @@ class Index extends MY_Controller {
 	//
 	// 		$this->db->from("type_backlink");
 	// 		$backlink_type = $this->db->get()->result_array();
-	// 		$finaldata["backlink_type"] = $backlink_type;
-	// 		$finaldata["original_data"] = $data[0]["n_link"];
+	// 		$this->finaldata["backlink_type"] = $backlink_type;
+	// 		$this->finaldata["original_data"] = $data[0]["n_link"];
 	//
 	// 		// 區分群組
 	// 		$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["n_link"]);
@@ -87,7 +87,7 @@ class Index extends MY_Controller {
 	// 		foreach ($eachgroup as $key => $unseperatename_group) {
 	// 			list($eachgroup2[$key]["groupname"],$eachgroup2[$key]["grouplink"]) = explode("Seperate%%GROUPNMAE%%Here",$unseperatename_group);
 	// 			$eachgroup2[$key]["groupname"] = preg_replace('/(.*)--([^-]*)-(.*)/','${2}',$eachgroup2[$key]["groupname"] );
-	// 			$finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
+	// 			$this->finaldata["group"][$key]["groupname"] = $eachgroup2[$key]["groupname"];
 	// 		}
 	// 		// 區分群組內連結和錨文本
 	// 		foreach ($eachgroup2 as $key => $find_grouplink) {
@@ -95,14 +95,14 @@ class Index extends MY_Controller {
 	// 			preg_match_all("/href=\"([^\"]*)\"/",$find_grouplink["grouplink"],$urls);
 	// 			preg_match_all("/title=\"([^\"]*)\"/",$find_grouplink["grouplink"],$titles);
 	// 			foreach ($urls[1] as $key2 => $value) {
-	// 				$finaldata["group"][$key]["grouplink"][$key2]["urls"] = $value;
-	// 				$finaldata["group"][$key]["grouplink"][$key2]["anchor"] = $anchor[1][$key2];
-	// 				$finaldata["group"][$key]["grouplink"][$key2]["titles"] = $titles[1][$key2];
+	// 				$this->finaldata["group"][$key]["grouplink"][$key2]["urls"] = $value;
+	// 				$this->finaldata["group"][$key]["grouplink"][$key2]["anchor"] = $anchor[1][$key2];
+	// 				$this->finaldata["group"][$key]["grouplink"][$key2]["titles"] = $titles[1][$key2];
 	// 			}
 	//
 	// 		}
-	// 		$finaldata["n_id"] = $n_id;
-	// 		$this->twig->display("changeLinkSytle",$finaldata);
+	// 		$this->finaldata["n_id"] = $n_id;
+	// 		$this->twig->display("changeLinkSytle",$this->finaldata);
 	// 	}
 
 	public function case_linkgroupedit($case_id){
@@ -114,26 +114,27 @@ class Index extends MY_Controller {
 		// 可下外鏈種類資料
 		$this->db->from("type_backlink");
 		$backlink_type = $this->db->get()->result_array();
-		$finaldata["backlink_type"] = $backlink_type;
-		$finaldata["original_data"] = $data[0]["case_backlink"];
+		$this->finaldata["backlink_type"] = $backlink_type;
+		$this->finaldata["original_data"] = $data[0]["case_backlink"];
 
 		// 區分群組
 		$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["case_backlink"]);
 		foreach ($eachgroup as $groupkey => $everyUrlinGroup) {
 			preg_match_all("/<a([^>]*)>([^<]*)<\/a>/",$everyUrlinGroup,$eachUrl[$groupkey]);
 			foreach ($eachUrl[$groupkey][2] as $eachUrlKeyinGroup => $eachUrlValueinGroup) {
-				$finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrlValueinGroup;
+				$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrlValueinGroup;
 				preg_match("/href=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$urls);
 				preg_match("/title=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$titles);
-				$finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
-				$finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["title"] = $titles[1];
+				$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
+				$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["title"] = $titles[1];
 			}
 			list($UrlPartinGroup[$groupkey],$RemarkPartinGroup[$groupkey]) = explode("Seperate%%REMARK%%Here",$everyUrlinGroup);
-			$finaldata["group"][$groupkey]["remark"] = $RemarkPartinGroup[$groupkey];
+			$this->finaldata["group"][$groupkey]["remark"] = $RemarkPartinGroup[$groupkey];
 		}
-		$finaldata["case_id"] = $case_id;
-		$finaldata["case_name"] = $data[0]["case_name"];
-		$this->twig->display("case_linkgroupedit",$finaldata);
+		$this->finaldata["case_id"] = $case_id;
+		$this->finaldata["case_name"] = $data[0]["case_name"];
+		$this->finaldata["groupChinese"] = $this->groupname;
+		$this->twig->display("case_linkgroupedit",$this->finaldata);
 	}
 	public function logout(){
 		$this->session->sess_destroy();
@@ -141,6 +142,14 @@ class Index extends MY_Controller {
 
 	}
 	public function testtime(){
+		$monday = strtotime("Monday last Week",time());
+		echo $monday."<br>";
+		$lastmonday = date("Y-n-d H:i:s",strtotime("Monday last Week",time()));
+		echo $lastmonday."<br>";
+		$sunday = strtotime("Sunday last Week",time());
+		echo $sunday."<br>";
+		$lastSunday = date("Y-n-d H:i:s",strtotime("Sunday last Week",time()));
+		echo $lastSunday;
 
 	}
 }

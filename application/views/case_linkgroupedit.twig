@@ -23,7 +23,7 @@ tr td:first-child{width:50%;}
       {% for eachbacklink_type in backlink_type %}
       <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
       {% endfor %}
-      <br><br><label>群組<span>{{group_id + 1}}</span></label>
+      <br><br><label class="groupname_chinese">群組<span>{{groupChinese[group_id]}}</span></label>
       <table>
         <tr>
           <th>url</th>
@@ -120,11 +120,11 @@ $("input[name=backlink_tpye]").click(function(){
   var type_name = $(this).next("label").html();
   var type_value = $(this).val();
   var group_id = $(this).parents(".eachLinkGroup").attr("group_id");
-  var group_name = Number($(this).parents(".eachLinkGroup").attr("group_id")) + 1;
+  var group_name = $(this).parents(".eachLinkGroup").find($("label.groupname_chinese")).html();
   if ($(this).is(":checked")) {
-    $("#submit_preview").append("<tr submit_id="+group_name+"_"+type_value+"><td group_id="+group_id+">群組"+group_name+"</td><td type_id="+type_value+">"+type_name+"</td><tr>");
+    $("#submit_preview").append("<tr submit_id="+group_id+"_"+type_value+"><td group_id="+group_id+">"+group_name+"</td><td type_id="+type_value+">"+type_name+"</td><tr>");
   } else{
-    $("#submit_preview").find("tr[submit_id="+group_name+"_"+type_value+"]").remove();
+    $("#submit_preview").find("tr[submit_id="+group_id+"_"+type_value+"]").remove();
   }
 });
 
