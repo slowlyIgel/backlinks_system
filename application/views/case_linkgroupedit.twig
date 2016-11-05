@@ -140,7 +140,7 @@ $("input[name=backlink_tpye]").click(function(){
       });
       thisweekRecord += "]";
       $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(){
-        location.href = "/";
+        location.href = "/backlink";
       });
     } else {
       alert("你還沒選膩");

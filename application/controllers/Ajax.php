@@ -33,6 +33,11 @@ class Ajax extends MY_Controller {
 				echo "bad!!";
 			}
 		}
+		public function upload_newtypelinktest($n_id){
+			if ($_POST) {
+				print_r($_POST);
+			}
+		}
 
 		public function submit_thisweek_record(){
 			if ($_POST) {

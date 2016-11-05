@@ -89,20 +89,23 @@ tr td:first-child{width:50%;}
     $(".everyGroup").append(Groupdiv);
   }
   function linkgroup_submit(){
-    var finalstorage = "";
+    allGroupStorge = {};
     $(".eachLinkGroup").each(function(){
+
       $(this).find(".eachUrl").each(function(){
-        finalstorage += "<a href=\""+$(this).find("input[name=url]").val()+"\" ";
-        finalstorage += "title=\""+$(this).find("input[name=title]").val()+"\" >";
-        finalstorage += $(this).find("input[name=keywords]").val()+"</a>";
+        eachGroupContent = "<a href=\""+$(this).find("input[name=url]").val()+"\" ";
+        eachGroupContent += "title=\""+$(this).find("input[name=title]").val()+"\">";
+        eachGroupContent += $(this).find("input[name=keywords]").val()+"</a>Seperate%%EachLink%%Here";
       });
-      finalstorage += "Seperate%%REMARK%%Here"+$(this).find("textarea[name=remark]").val();
-      if (!$(this).is($(".eachLinkGroup").last())) {
-            finalstorage += "Seperate%%GROUP%%Here";
-          }
+      eachGroupStorge = {
+        "case_id" : $("#case_id").attr("case_id"),
+        "group_id_incase" : $(this).attr("group_id"),
+        "backlink_content" : eachGroupContent,
+        "remark_content" : $(this).find("textarea[name=remark]").val(),
+      };
+      allGroupStorge += eachGroupStorge;
     });
-    var case_id = $("#case_id").attr("case_id");
-      $.post("/ajax/upload_newtypelink/"+case_id,{change:finalstorage},function(){
+      $.post("/ajax/upload_newtypelinktest/"+case_id,{test:allGroupStorge},function(){
         alert("good~~");
       });
   }
@@ -140,7 +143,7 @@ $("input[name=backlink_tpye]").click(function(){
       });
       thisweekRecord += "]";
       $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(){
-        location.href = "/";
+        location.href = "/backlink";
       });
     } else {
       alert("你還沒選膩");
