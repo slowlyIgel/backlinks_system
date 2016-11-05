@@ -1,0 +1,151 @@
+{% extends 'case_model.twig' %}
+{% block style %}
+td input{width:100%;}
+.otherFunction{margin:25px;}
+.original{display:none;}
+.original textarea{display:block;width:90%;height:300px;margin:auto;}
+.right{float:right;}
+tr td:first-child{width:50%;}
+.eachLinkGroup{padding:50px; border:2px solid #aaa;margin:50px auto;}
+.remarks{display:table;margin:auto;}
+.submit_link{min-width:100px;min-height:100px;position:fixed;bottom:100px;left:0;padding:15px;}
+.submit_link table{margin:auto;}
+.submit_link button{display:block;margin:auto;}
+.otherFunction button{display:block;margin:auto;}
+{% endblock %}
+{% block main_stage %}
+<div class="main_block">
+  <p id="case_id" case_id="{{case_id}}">{{case_name}}</p>
+  <div class="everyGroup">
+    {% for group_id,everyUrliGroup in group %}
+    <div class="eachLinkGroup" group_id="{{group_id}}">
+      <!-- <input type="checkbox" name="thisweek" value="{{group_id}}"><label>本週下外鏈</label><br> -->
+      {% for eachbacklink_type in backlink_type %}
+      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
+      {% endfor %}
+      <br><br><label class="groupname_chinese">群組<span>{{groupChinese[group_id]}}</span></label>
+      <table>
+        <tr>
+          <th>url</th>
+          <th>title</th>
+          <th>keywords</th>
+          <th></th>
+        </tr>
+        {% for eachUrlinGroup in everyUrliGroup["urlpart"] %}
+        <tr class="eachUrl">
+          <td><input type="text" name="url" value="{{eachUrlinGroup["url"]}}"></td>
+          <td><input type="text" name="title" value="{{eachUrlinGroup["title"]}}"></td>
+          <td><input type="text" name="keywords" value="{{eachUrlinGroup["keywords"]}}"></td>
+          <td><button type="button" onclick="removeUrl(this)">刪除</button></td>
+        </tr>
+    {% endfor %}
+      </table>
+      <div class="remarks">
+        <label>備註:</label><br>
+        <textarea name="remark">{{everyUrliGroup["remark"]}}</textarea>
+      </div>
+      <button class="right" type="button" onclick="addUrl(this)">新增</button>
+    </div>
+{% endfor %}
+  </div>
+  <div class="otherFunction">
+    <button class="right" type="button" onclick="addGroup()">新增群組</button>
+    <button class="right" type="button" onclick="linkgroup_submit()">儲存</button>
+    <button type="button" onclick="showhelp()">怪怪的顯示不出來??按這裡</button>
+    <div class="original">
+      <textarea name="original">{{original_data}}</textarea>
+      Seperate%%GROUP%%Here<br>Seperate%%GROUPNMAE%%Here<br>Seperate%%REMARK%%Here<br>
+
+      <button type="button" onclick="submit_original()">送出</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block addition %}
+<div class="submit_link">
+  <table id="submit_preview">
+    <tr>
+      <th>群組</th>
+      <th>種類</th>
+    </tr>
+  </table>
+  <button type="button" onclick="submit_thisweek()">提交</button>
+</div>
+{% endblock %}
+{% block script_stage %}
+<script type="text/javascript">
+  function showhelp(){
+    $(".original").show();
+  }
+  function addUrl(filed){
+    var Urltr = "<tr class=\"eachUrl\"><td><input type=\"text\" name=\"url\" value=\"\"></td><td><input type=\"text\" name=\"title\" value=\"\"></td><td><input type=\"text\" name=\"keywords\" value=\"\"></td><td><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></td></tr>";
+    $(filed).parents(".eachLinkGroup").children("table").append(Urltr);
+  }
+  function removeUrl(field){
+    $(field).parents(".eachUrl").remove();
+  }
+  function addGroup(){
+    var Groupdiv = "<div class=\"eachLinkGroup\"><button type=\"button\" style=\"float:right;\" onclick=\"removegroup(this)\">刪除此群組</button><br>{% for eachbacklink_type in backlink_type %}<input type=\"checkbox\" name=\"backlink_tpye\" value=\"{{eachbacklink_type["auto_backlinkID"]}}\"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>{% endfor %}<br><br><label>群組<span></span></label><table><tr><th>url</th><th>title</th><th>keywords</th><th></th></tr><tr class=\"eachUrl\"><td><input type=\"text\" name=\"url\" value=\"\"></td><td><input type=\"text\" name=\"title\" value=\"\"></td><td><input type=\"text\" name=\"keywords\" value=\"\"></td><td><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></td></tr></table><div class=\"remarks\"><label>備註:</label><br><textarea name=\"remark\"></textarea></div><button class=\"right\" type=\"button\" onclick=\"addUrl(this)\">新增</button></div>";
+    $(".everyGroup").append(Groupdiv);
+  }
+  function linkgroup_submit(){
+    var finalstorage = "";
+    $(".eachLinkGroup").each(function(){
+      $(this).find(".eachUrl").each(function(){
+        finalstorage += "<a href=\""+$(this).find("input[name=url]").val()+"\" ";
+        finalstorage += "title=\""+$(this).find("input[name=title]").val()+"\" >";
+        finalstorage += $(this).find("input[name=keywords]").val()+"</a>";
+      });
+      finalstorage += "Seperate%%REMARK%%Here"+$(this).find("textarea[name=remark]").val();
+      if (!$(this).is($(".eachLinkGroup").last())) {
+            finalstorage += "Seperate%%GROUP%%Here";
+          }
+    });
+    var case_id = $("#case_id").attr("case_id");
+      $.post("/ajax/upload_newtypelink/"+case_id,{change:finalstorage},function(){
+        alert("good~~");
+      });
+  }
+  function submit_original(){
+    var original_data = $("textarea[name=original]").val();
+    var case_id = $("#case_id").attr("case_id");
+      $.post("/ajax/upload_newtypelink/"+case_id,{change:original_data},function(){
+        alert("good~~");
+      });
+  }
+  function removegroup(field){
+    $(field).parents(".eachLinkGroup").remove();
+  }
+$("input[name=backlink_tpye]").click(function(){
+  var type_name = $(this).next("label").html();
+  var type_value = $(this).val();
+  var group_id = $(this).parents(".eachLinkGroup").attr("group_id");
+  var group_name = $(this).parents(".eachLinkGroup").find($("label.groupname_chinese")).html();
+  if ($(this).is(":checked")) {
+    $("#submit_preview").append("<tr submit_id="+group_id+"_"+type_value+"><td group_id="+group_id+">"+group_name+"</td><td type_id="+type_value+">"+type_name+"</td><tr>");
+  } else{
+    $("#submit_preview").find("tr[submit_id="+group_id+"_"+type_value+"]").remove();
+  }
+});
+
+  function submit_thisweek(){
+    if ($("input[name=backlink_tpye]:checked").length > 0 ) {
+      var case_id = $("#case_id").attr("case_id");
+      var thisweekRecord = "[";
+      $("tr[submit_id]").each(function(){
+        thisweekRecord += '{"case_id":'+case_id+',"backlinkGroup_id":'+$(this).children("td[group_id]").attr("group_id")+',"linktype_thisweek":'+$(this).children("td[type_id]").attr("type_id")+'}';
+        if (!$(this).is($("tr[submit_id]").last())) {
+          thisweekRecord += ",";
+        }
+      });
+      thisweekRecord += "]";
+      $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(){
+        location.href = "/";
+      });
+    } else {
+      alert("你還沒選膩");
+    }
+  }
+
+</script>
+{% endblock %}
