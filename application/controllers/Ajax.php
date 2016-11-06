@@ -34,8 +34,21 @@ class Ajax extends MY_Controller {
 			}
 		}
 		public function upload_newtypelinktest($n_id){
-			if ($_POST) {
-				print_r($_POST);
+			if ($_POST["allGroupStorge"]) {
+				foreach ($_POST["allGroupStorge"] as $key => $eachgroup) {
+					$this->db->from("backlink_content_table")
+									 ->where("case_id",$eachgroup["case_id"])
+									 ->where("group_id_incase",$eachgroup["group_id_incase"]);
+					$checkGroupExist = $this->db->get()->result_array();
+					if (empty($checkGroupExist)) {
+						$this->db->insert("backlink_content_table",$eachgroup);
+					} else{
+						$this->db->where("case_id",$eachgroup["case_id"])
+										 ->where("group_id_incase",$eachgroup["group_id_incase"])
+										 ->update("backlink_content_table",$eachgroup);
+
+					}
+				}
 			}
 		}
 
