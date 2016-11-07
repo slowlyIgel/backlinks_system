@@ -5,7 +5,8 @@ td input{width:100%;}
 .original{display:none;}
 .original textarea{display:block;width:90%;height:300px;margin:auto;}
 .right{float:right;}
-tr td:first-child{width:50%;}
+input[name=url] {width:50%;}
+input[name=title],input[name=keywords] {width:20%;}
 .eachLinkGroup{padding:50px; border:2px solid #aaa;margin:50px auto;}
 .remarks{display:table;margin:auto;}
 .submit_link{min-width:100px;min-height:100px;position:fixed;bottom:100px;left:0;padding:15px;}
@@ -23,23 +24,23 @@ tr td:first-child{width:50%;}
       {% for eachbacklink_type in backlink_type %}
       <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
       {% endfor %}
-      <br><br><label class="groupname_chinese">群組<span>{{groupChinese[group_id]}}</span></label>
-      <table>
-        <tr>
-          <th>url</th>
-          <th>title</th>
-          <th>keywords</th>
-          <th></th>
-        </tr>
+      <br><br><label class="groupname_chinese">{{groupChinese[group_id]}}</label>
+      <div class="GroupContent">
+        <!-- <div>
+          <span>url</span>
+          <span>title</span>
+          <span>keywords</span>
+          <span></span>
+        </div> -->
         {% for eachUrlinGroup in everyUrliGroup["urlpart"] %}
-        <tr class="eachUrl">
-          <td><input type="text" name="url" value="{{eachUrlinGroup["url"]}}"></td>
-          <td><input type="text" name="title" value="{{eachUrlinGroup["title"]}}"></td>
-          <td><input type="text" name="keywords" value="{{eachUrlinGroup["keywords"]}}"></td>
-          <td><button type="button" onclick="removeUrl(this)">刪除</button></td>
-        </tr>
+        <div class="eachUrl">
+          <input type="text" name="url" value="{{eachUrlinGroup["url"]}}">
+          <input type="text" name="title" value="{{eachUrlinGroup["title"]}}">
+          <input type="text" name="keywords" value="{{eachUrlinGroup["keywords"]}}">
+          <button type="button" onclick="removeUrl(this)">刪除</button>
+        </div>
     {% endfor %}
-      </table>
+  </div>
       <div class="remarks">
         <label>備註:</label><br>
         <textarea name="remark">{{everyUrliGroup["remark"]}}</textarea>
@@ -54,7 +55,7 @@ tr td:first-child{width:50%;}
     <button type="button" onclick="showhelp()">怪怪的顯示不出來??按這裡</button>
     <div class="original">
       <textarea name="original">{{original_data}}</textarea>
-      Seperate%%GROUP%%Here<br>Seperate%%GROUPNMAE%%Here<br>Seperate%%REMARK%%Here<br>
+      Seperate%%GROUP%%Here<br>Seperate%%REMARK%%Here<br>Seperate%%EachLink%%Here<br>
 
       <button type="button" onclick="submit_original()">送出</button>
     </div>
@@ -89,27 +90,35 @@ tr td:first-child{width:50%;}
     $(".everyGroup").append(Groupdiv);
   }
   function linkgroup_submit(){
-    var finalstorage = "";
+    var allGroupStorge = [];
     $(".eachLinkGroup").each(function(){
-      $(this).find(".eachUrl").each(function(){
-        finalstorage += "<a href=\""+$(this).find("input[name=url]").val()+"\" ";
-        finalstorage += "title=\""+$(this).find("input[name=title]").val()+"\" >";
-        finalstorage += $(this).find("input[name=keywords]").val()+"</a>";
+      var eachGroupContent = "";
+      $(this).children(".GroupContent").children(".eachUrl").each(function(){
+        eachGroupContent += "<a href=\""+$(this).children("input[name=url]").val()+"\" ";
+        eachGroupContent += "title=\""+$(this).children("input[name=title]").val()+"\">";
+        eachGroupContent += $(this).children("input[name=keywords]").val()+"</a>";
+        if (!$(this).is($(".eachUrl:last-child"))) {
+          eachGroupContent += "Seperate%%EachLink%%Here";
+        }
       });
-      finalstorage += "Seperate%%REMARK%%Here"+$(this).find("textarea[name=remark]").val();
-      if (!$(this).is($(".eachLinkGroup").last())) {
-            finalstorage += "Seperate%%GROUP%%Here";
-          }
+      var eachGroupStorge = {
+        "case_id" : $("#case_id").attr("case_id"),
+        "group_id_incase" : $(this).attr("group_id"),
+        "backlink_content" : eachGroupContent,
+        "remark_content" : $(this).find("textarea[name=remark]").val(),
+      };
+      allGroupStorge.push(eachGroupStorge);
     });
     var case_id = $("#case_id").attr("case_id");
-      $.post("/ajax/upload_newtypelink/"+case_id,{change:finalstorage},function(){
-        alert("good~~");
+    console.log(allGroupStorge);
+      $.post("/ajax/upload_linkgroupcontent/"+case_id,{allGroupStorge},function(data){
+        alert("good");
       });
   }
   function submit_original(){
     var original_data = $("textarea[name=original]").val();
     var case_id = $("#case_id").attr("case_id");
-      $.post("/ajax/upload_newtypelink/"+case_id,{change:original_data},function(){
+      $.post("/ajax/upload_newtypelink_oldver/"+case_id,{change:original_data},function(){
         alert("good~~");
       });
   }

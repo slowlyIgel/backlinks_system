@@ -23,7 +23,7 @@ class Ajax extends MY_Controller {
     {
         parent::__construct();
     }
-		public function upload_newtypelink($n_id){
+		public function upload_newtypelink_oldver($n_id){
 			if (isset($_POST["change"])) {
 				$data["case_backlink"] = $_POST["change"];
 				$this->db->where("auto_id",$n_id)
@@ -33,7 +33,7 @@ class Ajax extends MY_Controller {
 				echo "bad!!";
 			}
 		}
-		public function upload_newtypelinktest($n_id){
+		public function upload_linkgroupcontent($n_id){
 			if ($_POST["allGroupStorge"]) {
 				foreach ($_POST["allGroupStorge"] as $key => $eachgroup) {
 					$this->db->from("backlink_content_table")
