@@ -71,4 +71,43 @@ class Ajax extends MY_Controller {
 								 echo "good";
 			}
 		}
+
+		public function pre_export(){
+			if ($_POST["exportData"]) {
+					$this->db->start_cache()
+									 ->flush_cache()
+									 ->select("backlink_content")
+									 ->from("backlink_content_table")
+									 ->where($_POST["exportData"])
+									 ->stop_cache();
+					$data["eachGroupContent"] = $this->db->get()->result_array()[0]["backlink_content"];
+
+					$this->db->start_cache()
+									 ->flush_cache()
+									 ->select("case_address")
+									 ->from("case_table")
+									 ->where("auto_id",$_POST["exportData"]["case_id"])
+									 ->stop_cache();
+					$basicUrl = $this->db->get()->result_array()[0]["case_address"];
+					$this->load->library("find_tdk");
+					$curlTD = $this->find_tdk->get_tdktest($basicUrl);
+					$finaldata["TDK"] = $curlTD;
+
+					$finaldata["eachGroupContent"] = explode("Seperate%%EachLink%%Here",$data["eachGroupContent"]);
+					$finaldata["eachCaseName"] = $_POST["exportCaseName"];
+				unset($data);
+				$this->finaldata["allLinkinFile"] = $finaldata;
+				$flashdataName = "finaldata".$_POST["exportData"]["case_id"]."_".$_POST["exportData"]["group_id_incase"];
+				$this->session->set_flashdata($flashdataName, $this->finaldata);
+
+			}
+		}
+
+		public function export(){
+			// $this->output->set_header("Content-type:application/octet-stream");
+			// $this->output->set_header("Content-Disposition: attachment; filename = text.txt");
+			$test = $this->session->flashdata();
+			// $this->twig->display("export_txt",$test);
+			print_r($test);
+		}
 }

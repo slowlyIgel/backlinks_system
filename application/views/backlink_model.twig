@@ -3,7 +3,7 @@
 <ul>
   <li><a href="/backlink">總覽</a></li>
   {% for eachbacklink_type in backlink_type %}
-  <li><a href="/backlink/{{eachbacklink_type["auto_backlinkID"]}}">{{eachbacklink_type["BacklinkType_name"]}}</a></li>
+  <li><a href="/backlink/type/{{eachbacklink_type["auto_backlinkID"]}}">{{eachbacklink_type["BacklinkType_name"]}}</a></li>
   {% endfor %}
 </ul>
 {% endblock %}
