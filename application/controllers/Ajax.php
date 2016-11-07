@@ -23,7 +23,7 @@ class Ajax extends MY_Controller {
     {
         parent::__construct();
     }
-		public function upload_newtypelink($n_id){
+		public function upload_newtypelink_oldver($n_id){
 			if (isset($_POST["change"])) {
 				$data["case_backlink"] = $_POST["change"];
 				$this->db->where("auto_id",$n_id)
@@ -31,6 +31,24 @@ class Ajax extends MY_Controller {
 
 			} else{
 				echo "bad!!";
+			}
+		}
+		public function upload_linkgroupcontent($n_id){
+			if ($_POST["allGroupStorge"]) {
+				foreach ($_POST["allGroupStorge"] as $key => $eachgroup) {
+					$this->db->from("backlink_content_table")
+									 ->where("case_id",$eachgroup["case_id"])
+									 ->where("group_id_incase",$eachgroup["group_id_incase"]);
+					$checkGroupExist = $this->db->get()->result_array();
+					if (empty($checkGroupExist)) {
+						$this->db->insert("backlink_content_table",$eachgroup);
+					} else{
+						$this->db->where("case_id",$eachgroup["case_id"])
+										 ->where("group_id_incase",$eachgroup["group_id_incase"])
+										 ->update("backlink_content_table",$eachgroup);
+
+					}
+				}
 			}
 		}
 
