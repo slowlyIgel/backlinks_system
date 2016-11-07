@@ -1,26 +1,41 @@
 {% extends 'backlink_model.twig' %}
+{% block style %}
+.export{min-width:100px;min-height:100px;position:fixed;bottom:3%;left:0;padding:15px;}
+.export button {display:block;margin:auto;}
+td, th {padding:5px;}
+{% endblock %}
 {% block main_stage %}
 <table>
   <tr>
-    <th></th>
+    <th>選擇匯出</th>
+    <th>現在檢查用日期</th>
     <th>案件名稱</th>
     <th>外鏈群組</th>
     <th>外鏈類型</th>
     <th>案件產業</th>
     <th>群組備註</th>
+    <th>已匯出</th>
   </tr>
   {% for eachSubmitRecord in everySubmitRecord %}
   <tr>
-    <th></th>
-
-    <th>{{backlink_type[ eachSubmitRecord["linktype_thisweek"] ]["BacklinkType_name"]}}</th>
-
+    <td>
+      <input type="checkbox" name="selectexport" value="" checked>
+    </td>
+    <td>{{eachSubmitRecord["submit_time"]}}</td>
+    <td>{{eachSubmitRecord["case_name"]}}</td>
+    <td>{{groupChinese[ eachSubmitRecord["backlinkGroup_id"] ]}}</td>
+    <td>{{eachSubmitRecord["BacklinkType_name"]}}</td>
+    <td>{{eachSubmitRecord["industry_name"]}}</td>
+    <td>{{eachSubmitRecord["remark"]}}</td>
+    <td>{{eachSubmitRecord["export"]}}</td>
   </tr>
-
   {% endfor %}
 </table>
 
-
+<div class="export">
+  <label>拆檔:</label><input type="text" value=""><br><br>
+  <button type="button">匯出</button>
+</div>
 
 
 {% endblock %}
