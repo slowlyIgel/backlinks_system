@@ -19,7 +19,7 @@ td, th {padding:5px;}
   {% for eachSubmitRecord in everySubmitRecord %}
   <tr case_id="{{eachSubmitRecord["case_id"]}}" group_id="{{eachSubmitRecord["backlinkGroup_id"]}}">
     <td>
-      <input type="checkbox" name="selectexport" value="" checked>
+      <input type="checkbox" name="selectexport" value="" checked="checked">
     </td>
     <td>{{eachSubmitRecord["submit_time"]}}</td>
     <td name="caseName">{{eachSubmitRecord["case_name"]}}</td>
@@ -42,7 +42,7 @@ td, th {padding:5px;}
   function create_export_file(){
     var ContentIndex = "<form  action=\"\/export\/backlink_data\" method=\"post\">";
     var i = 0;
-    $("tr[case_id][group_id]").each(function(){
+    $("tr[case_id][group_id]").has("input:checked").each(function(){
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][case_id]\" value="+$(this).attr("case_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][group_id_incase]\" value="+$(this).attr("group_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"CaseName[]\" value="+$(this).children("td[name=caseName]").html()+">";
