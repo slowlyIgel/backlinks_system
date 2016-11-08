@@ -24,7 +24,7 @@ td, th {padding:5px;}
     <td>{{eachSubmitRecord["submit_time"]}}</td>
     <td name="caseName">{{eachSubmitRecord["case_name"]}}</td>
     <td>{{groupChinese[ eachSubmitRecord["backlinkGroup_id"] ]}}</td>
-    <td>{{eachSubmitRecord["BacklinkType_name"]}}</td>
+    <td  name="LinkType" type_id="{{eachSubmitRecord["linktype_thisweek"]}}">{{eachSubmitRecord["BacklinkType_name"]}}</td>
     <td>{{eachSubmitRecord["industry_name"]}}</td>
     <td>{{eachSubmitRecord["remark"]}}</td>
     <td>{{eachSubmitRecord["export"]}}</td>
@@ -33,7 +33,7 @@ td, th {padding:5px;}
 </table>
 <div id="forexportContent"></div>
 <div class="export">
-  <label>拆檔:</label><input type="text" value=""><br><br>
+  <label>拆檔:</label><input type="text" id="SeperateToNFile" value=""><br><br>
   <button type="button" onclick="create_export_file()">匯出</button>
 </div>
 {% endblock %}
@@ -46,8 +46,12 @@ td, th {padding:5px;}
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][case_id]\" value="+$(this).attr("case_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][group_id_incase]\" value="+$(this).attr("group_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"CaseName[]\" value="+$(this).children("td[name=caseName]").html()+">";
+      ContentIndex += "<input type=\"hidden\" name=\"LinkType[]\" value="+$(this).children("td[name=LinkType]").attr("type_id")+">";
       i += 1;
     });
+    if ($.isNumeric($("#SeperateToNFile").val())) {
+      ContentIndex += "<input type=\"hidden\" name=\"SeperateTo\" value="+$("#SeperateToNFile").val()+">";
+    }
     ContentIndex += "<\/form>";
     $(ContentIndex).submit();
   }

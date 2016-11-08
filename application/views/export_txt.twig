@@ -1,10 +1,10 @@
-    {% for eachGroup in allLinkinFile %}
-      {{eachGroup["CaseName"]}}\n
+{% for eachGroup in allLinkinFile %}
+{{eachGroup["CaseName"]}}
 
 
-      連結原始碼:
-      {% for eachLinkinGroup in eachGroup["eachGroupContent"] %}
-          {{eachLinkinGroup}}\n
-      {% endfor %}
-    ---------------------------------
-    {% endfor %}
+連結原始碼:
+{% for eachLinkinGroup in eachGroup["eachGroupContent"] %}
+{{eachLinkinGroup}}
+{% endfor %}
+---------------------------------<br>
+{% endfor %}

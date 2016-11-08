@@ -41,29 +41,23 @@ class Backlink extends MY_Controller {
 		$data = $this->db->get()->result_array();
 		foreach ($data as $key => $eachsubmit) {
 			// 取得備註
-			$this->db->start_cache()
-							 ->flush_cache()
+			$this->db->flush_cache()
 							 ->select("remark_content")
 							 ->from("backlink_content_table")
 		 				 	 ->where("case_id",$eachsubmit["case_id"])
-		 				 	 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"])
-							 ->stop_cache();
+		 				 	 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"]);
 			$data[$key]["remark"] = $this->db->get()->result_array()[0]["remark_content"];
 			// 取得外鏈類型名稱
-			$this->db->start_cache()
-							 ->flush_cache()
+			$this->db->flush_cache()
 							 ->select("BacklinkType_name")
 							 ->from("type_backlink")
-		 				 	 ->where("auto_backlinkID",$eachsubmit["linktype_thisweek"])
-							 ->stop_cache();
+		 				 	 ->where("auto_backlinkID",$eachsubmit["linktype_thisweek"]);
 			$data[$key]["BacklinkType_name"] = $this->db->get()->result_array()[0]["BacklinkType_name"];
 			// 取得產業名稱
-			$this->db->start_cache()
-							 ->flush_cache()
+			$this->db->flush_cache()
 							 ->select("industry_name")
 							 ->from("type_industry")
-							 ->where("auto_industryID",$eachsubmit["case_industry"])
-							 ->stop_cache();
+							 ->where("auto_industryID",$eachsubmit["case_industry"]);
 			$data[$key]["industry_name"] = $this->db->get()->result_array()[0]["industry_name"];
 			if ($eachsubmit["export"]) {
 				$data[$key]["export"] = "是";
@@ -88,29 +82,23 @@ class Backlink extends MY_Controller {
 		$data = $this->db->get()->result_array();
 		foreach ($data as $key => $eachsubmit) {
 			// 取得備註
-			$this->db->start_cache()
-							 ->flush_cache()
+			$this->db->flush_cache()
 							 ->select("remark_content")
 							 ->from("backlink_content_table")
 							 ->where("case_id",$eachsubmit["case_id"])
-							 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"])
-							 ->stop_cache();
+							 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"]);
 			$data[$key]["remark"] = $this->db->get()->result_array()[0]["remark_content"];
 			// 取得外鏈類型名稱
-			$this->db->start_cache()
-							 ->flush_cache()
+			$this->db->flush_cache()
 							 ->select("BacklinkType_name")
 							 ->from("type_backlink")
-							 ->where("auto_backlinkID",$eachsubmit["linktype_thisweek"])
-							 ->stop_cache();
+							 ->where("auto_backlinkID",$eachsubmit["linktype_thisweek"]);
 			$data[$key]["BacklinkType_name"] = $this->db->get()->result_array()[0]["BacklinkType_name"];
 			// 取得產業名稱
-			$this->db->start_cache()
-							 ->flush_cache()
+			$this->db->flush_cache()
 							 ->select("industry_name")
 							 ->from("type_industry")
-							 ->where("auto_industryID",$eachsubmit["case_industry"])
-							 ->stop_cache();
+							 ->where("auto_industryID",$eachsubmit["case_industry"]);
 			$data[$key]["industry_name"] = $this->db->get()->result_array()[0]["industry_name"];
 			if ($eachsubmit["export"]) {
 				$data[$key]["export"] = "是";
