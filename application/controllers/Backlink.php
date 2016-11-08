@@ -33,11 +33,6 @@ class Backlink extends MY_Controller {
 		$lastmonday = strtotime("Monday last Week",time());
 		$lastsunday = strtotime("Monday this Week",time());
 		echo "疑問:這頁顯示上週下的外鏈....所以沒地方檢查自己剛剛下了啥XD";
-		// $this->db->select("backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id, backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.case_name, case_table.case_backlink")
-		// 				 ->from("backlink_submit_record")
-		// 				 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")
-		// 				 ->where("backlink_submit_record.submit_time >",$lastmonday)
-		// 				 ->where("backlink_submit_record.submit_time <",$lastsunday);
 		$this->db->select("backlink_submit_record.submit_time, backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id,backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.case_name, case_table.case_industry")
 						 ->from("backlink_submit_record")
 	 				 	 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")

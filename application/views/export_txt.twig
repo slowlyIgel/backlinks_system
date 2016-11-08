@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
     {% for eachGroup in allLinkinFile %}
-    <div>
-      <p>{{eachGroup["CaseName"]}}</p>
+      {{eachGroup["CaseName"]}}\n
 
 
       連結原始碼:
       {% for eachLinkinGroup in eachGroup["eachGroupContent"] %}
-          <p>{{eachLinkinGroup}}</p>
+          {{eachLinkinGroup}}\n
       {% endfor %}
-    </div>
     ---------------------------------
     {% endfor %}
-  </body>
-</html>

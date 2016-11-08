@@ -35,10 +35,27 @@ class Export extends MY_Controller {
                 $finaldata[$key]["eachGroupContent"] = explode("Seperate%%EachLink%%Here",$data["eachGroupContent"]);
                 $finaldata[$key]["CaseName"] = $_POST["CaseName"][$key];
         }
-        $this->finaldata["allLinkinFile"] = $finaldata;
+        // $this->finaldata["allLinkinFile"] = $finaldata;
+        // 寫入txt檔
+        $content = "";
+        foreach ($finaldata as $key => $eachgroup) {
+          $content .= $eachgroup["CaseName"]."\r\n\r\n\r\n\r\n";
+          $content .= "連結原始碼:"."\r\n";
+          foreach ($eachgroup["eachGroupContent"] as $key2 => $eachlink) {
+            $content .= $eachlink."\r\n";
+          }
+          $content .= "------------------------------------------------------"."\r\n";
+        }
+
+        $fp = fopen("upload/backlink.txt", "w");
+  			fputs($fp, "$content");
+  			fclose($fp);
+
         $this->output->set_header("Content-type: application/octetstream");
     		$this->output->set_header("Content-Disposition: attachment; filename=test.txt");
-         echo $this->twig->render("export_txt",$this->finaldata);
+        //  echo $this->twig->render("export_txt",$this->finaldata);
+        readfile("upload/backlink.txt");
+        unlink("upload/backlink.txt");
     }
   }
 
