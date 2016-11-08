@@ -5,17 +5,17 @@
     <title></title>
   </head>
   <body>
-        <div>
-          <p>{{allLinkinFile["eachCaseName"]}}</p>
-          title:
-          <p>{{allLinkinFile["TDK"]["title"]}}</p>
-          description:
-          <p>{{allLinkinFile["TDK"]["description"]}}</p>
-          連結原始碼:
-          {% for eachLinkinGroup in allLinkinFile["eachGroupContent"] %}
-              <p>{{eachLinkinGroup}}</p>
-          {% endfor %}
-        </div>
-        ---------------------------------
+    {% for eachGroup in allLinkinFile %}
+    <div>
+      <p>{{eachGroup["CaseName"]}}</p>
+
+
+      連結原始碼:
+      {% for eachLinkinGroup in eachGroup["eachGroupContent"] %}
+          <p>{{eachLinkinGroup}}</p>
+      {% endfor %}
+    </div>
+    ---------------------------------
+    {% endfor %}
   </body>
 </html>
