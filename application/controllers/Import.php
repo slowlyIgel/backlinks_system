@@ -24,8 +24,12 @@ class Import extends MY_Controller {
     }
     public function casedata(){
       if ($_POST | $_FILES) {
-        print_r($_POST);
-        print_r($_FILES);
+        $file = fopen($_FILES["casedata"]["tmp_name"], 'r');
+        while (($line = fgetcsv($file)) !== FALSE) {
+          //$line is an array of the csv elements
+          print_r($line);
+        }
+        fclose($file);
       }
     }
 }

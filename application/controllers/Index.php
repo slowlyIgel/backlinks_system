@@ -33,7 +33,8 @@ class Index extends MY_Controller {
 		print_r($this->session->admin);
 
 			$this->db->select("auto_id,case_name")
-							 ->from("case_table");
+							 ->from("case_table")
+							 ->order_by("auto_id","DESC");
 			$this->finaldata["everycase"] = $this->db->get()->result_array();
 
 			// 取得最近下外鏈的日期
@@ -180,11 +181,16 @@ class Index extends MY_Controller {
 	}
 
 	public function add_casedata(){
-	}
-	public function import_casedata(){
-		$this->twig->display("casedata_import");
-	}
+		// 共用的產業分類
+		$this->db->select("auto_industryID, industry_name")
+						 ->from("type_industry");
+		$this->finaldata["industry_tpye"] = $this->db->get()->result_array();
 
+		// 共用的等級分類
+		$this->db->from("type_level");
+		$this->finaldata["level_tpye"] = $this->db->get()->result_array();
+		$this->twig->display("case_dataadd",$this->finaldata);
+	}
 	public function logout(){
 		$this->session->sess_destroy();
 		header("location: /");

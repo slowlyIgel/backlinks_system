@@ -79,8 +79,8 @@ input[name=title],input[name=keywords] {width:20%;}
     $(".original").show();
   }
   function addUrl(filed){
-    var Urltr = "<tr class=\"eachUrl\"><td><input type=\"text\" name=\"url\" value=\"\"></td><td><input type=\"text\" name=\"title\" value=\"\"></td><td><input type=\"text\" name=\"keywords\" value=\"\"></td><td><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></td></tr>";
-    $(filed).parents(".eachLinkGroup").children("table").append(Urltr);
+    var Urldiv = "<div class=\"eachUrl\"><input type=\"text\" name=\"url\" value=\"\"><input type=\"text\" name=\"title\" value=\"\"><input type=\"text\" name=\"keywords\" value=\"\"><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></div>";
+    $(filed).parents(".eachLinkGroup").children(".GroupContent").append(Urldiv);
   }
   function removeUrl(field){
     $(field).parents(".eachUrl").remove();
