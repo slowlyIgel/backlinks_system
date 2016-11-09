@@ -1,4 +1,7 @@
 {% extends 'case_model.twig' %}
+{% block style %}
+button:first-child {width:55%;}
+{% endblock %}
 {% block header %}
 <ul>
   <li><a href="#">搜尋</a></li>
@@ -11,7 +14,7 @@
 {% for eachcase in everycase %}
 <div class="caseindex_btnarea" case_id="{{eachcase["auto_id"]}}">
   <button type="button" onclick="goto_casedataedit(this)">{{eachcase["case_name"]}}</button>
-  <button type="button" name="button" disabled>最近下外鏈日期</button>
+  <button type="button" name="button" disabled>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</button>
   <button type="button" name="button" disabled>操作等級</button>
   <button type="button" onclick="goto_caseLinkedit(this)">連結管理</button>
   <button type="button" name="button">刪除</button><br>

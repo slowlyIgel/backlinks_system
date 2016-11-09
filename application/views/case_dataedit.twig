@@ -47,14 +47,14 @@ table tr td{padding:5px;text-align:center;}
 <div class="backlink_history">
   <table>
     <tr>
-      <th>日期</th>
+      <th>日期(是提交不是匯出)</th>
       <th>群組</th>
       <th>類型</th>
     </tr>
     {% for eachRecord in linkRecord %}
     <tr>
       <td>{{eachRecord["submit_time"]}}</td>
-      <td>群組{{groupChinese[ eachRecord["backlinkGroup_id"] ]}}</td>
+      <td>{{groupChinese[ eachRecord["backlinkGroup_id"] ]}}</td>
       <td>{{eachRecord["BacklinkType_name"]}}</td>
     </tr>
     {% endfor %}

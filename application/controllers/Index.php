@@ -32,6 +32,21 @@ class Index extends MY_Controller {
 			$this->db->select("auto_id,case_name")
 							 ->from("case_table");
 			$this->finaldata["everycase"] = $this->db->get()->result_array();
+
+			// 取得最近下外鏈的日期
+			foreach ($this->finaldata["everycase"] as $key => $value) {
+				$this->db->select("case_id, submit_time")
+								 ->from("backlink_submit_record")
+								 ->order_by("submit_time","DESC")
+								 ->limit(1)
+								 ->where("case_id",$value["auto_id"]);
+				 $data[] = $this->db->get()->result_array();
+			}
+			foreach ($data as $key => $value) {
+				if (!empty($value)) {
+					$this->finaldata["everycase"][$key]["submit_time"] = date("Y-n-d",$value[0]["submit_time"]);
+				}
+			}
 			$this->twig->display("case_index",$this->finaldata);
 		}
 	}
@@ -114,7 +129,7 @@ class Index extends MY_Controller {
 						 ->from("case_table")
 						 ->where("auto_id",$case_id);
 		$data = $this->db->get()->result_array();
-		// 可下外鏈種類資料
+		// 可下外鏈種類
 		$this->db->from("type_backlink");
 		$backlink_type = $this->db->get()->result_array();
 		$this->finaldata["backlink_type"] = $backlink_type;
