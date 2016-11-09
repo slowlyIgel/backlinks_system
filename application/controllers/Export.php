@@ -146,4 +146,8 @@ class Export extends MY_Controller {
 						print_r($this->db->get()->result_array());
     }
 
+		public function testxlsexport(){
+			
+		}
+
 }
