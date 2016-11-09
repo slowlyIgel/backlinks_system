@@ -84,10 +84,7 @@ class Export extends MY_Controller {
           foreach($fileList as $value){
             unlink($value["path"]);
           }
-          $this->db->stop_cache();
           foreach ($forUpdateExport as $key => $eachGroup) {
-            print_r($_POST["ContentIndex"][$key]);
-            print_r($eachGroup);
             $this->db->flush_cache()
                      ->where($eachGroup)
                      ->where("submit_time >",$lastmonday)
@@ -118,7 +115,11 @@ class Export extends MY_Controller {
           file_put_contents("upload/".$filename.".txt",$content);
 
           foreach ($forUpdateExport as $key => $eachGroup) {
-            print_r($eachGroup);
+						$this->db->flush_cache()
+                     ->where($eachGroup)
+                     ->where("submit_time >",$lastmonday)
+                     ->where("submit_time <",$lastsunday)
+                     ->update("backlink_submit_record",array("export"=> 1));
           }
 
           $this->output->set_header("Content-type: text/plain");
@@ -132,7 +133,17 @@ class Export extends MY_Controller {
   }
 
     public function test_seperate(){
-      print_r($_POST);
+							$this->db->flush_cache()
+											 ->start_cache()
+											 ->select("backlink_content")
+											 ->from("backlink_content_table")
+											 ->stop_cache();
+							foreach ($_POST["ContentIndex"] as $key => $eachGroupinCase) {
+								$where = "case_id = '".$eachGroupinCase["case_id"]."' AND group_id_incase = '".$eachGroupinCase["group_id_incase"]."'";
+							$this->db->or_where($where)
+											 ->stop_cache();
+				}
+						print_r($this->db->get()->result_array());
     }
 
 }
