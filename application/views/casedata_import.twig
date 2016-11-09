@@ -1,0 +1,35 @@
+{% extends 'case_model.twig' %}
+{% block main_stage %}
+<div>
+  <form action="/import/casedata/" method="post" id="fileUploadForm" enctype="multipart/form-data">
+    <input type="file" name="casedata" value=""><br>
+    <button type="submit" onclick="test()">送出</button>
+
+  </form>
+</div>
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script type="text/javascript">
+  function test(){
+    $('#fileUploadForm').ajaxForm({
+            beforeSubmit: ShowRequest,
+            success: SubmitSuccesful,
+            error: AjaxError
+          });
+  }
+  function ShowRequest(formData, jqForm, options) {
+          var queryString = $.param(formData);
+          alert('BeforeSend method: \n\nAbout to submit: \n\n' + queryString);
+          return true;
+        }
+
+        function AjaxError() {
+          alert("An AJAX error occured.");
+        }
+
+        function SubmitSuccesful(responseText, statusText) {
+          alert("SuccesMethod:\n\n" + responseText);
+        }
+</script>
+{% endblock %}

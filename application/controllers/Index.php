@@ -26,6 +26,12 @@ class Index extends MY_Controller {
 
 	public function index()
 	{
+		if (empty($this->session->admin)) {
+			$this->twig->display("login_page");
+
+		} else {
+		print_r($this->session->admin);
+
 			$this->db->select("auto_id,case_name")
 							 ->from("case_table");
 			$this->finaldata["everycase"] = $this->db->get()->result_array();
@@ -45,6 +51,8 @@ class Index extends MY_Controller {
 				}
 			}
 			$this->twig->display("case_index",$this->finaldata);
+
+		}
 
 	}
 	public function login($loginID){
@@ -169,6 +177,12 @@ class Index extends MY_Controller {
 		$this->finaldata["case_name"] = $data[0]["case_name"];
 		$this->finaldata["groupChinese"] = $this->groupname;
 		$this->twig->display("case_linkgroupedit",$this->finaldata);
+	}
+
+	public function add_casedata(){
+	}
+	public function import_casedata(){
+		$this->twig->display("casedata_import");
 	}
 
 	public function logout(){

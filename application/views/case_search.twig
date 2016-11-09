@@ -1,7 +1,19 @@
 {% extends 'case_model.twig' %}
 {% block main_stage %}
-依客戶搜尋：
+依案件名稱搜尋：
 <input type="text" name="case" value="">
-<button type="button">送出</button>
+<button type="button" onclick="search_case()">送出</button>
+<div class="result"></div>
+{% endblock %}
 
+{% block script_stage %}
+<script type="text/javascript">
+  function search_case(){
+    if ($("input[name=case]").val()) {
+      var searchKey = $("input[name=case]").val();
+      $.post("/ajax/case_search",{"searchKey":searchKey},function(data){
+      });
+    }
+  }
+</script>
 {% endblock %}
