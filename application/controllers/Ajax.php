@@ -80,4 +80,15 @@ class Ajax extends MY_Controller {
 					print_r($this->db->get()->result_array());
 			}
 		}
+
+		public function add_newcase(){
+			if ($_POST["newcasedata"]) {
+				$this->db->insert_batch("case_table",$_POST["newcasedata"]);
+				$casename = "";
+				foreach ($_POST["newcasedata"] as $key => $value) {
+					$casename .= " ".$value["case_name"]." ";
+				}
+				echo "case".$casename."加了";
+			}
+		}
 }

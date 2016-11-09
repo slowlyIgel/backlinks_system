@@ -92,9 +92,9 @@ class Export extends MY_Controller {
                      ->update("backlink_submit_record",array("export"=> 1));
           }
           ob_end_clean();
-          header('Content-type: application/octet-stream');
-          header('Content-Transfer-Encoding: Binary');
-          header('Content-disposition: attachment; filename=Link.zip');
+          $this->output->set_header('Content-type: application/octet-stream');
+          $this->output->set_header('Content-Transfer-Encoding: Binary');
+          $this->output->set_header('Content-disposition: attachment; filename=Link.zip');
 
           readfile($file);
           unlink($file);
@@ -145,5 +145,11 @@ class Export extends MY_Controller {
 				}
 						print_r($this->db->get()->result_array());
     }
+
+		public function testxlsexport(){
+			$this->output->set_header("Content-type:application/vnd.ms-excel");
+			$this->output->set_header("Content-Disposition: attachment; filename= test.xls");
+			$this->twig->display("export_xls");
+		}
 
 }
