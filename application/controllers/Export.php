@@ -135,15 +135,15 @@ class Export extends MY_Controller {
     public function test_seperate(){
 							$this->db->flush_cache()
 											 ->start_cache()
-											 ->select("backlink_content")
+											 ->select("case_id, group_id_incase, backlink_content")
 											 ->from("backlink_content_table")
 											 ->stop_cache();
 							foreach ($_POST["ContentIndex"] as $key => $eachGroupinCase) {
-								$where = "case_id = '".$eachGroupinCase["case_id"]."' AND group_id_incase = '".$eachGroupinCase["group_id_incase"]."'";
-							$this->db->or_where($where)
+								// $where = "case_id = '".$eachGroupinCase["case_id"]."' AND group_id_incase = '".$eachGroupinCase["group_id_incase"]."'";
+							$this->db->or_where("case_id",$eachGroupinCase["case_id"])
+											 ->where("group_id_incase",$eachGroupinCase["group_id_incase"])
 											 ->stop_cache();
 				}
-						print_r($this->db->get()->result_array());
     }
 
 		public function testxlsexport(){
