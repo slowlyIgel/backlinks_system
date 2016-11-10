@@ -5,8 +5,8 @@ td input{width:100%;}
 .original{display:none;}
 .original textarea{display:block;width:90%;height:300px;margin:auto;}
 .right{float:right;}
-input[name=url] {width:50%;}
-input[name=title],input[name=keywords] {width:20%;}
+input[name=url] {width:65%;}
+input[name=keywords] {width:25%;}
 .eachLinkGroup{padding:50px; border:2px solid #aaa;margin:50px auto;}
 .remarks{display:table;margin:auto;}
 .submit_link{min-width:100px;min-height:100px;position:fixed;bottom:100px;left:0;padding:15px;}
@@ -28,14 +28,12 @@ input[name=title],input[name=keywords] {width:20%;}
       <div class="GroupContent">
         <!-- <div>
           <span>url</span>
-          <span>title</span>
           <span>keywords</span>
           <span></span>
         </div> -->
         {% for eachUrlinGroup in everyUrliGroup["urlpart"] %}
         <div class="eachUrl">
           <input type="text" name="url" value="{{eachUrlinGroup["url"]}}">
-          <input type="text" name="title" value="{{eachUrlinGroup["title"]}}">
           <input type="text" name="keywords" value="{{eachUrlinGroup["keywords"]}}">
           <button type="button" onclick="removeUrl(this)">刪除</button>
         </div>
@@ -55,7 +53,7 @@ input[name=title],input[name=keywords] {width:20%;}
     <button type="button" onclick="showhelp()">怪怪的顯示不出來??按這裡</button>
     <div class="original">
       <textarea name="original">{{original_data}}</textarea>
-      Seperate%%GROUP%%Here<br>Seperate%%REMARK%%Here<br>Seperate%%EachLink%%Here<br>
+      Seperate%%GROUP%%Here<br><br>
 
       <button type="button" onclick="submit_original()">送出</button>
     </div>
@@ -79,15 +77,26 @@ input[name=title],input[name=keywords] {width:20%;}
     $(".original").show();
   }
   function addUrl(filed){
-    var Urldiv = "<div class=\"eachUrl\"><input type=\"text\" name=\"url\" value=\"\"><input type=\"text\" name=\"title\" value=\"\"><input type=\"text\" name=\"keywords\" value=\"\"><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></div>";
+    var Urldiv = "<div class=\"eachUrl\"><input type=\"text\" name=\"url\" value=\"\"><input type=\"text\" name=\"keywords\" value=\"\"><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></div>";
     $(filed).parents(".eachLinkGroup").children(".GroupContent").append(Urldiv);
   }
   function removeUrl(field){
     $(field).parents(".eachUrl").remove();
   }
   function addGroup(){
-    var Groupdiv = "<div class=\"eachLinkGroup\"><button type=\"button\" style=\"float:right;\" onclick=\"removegroup(this)\">刪除此群組</button><br>{% for eachbacklink_type in backlink_type %}<input type=\"checkbox\" name=\"backlink_tpye\" value=\"{{eachbacklink_type["auto_backlinkID"]}}\"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>{% endfor %}<br><br><label>群組<span></span></label><table><tr><th>url</th><th>title</th><th>keywords</th><th></th></tr><tr class=\"eachUrl\"><td><input type=\"text\" name=\"url\" value=\"\"></td><td><input type=\"text\" name=\"title\" value=\"\"></td><td><input type=\"text\" name=\"keywords\" value=\"\"></td><td><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></td></tr></table><div class=\"remarks\"><label>備註:</label><br><textarea name=\"remark\"></textarea></div><button class=\"right\" type=\"button\" onclick=\"addUrl(this)\">新增</button></div>";
-    $(".everyGroup").append(Groupdiv);
+    var countGroup = $(".eachLinkGroup").length;
+    if (countGroup < 30) {
+      var Groupdiv = $(".eachLinkGroup:first").html();
+      var newGroup = $("<div class=\"eachLinkGroup\" group_id="+(countGroup)+">");
+      newGroup.html(Groupdiv);
+      newGroup.find(".eachUrl:not(:first-child)").remove();
+      newGroup.find(".groupname_chinese").remove();
+      newGroup.find("input").val("");
+      newGroup.children(".GroupContent").before("<button type=\"button\" onclick=\"removegroup(this)\">刪除此群組</button><br>");
+      $(".everyGroup").append(newGroup);
+    } else {
+      alert("已達群組數上限!!!想要增加群組去跟管理員說!!!");
+    }
   }
   function linkgroup_submit(){
     var allGroupStorge = [];
@@ -95,7 +104,7 @@ input[name=title],input[name=keywords] {width:20%;}
       var eachGroupContent = "";
       $(this).children(".GroupContent").children(".eachUrl").each(function(){
         eachGroupContent += "<a href=\""+$(this).children("input[name=url]").val()+"\" ";
-        eachGroupContent += "title=\""+$(this).children("input[name=title]").val()+"\">";
+        eachGroupContent += "title=\""+$(this).children("input[name=keywords]").val()+"\">";
         eachGroupContent += $(this).children("input[name=keywords]").val()+"</a>";
         if (!$(this).is($(".eachUrl:last-child"))) {
           eachGroupContent += "Seperate%%EachLink%%Here";

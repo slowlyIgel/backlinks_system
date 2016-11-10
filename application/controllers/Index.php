@@ -139,12 +139,8 @@ class Index extends MY_Controller {
 				foreach ($eachUrl[$groupkey][2] as $eachUrlKeyinGroup => $eachUrlValueinGroup) {
 					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrlValueinGroup;
 					preg_match("/href=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$urls);
-					preg_match("/title=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$titles);
 					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
-					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["title"] = $titles[1];
 				}
-				list($UrlPartinGroup[$groupkey],$RemarkPartinGroup[$groupkey]) = explode("Seperate%%REMARK%%Here",$everyUrlinGroup);
-				$this->finaldata["group"][$groupkey]["remark"] = $RemarkPartinGroup[$groupkey];
 			}
 
 		} else {
@@ -157,9 +153,7 @@ class Index extends MY_Controller {
 					preg_match_all("/<a([^>]*)>([^<]*)<\/a>/",$seperate,$eachUrl);
 					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrl[2][0];
 					preg_match("/href=\"([^\"]*)\"/",$eachUrl[1][0],$urls);
-					preg_match("/title=\"([^\"]*)\"/",$eachUrl[1][0],$titles);
 					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
-					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["title"] = $titles[1];
 				}
 			}
 			// print_r($this->finaldata["group"]);
