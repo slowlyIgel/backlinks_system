@@ -26,10 +26,6 @@ class Index extends MY_Controller {
 
 	public function index()
 	{
-		if (empty($this->session->admin)) {
-			$this->twig->display("login_page");
-
-		} else {
 		print_r($this->session->admin);
 
 			$this->db->select("auto_id,case_name")
@@ -53,14 +49,8 @@ class Index extends MY_Controller {
 			}
 			$this->twig->display("case_index",$this->finaldata);
 
-		}
+	}
 
-	}
-	public function login($loginID){
-		$login = array("admin" =>$loginID );
-		$this->session->set_userdata($login);
-		header("location: /");
-	}
 	public function case_search(){
 		$this->twig->display("case_search");
 	}

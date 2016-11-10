@@ -8,6 +8,9 @@ class MY_Controller extends CI_Controller {
         public function __construct($config = array())
         {
                 parent::__construct($config);
+								if (empty($this->session->admin)) {
+										header("location: /login/login_page");
+								}
 									$this->groupname = array("群組一","群組二","群組三","群組四","群組五",
 																					"群組六","群組七","群組八","群組九","群組十",
 																					"群組十一","群組十二","群組十三","群組十四","群組十五",
