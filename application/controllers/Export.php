@@ -143,7 +143,17 @@ class Export extends MY_Controller {
 							$this->db->or_where("case_id",$eachGroupinCase["case_id"])
 											 ->where("group_id_incase",$eachGroupinCase["group_id_incase"])
 											 ->stop_cache();
-				}
+											 }
+							$test = $this->db->get()->result_array();
+								foreach ($_POST["ContentIndex"] as $groupkey => $eachGroupinCase) {
+										foreach ($test as $key => $value) {
+											if ($value["case_id"] === $eachGroupinCase["case_id"] && $value["group_id_incase"] === $eachGroupinCase["group_id_incase"]) {
+												$_POST["ContentIndex"][$groupkey]["linkContent"] = $value["backlink_content"];
+												break;
+											}
+								}
+							}
+							print_r($_POST["ContentIndex"]);
     }
 
 		public function testxlsexport(){

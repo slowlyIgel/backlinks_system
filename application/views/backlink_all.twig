@@ -40,7 +40,7 @@ td, th {padding:5px;}
 {% block script_stage %}
 <script type="text/javascript">
   function create_export_file(){
-    var ContentIndex = "<form  action=\"\/export\/backlink_data\" method=\"post\">";
+    var ContentIndex = "<form  action=\"\/export\/test_seperate\" method=\"post\">";
     var i = 0;
     $("tr[case_id][group_id]").has("input:checked").each(function(){
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][case_id]\" value="+$(this).attr("case_id")+">";
