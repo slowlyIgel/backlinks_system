@@ -19,6 +19,23 @@ input[name=keywords] {width:25%;}
 <div class="main_block">
   <p id="case_id" case_id="{{case_id}}">{{case_name}}</p>
   <div class="everyGroup">
+
+    {% if group is empty %}
+    <div class="eachLinkGroup" group_id="0">
+      <div class="GroupContent">
+        <div class="eachUrl">
+          <input type="text" name="url" value="">
+          <input type="text" name="keywords" value="">
+          <button type="button" onclick="removeUrl(this)">刪除</button>
+        </div>
+      </div>
+          <div class="remarks">
+            <label>備註:</label><br>
+            <textarea name="remark"></textarea>
+          </div>
+          <button class="right" type="button" onclick="addUrl(this)">新增</button>
+      </div>
+    {% else %}
     {% for group_id,everyUrliGroup in group %}
     <div class="eachLinkGroup" group_id="{{group_id}}">
       {% if dataversion == "new" %}
@@ -49,6 +66,8 @@ input[name=keywords] {width:25%;}
       <button class="right" type="button" onclick="addUrl(this)">新增</button>
     </div>
 {% endfor %}
+{% endif %}
+
   </div>
   <div class="otherFunction">
     <button class="right" type="button" onclick="addGroup()">新增群組</button>

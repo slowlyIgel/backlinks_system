@@ -77,7 +77,7 @@ class Ajax extends MY_Controller {
 					$this->db->select("auto_id, case_name")
 									 ->from("case_table")
 									 ->like("case_name",$_POST["searchKey"]);
-					print_r($this->db->get()->result_array());
+					$this->output->set_output(json_encode($this->db->get()->result_array()));
 			}
 		}
 

@@ -6,12 +6,18 @@
 <div class="result"></div>
 {% endblock %}
 
+
+
 {% block script_stage %}
 <script type="text/javascript">
   function search_case(){
     if ($("input[name=case]").val()) {
       var searchKey = $("input[name=case]").val();
       $.post("/ajax/case_search",{"searchKey":searchKey},function(data){
+        var json = $.parseJSON(data);
+        $.each($.parseJSON(data),function(){
+          $(".result").append("<a href=\"/index/casedata_edit/"+this.auto_id+"\">"+this.case_name+"</a><a href=\"/index/case_linkgroupedit/"+this.auto_id+"\">修改外鏈群組</a><br>");
+        });
       });
     }
   }
