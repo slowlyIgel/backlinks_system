@@ -32,7 +32,6 @@ class Backlink extends MY_Controller {
 	{
 		$lastmonday = strtotime("Monday last Week",time());
 		$lastsunday = strtotime("Monday this Week",time());
-		echo "疑問:這頁顯示上週下的外鏈....所以沒地方檢查自己剛剛下了啥XD";
 		$this->db->select("backlink_submit_record.submit_time, backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id,backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.case_name, case_table.case_industry")
 						 ->from("backlink_submit_record")
 	 				 	 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")
@@ -47,7 +46,7 @@ class Backlink extends MY_Controller {
 		 				 	 ->where("case_id",$eachsubmit["case_id"])
 		 				 	 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"]);
 			$data[$key]["remark"] = $this->db->get()->result_array()[0]["remark_content"];
-			// 取得外鏈類型名稱
+			// 取得外鏈類型名稱 不要再去抓資料庫了(待改)
 			$this->db->flush_cache()
 							 ->select("BacklinkType_name")
 							 ->from("type_backlink")
@@ -70,46 +69,46 @@ class Backlink extends MY_Controller {
 		$this->twig->display("backlink_all",$this->finaldata);
 
 	}
-	public function type($typeid){
-		$lastmonday = strtotime("Monday last Week",time());
-		$lastsunday = strtotime("Monday this Week",time());
-		$this->db->select("backlink_submit_record.submit_time, backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id,backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.case_name, case_table.case_industry")
-						 ->from("backlink_submit_record")
-						 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")
-						 ->where("backlink_submit_record.linktype_thisweek",$typeid)
-						 ->where("backlink_submit_record.submit_time >",$lastmonday)
-						 ->where("backlink_submit_record.submit_time <",$lastsunday);
-		$data = $this->db->get()->result_array();
-		foreach ($data as $key => $eachsubmit) {
-			// 取得備註
-			$this->db->flush_cache()
-							 ->select("remark_content")
-							 ->from("backlink_content_table")
-							 ->where("case_id",$eachsubmit["case_id"])
-							 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"]);
-			$data[$key]["remark"] = $this->db->get()->result_array()[0]["remark_content"];
-			// 取得外鏈類型名稱
-			$this->db->flush_cache()
-							 ->select("BacklinkType_name")
-							 ->from("type_backlink")
-							 ->where("auto_backlinkID",$eachsubmit["linktype_thisweek"]);
-			$data[$key]["BacklinkType_name"] = $this->db->get()->result_array()[0]["BacklinkType_name"];
-			// 取得產業名稱
-			$this->db->flush_cache()
-							 ->select("industry_name")
-							 ->from("type_industry")
-							 ->where("auto_industryID",$eachsubmit["case_industry"]);
-			$data[$key]["industry_name"] = $this->db->get()->result_array()[0]["industry_name"];
-			if ($eachsubmit["export"]) {
-				$data[$key]["export"] = "是";
-			} else{
-				$data[$key]["export"] = "否";
-			}
-			$data[$key]["submit_time"] = date("Y-n-d",$eachsubmit["submit_time"]);
-		}
-		$this->finaldata["everySubmitRecord"] = $data;
-		$this->twig->display("backlink_all",$this->finaldata);
-	}
+	// public function type($typeid){
+	// 	$lastmonday = strtotime("Monday last Week",time());
+	// 	$lastsunday = strtotime("Monday this Week",time());
+	// 	$this->db->select("backlink_submit_record.submit_time, backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id,backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.case_name, case_table.case_industry")
+	// 					 ->from("backlink_submit_record")
+	// 					 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")
+	// 					 ->where("backlink_submit_record.linktype_thisweek",$typeid)
+	// 					 ->where("backlink_submit_record.submit_time >",$lastmonday)
+	// 					 ->where("backlink_submit_record.submit_time <",$lastsunday);
+	// 	$data = $this->db->get()->result_array();
+	// 	foreach ($data as $key => $eachsubmit) {
+	// 		// 取得備註
+	// 		$this->db->flush_cache()
+	// 						 ->select("remark_content")
+	// 						 ->from("backlink_content_table")
+	// 						 ->where("case_id",$eachsubmit["case_id"])
+	// 						 ->where("group_id_incase",$eachsubmit["backlinkGroup_id"]);
+	// 		$data[$key]["remark"] = $this->db->get()->result_array()[0]["remark_content"];
+	// 		// 取得外鏈類型名稱
+	// 		$this->db->flush_cache()
+	// 						 ->select("BacklinkType_name")
+	// 						 ->from("type_backlink")
+	// 						 ->where("auto_backlinkID",$eachsubmit["linktype_thisweek"]);
+	// 		$data[$key]["BacklinkType_name"] = $this->db->get()->result_array()[0]["BacklinkType_name"];
+	// 		// 取得產業名稱
+	// 		$this->db->flush_cache()
+	// 						 ->select("industry_name")
+	// 						 ->from("type_industry")
+	// 						 ->where("auto_industryID",$eachsubmit["case_industry"]);
+	// 		$data[$key]["industry_name"] = $this->db->get()->result_array()[0]["industry_name"];
+	// 		if ($eachsubmit["export"]) {
+	// 			$data[$key]["export"] = "是";
+	// 		} else{
+	// 			$data[$key]["export"] = "否";
+	// 		}
+	// 		$data[$key]["submit_time"] = date("Y-n-d",$eachsubmit["submit_time"]);
+	// 	}
+	// 	$this->finaldata["everySubmitRecord"] = $data;
+	// 	$this->twig->display("backlink_all",$this->finaldata);
+	// }
 	public function testtime(){
 		$monday = strtotime("Monday last Week",time());
 		echo $monday."<br>";

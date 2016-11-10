@@ -5,6 +5,10 @@
 td, th {padding:5px;}
 {% endblock %}
 {% block main_stage %}
+<button type="button" name="OnlyShowthisType" onclick="showAllTypes(this)">總覽</button>
+{% for eachtype in backlink_type %}
+    <button type="button" name="OnlyShowthisType" onclick="showDatabyType(this)">{{eachtype["BacklinkType_name"]}}</button>
+{% endfor %}
 <table>
   <tr>
     <th>選擇匯出</th>
@@ -16,6 +20,17 @@ td, th {padding:5px;}
     <th>群組備註</th>
     <th>已匯出</th>
   </tr>
+  <tr>
+    <td><input type="checkbox" name="allselect" value="" checked></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
   {% for eachSubmitRecord in everySubmitRecord %}
   <tr case_id="{{eachSubmitRecord["case_id"]}}" group_id="{{eachSubmitRecord["backlinkGroup_id"]}}">
     <td>
@@ -39,10 +54,25 @@ td, th {padding:5px;}
 {% endblock %}
 {% block script_stage %}
 <script type="text/javascript">
+  $("input[name=allselect]").click(function(){
+    if(this.checked){ $("input[type=checkbox]").prop("checked",true) ;}
+    else { $("input[type=checkbox]").prop("checked",false) ; }
+  });
+
+  function showDatabyType(field){
+    var type = $(field).html();
+    $("tr[case_id][group_id]").hide();
+    $("td[name=LinkType]:contains("+type+")").parents("tr[case_id][group_id]").show();
+  }
+
+  function showAllTypes(){
+    $("tr[case_id][group_id]").show();
+  }
+
   function create_export_file(){
-    var ContentIndex = "<form  action=\"\/export\/test_seperate\" method=\"post\">";
+    var ContentIndex = "<form  action=\"\/export\/backlink_data\" method=\"post\">";
     var i = 0;
-    $("tr[case_id][group_id]").has("input:checked").each(function(){
+    $("tr[case_id][group_id]:visible").has("input:checked").each(function(){
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][case_id]\" value="+$(this).attr("case_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][group_id_incase]\" value="+$(this).attr("group_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"CaseName[]\" value="+$(this).children("td[name=caseName]").html()+">";
