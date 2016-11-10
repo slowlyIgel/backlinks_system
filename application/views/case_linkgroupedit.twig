@@ -22,7 +22,7 @@ input[name=keywords] {width:25%;}
     <div class="eachLinkGroup" group_id="{{group_id}}">
       <!-- <input type="checkbox" name="thisweek" value="{{group_id}}"><label>本週下外鏈</label><br> -->
       {% for eachbacklink_type in backlink_type %}
-      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
+      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}" {% if dataversion == "old" %}disabled{% endif %}><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
       {% endfor %}
       <br><br><label class="groupname_chinese">{{groupChinese[group_id]}}</label>
       <div class="GroupContent">
@@ -50,13 +50,14 @@ input[name=keywords] {width:25%;}
   <div class="otherFunction">
     <button class="right" type="button" onclick="addGroup()">新增群組</button>
     <button class="right" type="button" onclick="linkgroup_submit()">儲存</button>
+    {% if dataversion == "old" %}
     <button type="button" onclick="showhelp()">怪怪的顯示不出來??按這裡</button>
     <div class="original">
       <textarea name="original">{{original_data}}</textarea>
       Seperate%%GROUP%%Here<br><br>
-
       <button type="button" onclick="submit_original()">送出</button>
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
@@ -92,6 +93,7 @@ input[name=keywords] {width:25%;}
       newGroup.find(".eachUrl:not(:first-child)").remove();
       newGroup.find(".groupname_chinese").remove();
       newGroup.find("input").val("");
+      newGroup.find("input:checked").prop("disabled",true);
       newGroup.children(".GroupContent").before("<button type=\"button\" onclick=\"removegroup(this)\">刪除此群組</button><br>");
       $(".everyGroup").append(newGroup);
     } else {
@@ -158,7 +160,7 @@ $("input[name=backlink_tpye]").click(function(){
       });
       thisweekRecord += "]";
       $.post("/ajax/submit_thisweek_record",{everyRecord:thisweekRecord},function(){
-        location.href = "/backlink";
+        location.href = "/backlink/thisweek";
       });
     } else {
       alert("你還沒選膩");

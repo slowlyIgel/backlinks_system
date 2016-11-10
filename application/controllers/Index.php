@@ -120,6 +120,8 @@ class Index extends MY_Controller {
 		$this->db->from("backlink_content_table")
 						 ->where("case_id",$case_id);
 		$new_backlink = $this->db->get()->result_array();
+		// 選取這週勾選了那些群組和類型的資料
+		// $this->db->select("")
 		// 所有外鏈群組資料
 		$this->db->select("case_backlink, case_name")
 						 ->from("case_table")
@@ -142,6 +144,7 @@ class Index extends MY_Controller {
 					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
 				}
 			}
+			$this->finaldata["dataversion"] = "old";
 
 		} else {
 			// print_r($new_backlink);
@@ -156,6 +159,7 @@ class Index extends MY_Controller {
 					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
 				}
 			}
+			$this->finaldata["dataversion"] = "new";
 			// print_r($this->finaldata["group"]);
 		}
 		$this->finaldata["case_id"] = $case_id;
