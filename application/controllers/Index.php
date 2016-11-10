@@ -28,10 +28,24 @@ class Index extends MY_Controller {
 	{
 		print_r($this->session->admin);
 
-			$this->db->select("auto_id,case_name")
+			$this->db->select("auto_id,case_name, case_industry, case_program, case_level")
 							 ->from("case_table")
 							 ->order_by("auto_id","DESC");
 			$this->finaldata["everycase"] = $this->db->get()->result_array();
+
+			// 共用的產業分類  應該提出待改
+			$this->db->select("auto_industryID, industry_name")
+							 ->from("type_industry");
+			$industry_tpye = $this->db->get()->result_array();
+
+			// 共用的等級分類  應該提出待改
+			$this->db->from("type_level");
+			$level_tpye = $this->db->get()->result_array();
+
+			// 共用的方案分類  應該提出待改
+			$this->db->from("type_program");
+			$program_type = $this->db->get()->result_array();
+
 
 			// 取得最近下外鏈的日期
 			foreach ($this->finaldata["everycase"] as $key => $value) {
@@ -47,6 +61,16 @@ class Index extends MY_Controller {
 					$this->finaldata["everycase"][$key]["submit_time"] = date("Y-n-d",$value[0]["submit_time"]);
 				}
 			}
+
+			foreach ($this->finaldata["everycase"] as $key => $value) {
+				$levelkey = array_search($value["case_level"],array_column($level_tpye,"auto_levelID"));
+				$programkey = array_search($value["case_program"],array_column($program_type,"auto_programID"));
+				$industrykey = array_search($value["case_industry"],array_column($industry_tpye,"industry_name"));
+				$this->finaldata["everycase"][$key]["case_program"] = $program_type[$programkey]["program_name"];
+				$this->finaldata["everycase"][$key]["case_level"] = $level_tpye[$levelkey]["level_name"];
+				$this->finaldata["everycase"][$key]["case_industry"] = $industry_tpye[$industrykey]["industry_name"];
+
+			}
 			$this->twig->display("case_index",$this->finaldata);
 
 	}
@@ -56,7 +80,7 @@ class Index extends MY_Controller {
 	}
 	public function casedata_edit($id){
 		//案件資料
-		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level")
+		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level, case_program")
 						 ->from("case_table")
 						 ->where("auto_id",$id);
 		$this->finaldata["casedata"] = $this->db->get()->result_array();
@@ -80,6 +104,12 @@ class Index extends MY_Controller {
 		// 共用的等級分類
 		$this->db->from("type_level");
 		$this->finaldata["level_tpye"] = $this->db->get()->result_array();
+
+
+		// 共用的方案分類  應該提出待改
+		$this->db->from("type_program");
+		$this->finaldata["program_type"] = $this->db->get()->result_array();
+
 		$this->finaldata["case_id"] = $id;
 		$this->twig->display("case_dataedit",$this->finaldata);
 	}
@@ -193,6 +223,11 @@ class Index extends MY_Controller {
 		// 共用的等級分類
 		$this->db->from("type_level");
 		$this->finaldata["level_tpye"] = $this->db->get()->result_array();
+
+		// 共用的方案分類  應該提出待改
+		$this->db->from("type_program");
+		$this->finaldata["program_type"] = $this->db->get()->result_array();
+
 		$this->twig->display("case_dataadd",$this->finaldata);
 	}
 	public function logout(){

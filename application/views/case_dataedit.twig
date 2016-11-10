@@ -34,6 +34,13 @@ table tr td{padding:5px;text-align:center;}
         {% endfor %}
       </select>
     </li>
+    <li>
+      <select name="program" disabled>
+      {% for each_program in program_type %}
+      <option value="{{each_program["auto_programID"]}}" {% if each_program["auto_programID"] == casedetail["case_program"] %}selected{% endif %}>{{each_program["program_name"]}}</option>
+      {% endfor %}
+      </select>
+    </li>
   </ul>
   {% endfor %}
 <div>
@@ -78,10 +85,12 @@ table tr td{padding:5px;text-align:center;}
         "case_gacode" : $("input[name=gacode]").val(),
         "case_industry" : $("select[name=industry]").val(),
         "case_level" : $("select[name=level]").val(),
+        "case_program" : $("select[name=program]").val()
       }
     };
     $.post("/ajax/submit_casedata",{casedata:caseData},function(data){
-      console.log(data);
+      alert(data);
+      location.href = "/index/casedata_edit/"+case_id;
     });
   }
 </script>

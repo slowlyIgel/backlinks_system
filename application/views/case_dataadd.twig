@@ -20,6 +20,11 @@
       <option value="{{each_level["auto_levelID"]}}">{{each_level["level_name"]}}</option>
       {% endfor %}
     </select>
+    <label>方案:</label><select name="program">
+    {% for each_program in program_type %}
+    <option value="{{each_program["auto_programID"]}}">{{each_program["program_name"]}}</option>
+    {% endfor %}
+    </select>
     <br><br>
   </div>
   <button type="button" onclick="add_anthorcase(this)">繼續新增案件</button>
@@ -48,9 +53,14 @@
     var add_area = $(".each_newcase:first-child").html();
     var newarea = $("<div class=\"each_newcase\">");
     newarea.html(add_area);
+    newarea.prepend("<button type=\"button\" onclick=\"removecase(this)\" style=\"float:right;\">刪除此案件</button>");
     $(field).before(newarea);
-
   }
+
+  function removecase(field){
+    $(field).parents(".each_newcase").remove();
+  }
+
   function submitnewcase(){
     var totalNewCase = [];
     $(".each_newcase").each(function(){
@@ -59,7 +69,8 @@
         "case_address" : $(this).children("input[name=address]").val(),
         "case_gacode" : $(this).children("input[name=gacode]").val(),
         "case_industry" : $(this).children("select[name=industry_name]").val(),
-        "case_level" : $(this).children("select[name=level]").val()
+        "case_level" : $(this).children("select[name=level]").val(),
+        "case_program" : $(this).children("select[name=program]").val()
       };
       totalNewCase.push(NewCase);
     });
