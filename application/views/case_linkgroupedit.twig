@@ -9,6 +9,7 @@ input[name=url] {width:65%;}
 input[name=keywords] {width:25%;}
 .eachLinkGroup{padding:50px; border:2px solid #aaa;margin:50px auto;}
 .remarks{display:table;margin:auto;}
+.thisweekRecord{min-width:100px;min-height:100px;position:fixed;bottom:40%;left:0;padding:15px;}
 .submit_link{min-width:100px;min-height:100px;position:fixed;bottom:100px;left:0;padding:15px;}
 .submit_link table{margin:auto;}
 .submit_link button{display:block;margin:auto;}
@@ -20,10 +21,12 @@ input[name=keywords] {width:25%;}
   <div class="everyGroup">
     {% for group_id,everyUrliGroup in group %}
     <div class="eachLinkGroup" group_id="{{group_id}}">
-      <!-- <input type="checkbox" name="thisweek" value="{{group_id}}"><label>本週下外鏈</label><br> -->
+      {% if dataversion == "new" %}
+
       {% for eachbacklink_type in backlink_type %}
-      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}" {% if dataversion == "old" %}disabled{% endif %}><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
+      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
       {% endfor %}
+      {% endif %}
       <br><br><label class="groupname_chinese">{{groupChinese[group_id]}}</label>
       <div class="GroupContent">
         <!-- <div>
@@ -62,6 +65,15 @@ input[name=keywords] {width:25%;}
 </div>
 {% endblock %}
 {% block addition %}
+<div class="thisweekRecord">
+  {% for record in thisweekRecord %}
+      <p alreadysubmitgroup_id="{{record["backlinkGroup_id"]}}" alreadysubmittype_id="{{record["linktype_thisweek"]}}">
+      {{groupChinese[ record["backlinkGroup_id"] ]}}
+        <span>{{record["linktype_thisweek_name"]}}</span>
+      </p>
+  {% endfor %}
+</div>
+
 <div class="submit_link">
   <table id="submit_preview">
     <tr>
@@ -74,6 +86,14 @@ input[name=keywords] {width:25%;}
 {% endblock %}
 {% block script_stage %}
 <script type="text/javascript">
+
+$(document).ready(function(){
+    $("p[alreadysubmitgroup_id]").each(function(){
+      var selectedOne = $(".eachLinkGroup[group_id="+$(this).attr("alreadysubmitgroup_id")+"]").find("input[name=backlink_tpye][value="+$(this).attr("alreadysubmittype_id")+"]");
+      selectedOne.prop("disabled",true);
+      selectedOne.next("label").css("color","#aaa");
+    });
+});
   function showhelp(){
     $(".original").show();
   }

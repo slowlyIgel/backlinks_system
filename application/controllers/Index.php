@@ -116,12 +116,21 @@ class Index extends MY_Controller {
 	// 	$this->twig->display("case_linkgroupedit",$this->finaldata);
 	// }
 	public function case_linkgroupedit($case_id){
+		$thismonday = strtotime("Monday this Week",time());
+		$thissunday = strtotime("Sunday this Week",time());
+
 		// 先確認有沒有新版資料，如果沒有就用舊版的
 		$this->db->from("backlink_content_table")
 						 ->where("case_id",$case_id);
 		$new_backlink = $this->db->get()->result_array();
 		// 選取這週勾選了那些群組和類型的資料
-		// $this->db->select("")
+		$this->db->select("backlinkGroup_id, linktype_thisweek")
+						 ->from("backlink_submit_record")
+						 ->order_by("backlinkGroup_id")
+						 ->where("case_id",$case_id)
+						 ->where("submit_time >",$thismonday)
+						 ->where("submit_time <",$thissunday);
+		$AlreadySubmitGroup = $this->db->get()->result_array();
 		// 所有外鏈群組資料
 		$this->db->select("case_backlink, case_name")
 						 ->from("case_table")
@@ -130,6 +139,7 @@ class Index extends MY_Controller {
 		// 可下外鏈種類
 		$this->db->from("type_backlink");
 		$backlink_type = $this->db->get()->result_array();
+
 		$this->finaldata["backlink_type"] = $backlink_type;
 		$this->finaldata["original_data"] = $data[0]["case_backlink"];
 
@@ -160,7 +170,13 @@ class Index extends MY_Controller {
 				}
 			}
 			$this->finaldata["dataversion"] = "new";
-			// print_r($this->finaldata["group"]);
+
+			foreach ($AlreadySubmitGroup as $key => $record) {
+				$typekey = array_search($record["linktype_thisweek"],array_column($backlink_type,"auto_backlinkID"));
+				$AlreadySubmitGroup[$key]["linktype_thisweek_name"] = $backlink_type[$typekey]["BacklinkType_name"];
+			}
+			$this->finaldata["thisweekRecord"] = $AlreadySubmitGroup;
+
 		}
 		$this->finaldata["case_id"] = $case_id;
 		$this->finaldata["case_name"] = $data[0]["case_name"];
