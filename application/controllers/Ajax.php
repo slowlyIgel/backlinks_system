@@ -91,4 +91,20 @@ class Ajax extends MY_Controller {
 				echo "case".$casename."加了";
 			}
 		}
+
+		public function delete_case(){
+			if (is_numeric($_POST["case_id"])) {
+				$table_array = array("backlink_content_table","backlink_submit_record");
+				$this->db->where("case_id",$_POST["case_id"])
+								 ->delete("backlink_content_table");
+				$this->db->where("case_id",$_POST["case_id"])
+									->delete("backlink_content_table");
+
+				$this->db->where("auto_id",$_POST["case_id"])
+									->delete("case_table");
+				$this->output->set_output(json_encode(array("status"=>"success","alert"=>"已刪除")));
+			} else {
+				$this->output->set_output(json_encode(array("status"=>"fail","alert"=>"案件編號有誤")));
+			}
+		}
 }

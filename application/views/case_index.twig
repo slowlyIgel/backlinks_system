@@ -10,7 +10,7 @@ button:first-child {width:55%;}
   <button type="button" name="button" disabled>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</button>
   <button type="button" name="button" disabled>操作等級</button>
   <button type="button" onclick="goto_caseLinkedit(this)">連結管理</button>
-  <button type="button" name="button">刪除</button><br>
+  <button type="button" name="button" onclick="delete_case(this)">刪除</button><br>
 </div>
 {% endfor %}
 {% endblock %}
@@ -26,6 +26,19 @@ function goto_caseLinkedit(field){
 function goto_casedataedit(field){
   var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
   location.href = "/index/casedata_edit/"+case_id;
+}
+
+function delete_case(field){
+  if (confirm("確定要刪除案件嗎??刪除了就沒救了喔")) {
+    if (confirm("確定確定要刪除??")) {
+      var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
+      $.post("/ajax/delete_case",{case_id:case_id},function(result){
+        var json = $.parseJSON(result);
+        alert(json.alert);
+        if (json.status == "success") { location.href = "/"; }
+      });
+    }
+  }
 }
 </script>
 {% endblock %}
