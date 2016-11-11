@@ -22,9 +22,6 @@ class Backlink extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-				$this->db->from("type_backlink");
-				$backlink_type = $this->db->get()->result_array();
-				$this->finaldata["backlink_type"] = $backlink_type;
 
     }
 

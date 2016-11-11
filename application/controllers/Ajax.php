@@ -22,6 +22,8 @@ class Ajax extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
+				$this->load->library("find_tdk");
+
     }
 		public function upload_newtypelink_oldver($n_id){
 			if (isset($_POST["change"])) {
@@ -107,6 +109,15 @@ class Ajax extends MY_Controller {
 				$this->output->set_output(json_encode(array("status"=>"success","alert"=>"已刪除")));
 			} else {
 				$this->output->set_output(json_encode(array("status"=>"fail","alert"=>"案件編號有誤")));
+			}
+		}
+
+
+
+		public function checkTDK(){
+			if ($_POST["caseAddress"]) {
+				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"]);
+				$this->output->set_output(json_encode($tdk));
 			}
 		}
 }

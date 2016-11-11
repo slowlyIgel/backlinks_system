@@ -29,7 +29,9 @@ class Find_tdk {
               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
               curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
               $html = curl_exec($ch);
+              $httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
               curl_close($ch);
+              $test["status"] = $httpCode;
               # Create a DOM parser object
               $dom = new DOMDocument();
               # Parse the HTML from Google.
@@ -49,10 +51,16 @@ class Find_tdk {
                       if( strtolower($link->getAttribute('name')) == 'description'){
               		 $test["description"] = $link->getAttribute('content');
               	}
+
+                      if( strtolower($link->getAttribute('name')) == 'keywords'){
+                   $test["keywords"] = $link->getAttribute('content');
+                }
+
               }
               if($f==0){
                 $test["title"] = "error";
                 $test["description"] = "error";
+                $test["keywords"] = "error";
               }
               return $test;
 
