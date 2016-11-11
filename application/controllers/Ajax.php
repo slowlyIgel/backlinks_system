@@ -115,8 +115,12 @@ class Ajax extends MY_Controller {
 
 
 		public function checkTDK(){
-			if ($_POST["caseAddress"]) {
+			if ($_POST["caseAddress"] && $_POST["caseID"]) {
 				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"]);
+
+				$this->db->where("auto_id",$_POST["caseID"])
+								 ->update("case_table",$tdk);
+
 				$this->output->set_output(json_encode($tdk));
 			}
 		}

@@ -31,7 +31,7 @@ class Find_tdk {
               $html = curl_exec($ch);
               $httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
               curl_close($ch);
-              $test["status"] = $httpCode;
+              $test["case_alive"] = $httpCode;
               # Create a DOM parser object
               $dom = new DOMDocument();
               # Parse the HTML from Google.
@@ -42,25 +42,31 @@ class Find_tdk {
               # Iterate over all the <a> tags
               foreach($dom->getElementsByTagName('title') as $link) {
                       # Show the <a href>
-                      $test["title"] = $link->nodeValue;
+                      $test["case_title"] = $link->nodeValue;
+                      $f=1;
+              }
+
+              foreach($dom->getElementsByTagName('script') as $link) {
+                      # Show the <a href>
+                      $test["script"] = $link->nodeValue;
                       $f=1;
               }
 
               foreach($dom->getElementsByTagName('meta') as $link) {
                       # Show the <a href>
                       if( strtolower($link->getAttribute('name')) == 'description'){
-              		 $test["description"] = $link->getAttribute('content');
+              		 $test["case_description"] = $link->getAttribute('content');
               	}
 
                       if( strtolower($link->getAttribute('name')) == 'keywords'){
-                   $test["keywords"] = $link->getAttribute('content');
+                   $test["case_keyword"] = $link->getAttribute('content');
                 }
 
               }
               if($f==0){
-                $test["title"] = "error";
-                $test["description"] = "error";
-                $test["keywords"] = "error";
+                $test["case_title"] = "error";
+                $test["case_description"] = "error";
+                $test["case_keyword"] = "error";
               }
               return $test;
 

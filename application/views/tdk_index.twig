@@ -52,23 +52,23 @@ function start_tdkcheck(){
   $("tr[case_id]").each(function(){
     $(this).find("button.tdk").trigger("click");
   });
-
-  alert("done");
   $("label[name=lastcheck]").html(Date());
 
 }
 
 function test(field){
   var address = $(field).parents("tr[case_id]").attr("case_address");
-  $.post("/ajax/checkTDK",{"caseAddress" : address},function(data){
+  var id = $(field).parents("tr[case_id]").attr("case_id");
+  console.log({"caseAddress" : address, "caseID" : id});
+
+  $.post("/ajax/checkTDK",{"caseAddress" : address, "caseID" : id},function(data){
     var json = $.parseJSON(data);
-    $(field).parents("tr").children("td[name=status]").html(json.status);
-    $(field).parents("tr").children("td[name=title]").html(json.title);
-    $(field).parents("tr").children("td[name=description]").html(json.description);
-    $(field).parents("tr").children("td[name=keyword]").html(json.keywords);
-
+    $(field).parents("tr").children("td[name=status]").html(json.case_alive);
+    $(field).parents("tr").children("td[name=title]").html(json.case_title);
+    $(field).parents("tr").children("td[name=description]").html(json.case_description);
+    $(field).parents("tr").children("td[name=keyword]").html(json.case_keyword);
+    console.log(data);
   });
-
   $("label[name=lastcheck]").html(Date());
 
 
