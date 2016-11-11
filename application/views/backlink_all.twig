@@ -39,8 +39,8 @@ td, th {padding:5px;}
     <td>{{eachSubmitRecord["submit_time"]}}</td>
     <td name="caseName">{{eachSubmitRecord["case_name"]}}</td>
     <td>{{groupChinese[ eachSubmitRecord["backlinkGroup_id"] ]}}</td>
-    <td  name="LinkType" type_id="{{eachSubmitRecord["linktype_thisweek"]}}">{{eachSubmitRecord["BacklinkType_name"]}}</td>
-    <td>{{eachSubmitRecord["industry_name"]}}</td>
+    <td  name="LinkType" type_id="{{eachSubmitRecord["linktype_thisweek"]}}">{{backlink_typeName[ eachSubmitRecord["linktype_thisweek"] ]}}</td>
+    <td name="IndustryType" industry_id="{{eachSubmitRecord["case_industry"]}}">{{industry_tpyeName[ eachSubmitRecord["case_industry"] ]}}</td>
     <td>{{eachSubmitRecord["remark"]}}</td>
     <td>{{eachSubmitRecord["export"]}}</td>
   </tr>

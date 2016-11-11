@@ -33,20 +33,6 @@ class Index extends MY_Controller {
 							 ->order_by("auto_id","DESC");
 			$this->finaldata["everycase"] = $this->db->get()->result_array();
 
-			// 共用的產業分類  應該提出待改
-			$this->db->select("auto_industryID, industry_name")
-							 ->from("type_industry");
-			$industry_tpye = $this->db->get()->result_array();
-
-			// 共用的等級分類  應該提出待改
-			$this->db->from("type_level");
-			$level_tpye = $this->db->get()->result_array();
-
-			// 共用的方案分類  應該提出待改
-			$this->db->from("type_program");
-			$program_type = $this->db->get()->result_array();
-
-
 			// 取得最近下外鏈的日期
 			foreach ($this->finaldata["everycase"] as $key => $value) {
 				$this->db->select("case_id, submit_time")
@@ -60,16 +46,6 @@ class Index extends MY_Controller {
 				if (!empty($value)) {
 					$this->finaldata["everycase"][$key]["submit_time"] = date("Y-n-d",$value[0]["submit_time"]);
 				}
-			}
-
-			foreach ($this->finaldata["everycase"] as $key => $value) {
-				$levelkey = array_search($value["case_level"],array_column($level_tpye,"auto_levelID"));
-				$programkey = array_search($value["case_program"],array_column($program_type,"auto_programID"));
-				$industrykey = array_search($value["case_industry"],array_column($industry_tpye,"industry_name"));
-				$this->finaldata["everycase"][$key]["case_program"] = $program_type[$programkey]["program_name"];
-				$this->finaldata["everycase"][$key]["case_level"] = $level_tpye[$levelkey]["level_name"];
-				$this->finaldata["everycase"][$key]["case_industry"] = $industry_tpye[$industrykey]["industry_name"];
-
 			}
 			$this->twig->display("case_index",$this->finaldata);
 
@@ -95,20 +71,6 @@ class Index extends MY_Controller {
 		foreach ($this->finaldata["linkRecord"]  as $key => $eachRecord) {
 			$this->finaldata["linkRecord"][$key]["submit_time"] = date("Y-n-d",$eachRecord["submit_time"]);
 		}
-
-		// 共用的產業分類
-		$this->db->select("auto_industryID, industry_name")
-						 ->from("type_industry");
-		$this->finaldata["industry_tpye"] = $this->db->get()->result_array();
-
-		// 共用的等級分類
-		$this->db->from("type_level");
-		$this->finaldata["level_tpye"] = $this->db->get()->result_array();
-
-
-		// 共用的方案分類  應該提出待改
-		$this->db->from("type_program");
-		$this->finaldata["program_type"] = $this->db->get()->result_array();
 
 		$this->finaldata["case_id"] = $id;
 		$this->twig->display("case_dataedit",$this->finaldata);
@@ -161,16 +123,13 @@ class Index extends MY_Controller {
 						 ->where("submit_time >",$thismonday)
 						 ->where("submit_time <",$thissunday);
 		$AlreadySubmitGroup = $this->db->get()->result_array();
-		// 所有外鏈群組資料
+		$this->finaldata["thisweekRecord"] = $AlreadySubmitGroup;
+
+		// 舊版外鏈群組資料
 		$this->db->select("case_backlink, case_name")
 						 ->from("case_table")
 						 ->where("auto_id",$case_id);
 		$data = $this->db->get()->result_array();
-		// 可下外鏈種類
-		$this->db->from("type_backlink");
-		$backlink_type = $this->db->get()->result_array();
-
-		$this->finaldata["backlink_type"] = $backlink_type;
 		$this->finaldata["original_data"] = $data[0]["case_backlink"];
 
 		if (empty($new_backlink)) {
@@ -201,12 +160,6 @@ class Index extends MY_Controller {
 			}
 			$this->finaldata["dataversion"] = "new";
 
-			foreach ($AlreadySubmitGroup as $key => $record) {
-				$typekey = array_search($record["linktype_thisweek"],array_column($backlink_type,"auto_backlinkID"));
-				$AlreadySubmitGroup[$key]["linktype_thisweek_name"] = $backlink_type[$typekey]["BacklinkType_name"];
-			}
-			$this->finaldata["thisweekRecord"] = $AlreadySubmitGroup;
-
 		}
 		$this->finaldata["case_id"] = $case_id;
 		$this->finaldata["case_name"] = $data[0]["case_name"];
@@ -215,19 +168,6 @@ class Index extends MY_Controller {
 	}
 
 	public function add_casedata(){
-		// 共用的產業分類
-		$this->db->select("auto_industryID, industry_name")
-						 ->from("type_industry");
-		$this->finaldata["industry_tpye"] = $this->db->get()->result_array();
-
-		// 共用的等級分類
-		$this->db->from("type_level");
-		$this->finaldata["level_tpye"] = $this->db->get()->result_array();
-
-		// 共用的方案分類  應該提出待改
-		$this->db->from("type_program");
-		$this->finaldata["program_type"] = $this->db->get()->result_array();
-
 		$this->twig->display("case_dataadd",$this->finaldata);
 	}
 	public function logout(){

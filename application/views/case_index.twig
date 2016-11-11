@@ -8,9 +8,9 @@ button:first-child {width:45%;}
 <div class="caseindex_btnarea" case_id="{{eachcase["auto_id"]}}">
   <button type="button" onclick="goto_casedataedit(this)">{{eachcase["case_name"]}}</button>
   <button type="button" name="button" disabled>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</button>
-  <button type="button" name="button" disabled>{{eachcase["case_level"]}}</button>
-  <button type="button" name="button" disabled>{{eachcase["case_program"]}}</button>
-  <button type="button" name="button" disabled>{{eachcase["case_industry"]}}</button>
+  <button type="button" name="button" disabled>{{level_tpyeName[ eachcase["case_level"] ]}}</button>
+  <button type="button" name="button" disabled>{{program_tpyeName[eachcase["case_program"]]}}</button>
+  <button type="button" name="button" disabled>{{industry_tpyeName[eachcase["case_industry"]]}}</button>
   <button type="button" onclick="goto_caseLinkedit(this)">連結管理</button>
   <button type="button" name="button" onclick="delete_case(this)">刪除</button><br>
 </div>

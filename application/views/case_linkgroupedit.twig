@@ -40,8 +40,8 @@ input[name=keywords] {width:25%;}
     <div class="eachLinkGroup" group_id="{{group_id}}">
       {% if dataversion == "new" %}
 
-      {% for eachbacklink_type in backlink_type %}
-      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
+      {% for backlinkkey,eachbacklink_type in backlink_typeName %}
+      <input type="checkbox" name="backlink_tpye" value="{{backlinkkey}}"><label>{{eachbacklink_type}}</label>
       {% endfor %}
       {% endif %}
       <br><br><label class="groupname_chinese">{{groupChinese[group_id]}}</label>
@@ -88,7 +88,7 @@ input[name=keywords] {width:25%;}
   {% for record in thisweekRecord %}
       <p alreadysubmitgroup_id="{{record["backlinkGroup_id"]}}" alreadysubmittype_id="{{record["linktype_thisweek"]}}">
       {{groupChinese[ record["backlinkGroup_id"] ]}}
-        <span>{{record["linktype_thisweek_name"]}}</span>
+        <span>{{backlink_typeName[ record["linktype_thisweek"] ]}}</span>
       </p>
   {% endfor %}
 </div>

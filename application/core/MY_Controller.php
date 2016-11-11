@@ -18,6 +18,33 @@ class MY_Controller extends CI_Controller {
 																					"群組二一","群組二二","群組二三","群組二四","群組二五",
 																					"群組二六","群組二七","群組二八","群組二九","群組三十");
 									$this->finaldata["groupChinese"] = $this->groupname;
+
+
+									// 共用所有下外鏈種類
+									$this->db->from("type_backlink");
+									$backlink = $this->db->get()->result_array();
+									foreach ($backlink as $key => $value) {
+										$this->finaldata["backlink_typeName"][ $value["auto_backlinkID"] ] = $value["BacklinkType_name"];
+									}
+									// 共用所有產業分類
+									$this->db->from("type_industry");
+									$industry = $this->db->get()->result_array();
+									foreach ($industry as $key => $value) {
+										$this->finaldata["industry_tpyeName"][ $value["auto_industryID"] ] = $value["industry_name"];
+									}
+									// 共用所有操作等級分類
+									$this->db->from("type_level");
+									$level = $this->db->get()->result_array();
+									foreach ($level as $key => $value) {
+										$this->finaldata["level_tpyeName"][ $value["auto_levelID"] ] = $value["level_name"];
+									}
+									// 共用所有方案分類
+									$this->db->from("type_program");
+									$program = $this->db->get()->result_array();
+									foreach ($program as $key => $value) {
+										$this->finaldata["program_tpyeName"][ $value["auto_programID"] ] = $value["program_name"];
+									}
+
         }
 
 
