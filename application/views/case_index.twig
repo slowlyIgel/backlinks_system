@@ -1,25 +1,43 @@
 {% extends 'case_model.twig' %}
-{% block style %}
-button:first-child {width:45%;}
-{% endblock %}
-
 {% block main_stage %}
-{% for eachcase in everycase %}
-<div class="caseindex_btnarea" case_id="{{eachcase["auto_id"]}}">
-  <button type="button" onclick="goto_casedataedit(this)">{{eachcase["case_name"]}}</button>
-  <button type="button" name="button" disabled>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</button>
-  <button type="button" name="button" disabled>{{level_tpyeName[ eachcase["case_level"] ]}}</button>
-  <button type="button" name="button" disabled>{{program_tpyeName[eachcase["case_program"]]}}</button>
-  <button type="button" name="button" disabled>{{industry_tpyeName[eachcase["case_industry"]]}}</button>
-  <button type="button" onclick="goto_caseLinkedit(this)">連結管理</button>
-  <button type="button" name="button" onclick="delete_case(this)">刪除</button><br>
-</div>
-{% endfor %}
+<table id="caseIndexTable" class="tablesorter">
+  <thead>
+    <tr>
+      <td>案件名稱</td>
+      <td>最近下外鏈日期</td>
+      <td>操作等級</td>
+      <td>方案</td>
+      <td>產業</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for eachcase in everycase %}
+    <tr class="caseindex_btnarea" case_id="{{eachcase["auto_id"]}}">
+      <td onclick="goto_caseLinkedit(this)">{{eachcase["case_name"]}}</td>
+      <td>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</td>
+      <td>{{level_tpyeName[ eachcase["case_level"] ]}}</td>
+      <td>{{program_tpyeName[eachcase["case_program"]]}}</td>
+      <td>{{industry_tpyeName[eachcase["case_industry"]]}}</td>
+      <td><button type="button" onclick="goto_caseLinkedit(this)">連結管理</button></td>
+      <td><button type="button" name="button" onclick="delete_case(this)">刪除</button><br></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
 
 
 {% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
 <script type="text/javascript">
+
+$(function(){
+  $("#caseIndexTable").tablesorter();
+});
+
+
 function goto_caseLinkedit(field){
   var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
   location.href = "/index/case_linkgroupedit/"+case_id;
