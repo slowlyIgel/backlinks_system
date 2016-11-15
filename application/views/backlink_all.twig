@@ -6,8 +6,8 @@ td, th {padding:5px;}
 {% endblock %}
 {% block main_stage %}
 <button type="button" name="OnlyShowthisType" onclick="showAllTypes(this)">總覽</button>
-{% for eachtype in backlink_type %}
-    <button type="button" name="OnlyShowthisType" onclick="showDatabyType(this)">{{eachtype["BacklinkType_name"]}}</button>
+{% for eachtype in backlink_typeName %}
+    <button type="button" name="OnlyShowthisType" onclick="showDatabyType(this)">{{eachtype}}</button>
 {% endfor %}
   <br><input type="checkbox" name="allselect" value="" checked>
 <table id="recordTable" class="tablesorter">
