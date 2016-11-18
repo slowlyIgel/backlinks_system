@@ -27,10 +27,18 @@ class Login extends CI_Controller {
 	public function login_page(){
 		$this->twig->display("login_page");
 	}
-	public function login($loginID){
-		$login = array("admin" =>$loginID );
-		$this->session->set_userdata($login);
-		header("location: /");
+	public function login(){
+		if (!empty($_POST["admin_name"])) {
+			$this->db->select("admin_id, admin_name, total_privilege")
+							 ->from("admin_privilege")
+							 ->where("admin_name",$_POST["admin_name"])
+							 ->where("admin_pw",$_POST["admin_pw"]);
+		 $login = $this->db->get();
+			if($login->num_rows()){
+				$this->session->set_userdata($login->result_array()[0]);
+			}
+		}
+		// header("location: /");
 	}
 
 }

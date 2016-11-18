@@ -25,9 +25,11 @@
         <li><a href="/">客戶管理</a></li>
         <li><a href="/backlink">外鏈管理</a></li>
         <li><a href="/tdkcheck">網站檢查</a></li>
-        <li><a href="/typeedit">分類管理</a></li>
-        <li><a href="#">資源站管理</a></li>
+        {% if total_privilege b-and  page_privilege["editAll"] %}
+        <li><a href="/manage">分類管理</a></li>
         <li><a href="#">權限/人員管理</a></li>
+        {% endif %}
+        <li><a href="#">資源站管理</a></li>
         <li><a href="/index/logout">登出</a></li>
 
       </ul>

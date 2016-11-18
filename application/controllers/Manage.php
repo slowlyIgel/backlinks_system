@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Typeedit extends MY_Controller {
+class Manage extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -23,6 +23,6 @@ class Typeedit extends MY_Controller {
         parent::__construct();
     }
     public function index(){
-      echo "typeedit";
+      $this->twig->display("manage_index",$this->finaldata);
     }
 }

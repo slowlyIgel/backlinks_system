@@ -8,7 +8,7 @@
     帳號:
     <input type="text" id="loginID" value="">
     密碼:
-    <input type="text" id="loginPW" value="">
+    <input type="password" id="loginPW" value="">
     <button type="button" name="button" onclick="go()">登入</button>
   </body>
 </html>
@@ -16,6 +16,9 @@
 <script type="text/javascript">
   function go(){
     var loginID = $("#loginID").val();
-    location.href = "/login/login/"+loginID;
+    var password = $("#loginPW").val();
+    $.post("/login/login",{"admin_name":loginID, "admin_pw": password},function(data){
+      location.href= "/";
+    });
   }
 </script>

@@ -1,0 +1,69 @@
+{% extends 'manage_model.twig' %}
+{% block main_stage %}
+<button type="button">外鏈種類</button>
+<button type="button">產業分類</button>
+<button type="button">操作等級</button>
+<button type="button">方案種類</button>
+
+<div manageGroup="type_backlink">
+  外鏈種類:
+{% for backlinkKey,backlinktype in backlink_typeName %}
+<div class="backlinkEdit">
+  <input type="text" value="{{backlinktype}}" inTpyeID="{{backlinkKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
+</div>
+{% endfor %}
+<input type="text" value=""><button type="button">新增</button>
+</div>
+<br>
+<br>
+<div manageGroup="type_industry">
+  產業分類:
+{% for industryKey,industrytype in industry_tpyeName %}
+<div class="industryEdit">
+  <input type="text" value="{{industrytype}}" inTpyeID="{{industryKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
+</div>
+{% endfor %}
+<input type="text" value=""><button type="button">新增</button>
+</div>
+<br>
+<br>
+<div manageGroup="type_level">
+  操作等級:
+{% for levelKey,leveltype in level_tpyeName %}
+<div class="levelEdit">
+  <input type="text" value="{{leveltype}}" inTpyeID="{{levelKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
+</div>
+{% endfor %}
+<input type="text" value=""><button type="button">新增</button>
+</div>
+<br>
+<br>
+<div manageGroup="type_program">
+  方案種類:
+{% for programKey,programtype in program_tpyeName %}
+<div class="programEdit">
+  <input type="text" value="{{programtype}}" inTpyeID="{{programKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
+</div>
+{% endfor %}
+<input type="text" value=""><button type="button">新增</button>
+</div>
+
+{% endblock %}
+
+{% block script_stage %}
+<script type="text/javascript">
+  $("button[name=delete_ingroup]").click(function(){
+    console.log($(this).prev("input[inTpyeID]").val());
+    var group = $(this).parents("div[manageGroup]").attr("manageGroup");
+    var deleteID = $(this).prev("input[inTpyeID]").attr("inTpyeID");
+  });
+
+  $("button[name=change_name]").click(function(){
+    var group = $(this).parents("div[manageGroup]").attr("manageGroup");
+    var deleteID = $(this).prev("input[inTpyeID]").attr("inTpyeID");
+    var rename = $(this).prev("input[inTpyeID]").val();
+  });
+
+
+</script>
+{% endblock %}

@@ -140,8 +140,10 @@ class Export extends MY_Controller {
 											 ->stop_cache();
 							foreach ($_POST["ContentIndex"] as $key => $eachGroupinCase) {
 								// $where = "case_id = '".$eachGroupinCase["case_id"]."' AND group_id_incase = '".$eachGroupinCase["group_id_incase"]."'";
-							$this->db->or_where("case_id",$eachGroupinCase["case_id"])
+							$this->db->or_group_start()
+											 ->where("case_id",$eachGroupinCase["case_id"])
 											 ->where("group_id_incase",$eachGroupinCase["group_id_incase"])
+											 ->group_end()
 											 ->stop_cache();
 											 }
 							$test = $this->db->get()->result_array();
