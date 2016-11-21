@@ -28,19 +28,19 @@ class MY_Controller extends CI_Controller {
 									$this->db->from("type_backlink");
 									$backlink = $this->db->get()->result_array();
 									foreach ($backlink as $key => $value) {
-										$this->finaldata["backlink_typeName"][ $value["auto_backlinkID"] ] = $value["BacklinkType_name"];
+										$this->finaldata["backlink_typeName"][ $value["auto_typeID"] ] = $value["Type_name"];
 									}
 									// 共用所有產業分類
 									$this->db->from("type_industry");
 									$industry = $this->db->get()->result_array();
 									foreach ($industry as $key => $value) {
-										$this->finaldata["industry_tpyeName"][ $value["auto_industryID"] ] = $value["industry_name"];
+										$this->finaldata["industry_tpyeName"][ $value["auto_typeID"] ] = $value["Type_name"];
 									}
 									// 共用所有操作等級分類
 									$this->db->from("type_level");
 									$level = $this->db->get()->result_array();
 									foreach ($level as $key => $value) {
-										$this->finaldata["level_tpyeName"][ $value["auto_levelID"] ] = $value["level_name"];
+										$this->finaldata["level_tpyeName"][ $value["auto_typeID"] ] = $value["Type_name"];
 									}
 									// 共用所有方案分類
 									$this->db->from("type_program");

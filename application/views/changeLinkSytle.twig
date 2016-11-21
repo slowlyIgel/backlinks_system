@@ -18,7 +18,7 @@
       <button type="button" style="float:right;" onclick="addnewinGroup(this)">新增</button>
       <input type="checkbox" name="thisweek" value="{{groupkey}}"><label>本週下外鏈</label>
       {% for eachbacklink_type in backlink_type %}
-      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_backlinkID"]}}"><label>{{eachbacklink_type["BacklinkType_name"]}}</label>
+      <input type="checkbox" name="backlink_tpye" value="{{eachbacklink_type["auto_typeID"]}}"><label>{{eachbacklink_type["Type_name"]}}</label>
       {% endfor %}
       <br>群組名稱：<input type="text" name="groupname" value="{{eachgroup["groupname"]}}"><br>
       內容：<br>

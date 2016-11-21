@@ -1,11 +1,19 @@
 {% extends 'manage_model.twig' %}
+
+{% block style %}
+div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_program]{display:none;}
+
+{% endblock %}
+
+
 {% block main_stage %}
-<button type="button">外鏈種類</button>
-<button type="button">產業分類</button>
-<button type="button">操作等級</button>
-<button type="button">方案種類</button>
+<button type="button" goto="type_backlink">外鏈種類</button>
+<button type="button" goto="type_industry">產業分類</button>
+<button type="button" goto="type_level">操作等級</button>
+<button type="button" goto="type_program">方案種類</button>
 
 <div manageGroup="type_backlink">
+  <br>
   外鏈種類:
 {% for backlinkKey,backlinktype in backlink_typeName %}
 <div class="backlinkEdit">
@@ -14,9 +22,9 @@
 {% endfor %}
 <input type="text" value=""><button type="button">新增</button>
 </div>
-<br>
-<br>
+
 <div manageGroup="type_industry">
+  <br>
   產業分類:
 {% for industryKey,industrytype in industry_tpyeName %}
 <div class="industryEdit">
@@ -25,9 +33,9 @@
 {% endfor %}
 <input type="text" value=""><button type="button">新增</button>
 </div>
-<br>
-<br>
+
 <div manageGroup="type_level">
+  <br>
   操作等級:
 {% for levelKey,leveltype in level_tpyeName %}
 <div class="levelEdit">
@@ -36,9 +44,9 @@
 {% endfor %}
 <input type="text" value=""><button type="button">新增</button>
 </div>
-<br>
-<br>
+
 <div manageGroup="type_program">
+  <br>
   方案種類:
 {% for programKey,programtype in program_tpyeName %}
 <div class="programEdit">
@@ -53,17 +61,28 @@
 {% block script_stage %}
 <script type="text/javascript">
   $("button[name=delete_ingroup]").click(function(){
-    console.log($(this).prev("input[inTpyeID]").val());
     var group = $(this).parents("div[manageGroup]").attr("manageGroup");
     var deleteID = $(this).prev("input[inTpyeID]").attr("inTpyeID");
+    $.post("/ajax/manage_delete",{"manageFocus":group,"idFocus":deleteID},function(data){
+      alert(data);
+    });
   });
 
   $("button[name=change_name]").click(function(){
     var group = $(this).parents("div[manageGroup]").attr("manageGroup");
-    var deleteID = $(this).prev("input[inTpyeID]").attr("inTpyeID");
-    var rename = $(this).prev("input[inTpyeID]").val();
+    var renameID = $(this).prevAll("input[inTpyeID]").attr("inTpyeID");
+    var rename = $(this).prevAll("input[inTpyeID]").val();
+    // 檢查輸入名稱非空值
+    $.post("/ajax/manage_rename",{"manageFocus":group,"idFocus":renameID,"nameFocus":rename},function(data){
+      console.log(data);
+    });
   });
 
+$("button[goto]").click(function(){
+  var area = $(this).attr("goto");
+  $("div[manageGroup]").hide();
+  $("div[manageGroup="+area+"]").show();
+});
 
 </script>
 {% endblock %}

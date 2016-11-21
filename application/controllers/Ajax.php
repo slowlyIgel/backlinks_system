@@ -116,12 +116,47 @@ class Ajax extends MY_Controller {
 
 		public function checkTDK(){
 			if ($_POST["caseAddress"] && $_POST["caseID"]) {
-				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"]);
-
+				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"],$_POST["gacode"]);
 				$this->db->where("auto_id",$_POST["caseID"])
 								 ->update("case_table",$tdk);
-
 				$this->output->set_output(json_encode($tdk));
 			}
 		}
+
+
+		public function manage_delete(){
+			if ($_POST["manageFocus"]) {
+				$table = $_POST["manageFocus"];
+				$incase = str_replace("type","case",$_POST["manageFocus"]);
+				$this->db->from("case_table")
+								 ->where($incase,$_POST["idFocus"]);
+				$data = $this->db->get();
+				if ($data->num_rows()) {
+					echo "還有資料屬於這個分類，不可刪除";
+				} else{
+					$this->db->where("auto_typeID",$_POST["idFocus"])
+									 ->delete($table);
+					echo "分類已刪除";
+				}
+				}
+				if ($_POST["manageFocus"] == "type_backlink") {
+					echo "hi";
+				}
+			}
+
+
+		public function manage_rename(){
+			if ($_POST["manageFocus"]) {
+				$table = $_POST["manageFocus"];
+				$this->db->from($table)
+								 ->where("auto_typeID",$_POST["idFocus"]);
+				$data = $this->db->get();
+				if ($data->num_rows()) {
+					$this->db->where("auto_typeID",$_POST["idFocus"])
+									 ->update($table,array("Type_name"=>$_POST["nameFocus"]));
+
+				}
+			}
+		}
+
 }

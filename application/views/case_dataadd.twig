@@ -10,7 +10,7 @@
     <label>案件名稱:</label><input type="text" name="case_name" value=""><br><br>
     <label>網址:</label><input type="text" name="address" value=""><br><br>
     <label>GA碼:</label><input type="text" name="gacode" value=""><br><br>
-    <label>產業:</label><select name="industry_name">
+    <label>產業:</label><select name="industy">
       {% for industrykey,each_industry in industry_tpyeName %}
       <option value="{{industrykey}}">{{each_industry}}</option>
       {% endfor %}
@@ -68,7 +68,7 @@
         "case_name" : $(this).children("input[name=case_name]").val(),
         "case_address" : $(this).children("input[name=address]").val(),
         "case_gacode" : $(this).children("input[name=gacode]").val(),
-        "case_industry" : $(this).children("select[name=industry_name]").val(),
+        "case_industry" : $(this).children("select[name=industy]").val(),
         "case_level" : $(this).children("select[name=level]").val(),
         "case_program" : $(this).children("select[name=program]").val()
       };

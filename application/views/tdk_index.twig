@@ -1,5 +1,9 @@
 {% extends 'page_model.twig' %}
 {% block style %}
+section.side{width:12%;}
+section.main{width:85%;}
+table{ border-collapse:collapse;}
+td{border: 1px solid #000;}
 td[name] {font-size:10px;}
 {% endblock %}
 {% block main_stage %}
@@ -12,8 +16,8 @@ td[name] {font-size:10px;}
       <td>客戶名稱</td>
       <td>產業</td>
       <td>GA碼</td>
-      <td>網站存活</td>
       <td>GA碼比對</td>
+      <td>網站存活</td>
       <td>T</td>
       <td>D</td>
       <td>K</td>
@@ -26,9 +30,9 @@ td[name] {font-size:10px;}
       <tr case_id="{{eachcase["auto_id"]}}" case_address="{{eachcase["case_address"]}}">
         <td>{{eachcase["case_name"]}}</td>
         <td>{{industry_tpyeName[ eachcase["case_industry"] ]}}</td>
-        <td>{{eachcase["case_gacode"]}}</td>
+        <td name="gacode">{{eachcase["case_gacode"]}}</td>
+        <td name="gacode_check">{{eachcase["case_gacode_check"]}}</td>
         <td name="status">{{eachcase["case_alive"]}}</td>
-        <td></td>
         <td name="title">{{eachcase["case_title"]}}</td>
         <td name="description">{{eachcase["case_description"]}}</td>
         <td name="keyword">{{eachcase["case_keyword"]}}</td>
@@ -59,14 +63,17 @@ function start_tdkcheck(){
 function test(field){
   var address = $(field).parents("tr[case_id]").attr("case_address");
   var id = $(field).parents("tr[case_id]").attr("case_id");
-  console.log({"caseAddress" : address, "caseID" : id});
+  var gacode = $(field).parents("tr[case_id]").children("td[name=gacode]").html();
+  console.log({"caseAddress" : address, "caseID" : id, "gacode" : gacode});
 
-  $.post("/ajax/checkTDK",{"caseAddress" : address, "caseID" : id},function(data){
+  $.post("/ajax/checkTDK",{"caseAddress" : address, "caseID" : id, "gacode" : gacode},function(data){
     var json = $.parseJSON(data);
     $(field).parents("tr").children("td[name=status]").html(json.case_alive);
     $(field).parents("tr").children("td[name=title]").html(json.case_title);
     $(field).parents("tr").children("td[name=description]").html(json.case_description);
     $(field).parents("tr").children("td[name=keyword]").html(json.case_keyword);
+    $(field).parents("tr").children("td[name=gacode_check]").html(json.case_gacode_check);
+
     console.log(data);
   });
   $("label[name=lastcheck]").html(Date());

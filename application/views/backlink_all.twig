@@ -36,7 +36,7 @@ td, th {padding:5px;}
       </td>
       {% endif %}
 
-      <td>{{eachSubmitRecord["submit_time_date"]}}</td>
+      <td time="{{eachSubmitRecord["submit_time"]}}">{{eachSubmitRecord["submit_time_date"]}}</td>
       <td name="caseName">{{eachSubmitRecord["case_name"]}}</td>
       <td>{{groupChinese[ eachSubmitRecord["backlinkGroup_id"] ]}}</td>
       <td  name="LinkType" type_id="{{eachSubmitRecord["linktype_thisweek"]}}">{{backlink_typeName[ eachSubmitRecord["linktype_thisweek"] ]}}</td>
@@ -83,18 +83,27 @@ $(function(){
   }
 
   function create_export_file(){
-    var ContentIndex = "<form  action=\"\/export\/backlink_data\" method=\"post\">";
+    var datacount = $("tr[case_id][group_id]:visible").has("input:checked").length;
+    var seperateint = $("#SeperateToNFile").val();
+    if ($.isNumeric(seperateint) && datacount >= seperateint ) {
+      var ContentIndex = "<form  action=\"\/export\/backlink_multi\" method=\"post\">";
+      ContentIndex += "<input type=\"hidden\" name=\"SeperateTo\" value="+seperateint+">";
+    } else if ($.isNumeric(seperateint) && datacount < seperateint) {
+      alert("拆檔數大於總比數，請重新輸入");
+      return false;
+    }  else {
+      var ContentIndex = "<form  action=\"\/export\/backlink_one\" method=\"post\">";
+    }
     var i = 0;
     $("tr[case_id][group_id]:visible").has("input:checked").each(function(){
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][case_id]\" value="+$(this).attr("case_id")+">";
       ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][group_id_incase]\" value="+$(this).attr("group_id")+">";
-      ContentIndex += "<input type=\"hidden\" name=\"CaseName[]\" value="+$(this).children("td[name=caseName]").html()+">";
-      ContentIndex += "<input type=\"hidden\" name=\"LinkType[]\" value="+$(this).children("td[name=LinkType]").attr("type_id")+">";
+      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][submit_time]\" value="+$(this).children("td[time]").attr("time")+">";
+      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][CaseName]\" value="+$(this).children("td[name=caseName]").html()+">";
+      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][LinkType]\" value="+$(this).children("td[name=LinkType]").attr("type_id")+">";
       i += 1;
     });
-    if ($.isNumeric($("#SeperateToNFile").val())) {
-      ContentIndex += "<input type=\"hidden\" name=\"SeperateTo\" value="+$("#SeperateToNFile").val()+">";
-    }
+
     ContentIndex += "<\/form>";
     $(ContentIndex).submit();
   }

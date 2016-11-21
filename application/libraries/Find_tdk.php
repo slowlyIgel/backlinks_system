@@ -10,20 +10,24 @@ class Find_tdk {
 
           $meta = file_get_contents($Url);
           // echo $meta;
-          preg_match('/<title>(.*)<\/title>/',$meta,$title);
-          $test["title"] = $title[1]."<br>";
+          preg_match('/<title>([^<]*)<\/title>/',$meta,$title);
+          $test["case_title"] = $title[1]."<br>";
           // print_r($title[1]);
           preg_match('/<meta name="description".content="([^"]*)">/',$meta,$description);
           // print_r($description[1]);
-          $test["d"] =  $description[1]."<br>";
+          $test["case_description"] =  $description[1]."<br>";
           return $test;
         }
 
 
-        public function get_tdktest($Url){
+        public function get_tdktest($Url,$gacode){
+          $gacode = '/'.str_replace("-","\-",$gacode).'/';
+
                     // 借用
+              $this_header = array("charset=UTF-8");
           $ch = curl_init();
               $timeout = 5;
+              curl_setopt($ch,CURLOPT_HTTPHEADER,$this_header);
               curl_setopt($ch, CURLOPT_URL, $Url);
               curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -37,7 +41,11 @@ class Find_tdk {
               # Parse the HTML from Google.
               # The @ before the method call suppresses any warnings that
               # loadHTML might throw because of invalid HTML in the page.
-              @$dom->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' .$html);
+              @$dom->loadHTML('<?xml encoding="UTF-8">' .$html);
+              foreach ($dom->childNodes as $item)
+                  if ($item->nodeType == XML_PI_NODE)
+                      $dom->removeChild($item); // remove hack
+              $dom->encoding = 'UTF-8'; // insert proper
               $f=0; //flag for error output
               # Iterate over all the <a> tags
               foreach($dom->getElementsByTagName('title') as $link) {
@@ -48,8 +56,13 @@ class Find_tdk {
 
               foreach($dom->getElementsByTagName('script') as $link) {
                       # Show the <a href>
-                      $test["script"] = $link->nodeValue;
-                      $f=1;
+                      $script = $link->nodeValue;
+                      $test["case_gacode_check"] = 0;
+                      if (preg_match($gacode,$script)) {
+                        $test["case_gacode_check"] = preg_match($gacode,$script);
+                        break;
+                      }
+
               }
 
               foreach($dom->getElementsByTagName('meta') as $link) {
