@@ -56,7 +56,7 @@ class Index extends MY_Controller {
 	}
 	public function casedata_edit($id){
 		//案件資料
-		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level, case_program")
+		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level, case_program, case_title, case_description, case_keyword")
 						 ->from("case_table")
 						 ->where("auto_id",$id);
 		$this->finaldata["casedata"] = $this->db->get()->result_array();

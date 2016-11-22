@@ -131,7 +131,9 @@ $(document).ready(function(){
       newGroup.html(Groupdiv);
       newGroup.find(".eachUrl:not(:first-child)").remove();
       newGroup.find(".groupname_chinese").remove();
+      newGroup.find("input[type=checkbox],input[type=checkbox]~label").remove();
       newGroup.find("input").val("");
+      newGroup.find("textarea").val("");
       newGroup.find("input:checked").prop("disabled",true);
       newGroup.children(".GroupContent").before("<button type=\"button\" onclick=\"removegroup(this)\">刪除此群組</button><br>");
       $(".everyGroup").append(newGroup);
