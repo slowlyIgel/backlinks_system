@@ -220,7 +220,16 @@ class Export extends MY_Controller {
 
 		}
 
+		public function tdkexcel(){
+			$this->db->select("case_name, case_address, case_gacode, case_gacode_check, case_alive, case_title, case_description, case_keyword")
+							 ->from("case_table");
+			$data = $this->db->get()->result_array();
+			$this->finaldata["data"] = $data;
+			header("Content-type:application/vnd.ms-excel");
+			header("Content-Disposition: attachment; filename= test.xls");
 
+			$this->twig->display("export_xls",$this->finaldata);
+		}
 
 
 

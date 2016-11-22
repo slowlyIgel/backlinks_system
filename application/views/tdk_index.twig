@@ -56,7 +56,6 @@ function start_tdkcheck(){
   $("tr[case_id]").each(function(){
     $(this).find("button.tdk").trigger("click");
   });
-  $("label[name=lastcheck]").html(Date());
 
 }
 
@@ -73,11 +72,13 @@ function test(field){
     $(field).parents("tr").children("td[name=description]").html(json.case_description);
     $(field).parents("tr").children("td[name=keyword]").html(json.case_keyword);
     $(field).parents("tr").children("td[name=gacode_check]").html(json.case_gacode_check);
-
+    // alert(data);
     console.log(data);
+    if($(field).is($("button.tdk:last"))){
+      $("label[name=lastcheck]").html(Date());
+      location.href = "/export/tdkexcel";
+    }
   });
-  $("label[name=lastcheck]").html(Date());
-
 
 }
 

@@ -119,6 +119,10 @@ class Ajax extends MY_Controller {
 				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"],$_POST["gacode"]);
 				$this->db->where("auto_id",$_POST["caseID"])
 								 ->update("case_table",$tdk);
+								//  print_r($tdk);
+								if ($tdk["case_gacode_check"] ===1) {
+									$tdk["case_gacode_check"] = "是";
+								} else{ $tdk["case_gacode_check"] = "否"; }
 				$this->output->set_output(json_encode($tdk));
 			}
 		}

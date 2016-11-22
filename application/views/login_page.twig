@@ -17,7 +17,7 @@
   function go(){
     var loginID = $("#loginID").val();
     var password = $("#loginPW").val();
-    $.post("/login/login",{"admin_name":loginID, "admin_pw": password},function(data){
+    $.post("/login/login",{"admin_name":loginID, "admin_pw": password},function(){
       location.href= "/";
     });
   }

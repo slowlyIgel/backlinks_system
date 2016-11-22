@@ -30,7 +30,7 @@ class Tdkcheck extends MY_Controller {
              ->from("case_table");
     $this->finaldata["TDKdata"] = $this->db->get()->result_array();
 		foreach ($this->finaldata["TDKdata"] as $key => $value) {
-			if ($value["case_gacode_check"] === 1) {
+			if ($value["case_gacode_check"] === "1") {
 				$this->finaldata["TDKdata"][$key]["case_gacode_check"] = "是";
 			} else{ $this->finaldata["TDKdata"][$key]["case_gacode_check"] = "否";}
 		}

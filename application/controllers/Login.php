@@ -29,16 +29,21 @@ class Login extends CI_Controller {
 	}
 	public function login(){
 		if (!empty($_POST["admin_name"])) {
-			$this->db->select("admin_id, admin_name, total_privilege")
+			$this->db->select("admin_id, admin_name, total_privilege, admin_pw")
 							 ->from("admin_privilege")
-							 ->where("admin_name",$_POST["admin_name"])
-							 ->where("admin_pw",$_POST["admin_pw"]);
-		 $login = $this->db->get();
-			if($login->num_rows()){
-				$this->session->set_userdata($login->result_array()[0]);
+							 ->where("admin_name",$_POST["admin_name"]);
+		 $login = $this->db->get()->result_array()[0];
+			if(password_verify($_POST["admin_pw"],$login["admin_pw"])){
+				unset($login["admin_pw"]);
+				$this->session->set_userdata($login);
+				print_r($this->session->userdata);
 			}
 		}
 		// header("location: /");
+	}
+
+	public function XXX(){
+		echo password_hash("admin",PASSWORD_DEFAULT);
 	}
 
 }
