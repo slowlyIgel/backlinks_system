@@ -25,26 +25,30 @@ class Import extends MY_Controller {
     public function casedata(){
       if ($_FILES) {
 				// 檢查是不是csv(或前面檢查)
-        $file = fopen($_FILES["casedata"]["tmp_name"], 'r');
-				$i = 0;
-        while (($line = fgetcsv($file)) !== FALSE) {
-          // $line is an array of the csv elements
-					// 檢查匯入的編碼是不是UTF8
-					// foreach ($line as $key => $value) {
-					// 	$line[$key] = iconv("big5","UTF-8",$value);
-					// }
-					$casedata_withkey[$i]["case_name"] = $line[0];
-					$casedata_withkey[$i]["case_address"] = $line[1];
-					$casedata_withkey[$i]["case_backlink"] = $line[2];
-					$casedata_withkey[$i]["case_gacode"] = $line[3];
-					$casedata_withkey[$i]["case_industry"] = $line[4];
-					$casedata_withkey[$i]["case_program"] = $line[5];
-					$casedata_withkey[$i]["case_level"] = $line[6];
-					$i ++;
-        }
-				$this->db->insert_batch("case_table",$casedata_withkey);
-        fclose($file);
-				echo "done!!!";
+				if (mb_check_encoding(file_get_contents($_FILES["casedata"]["tmp_name"]), 'UTF-8')){
+					$file = fopen($_FILES["casedata"]["tmp_name"], 'r');
+					$i = 0;
+					while (($line = fgetcsv($file)) !== FALSE) {
+						// $line is an array of the csv elements
+						// 檢查匯入的編碼是不是UTF8
+						// foreach ($line as $key => $value) {
+						// 	$line[$key] = iconv("big5","UTF-8",$value);
+						// }
+						$casedata_withkey[$i]["case_name"] = $line[0];
+						$casedata_withkey[$i]["case_address"] = $line[1];
+						$casedata_withkey[$i]["case_backlink"] = $line[2];
+						$casedata_withkey[$i]["case_gacode"] = $line[3];
+						$casedata_withkey[$i]["case_industry"] = $line[4];
+						$casedata_withkey[$i]["case_program"] = $line[5];
+						$casedata_withkey[$i]["case_level"] = $line[6];
+						$i ++;
+					}
+					// unset($casedata_withkey[0]);
+					$this->db->insert_batch("case_table",$casedata_withkey);
+					fclose($file);
+					echo "done!!!";
+				} else{ echo "請用UTF-8編碼儲存csv檔案並且重新上傳";}
+
       }
     }
 }

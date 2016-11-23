@@ -43,7 +43,7 @@ class Login extends CI_Controller {
 	}
 
 	public function XXX(){
-		echo password_hash("admin",PASSWORD_DEFAULT);
+		echo password_hash("engineer",PASSWORD_DEFAULT);
 	}
 
 }

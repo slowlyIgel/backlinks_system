@@ -9,7 +9,7 @@ class Textworks {
         public function wirte_txtfile($to_txt_array,$filename){
           $content = "";
           foreach ($to_txt_array as $key => $eachgroup) {
-            $content .= $eachgroup["CaseName"]."\r\n\r\n\r\n\r\n";
+            $content .= $eachgroup["CaseName"]."\r\n\r\n";
             $content .= "描述:"."\r\n";
             $content .= $eachgroup["description"]."\r\n";
             $content .= "連結原始碼:"."\r\n";

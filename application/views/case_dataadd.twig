@@ -90,8 +90,13 @@
   }
   function ShowRequest(formData, jqForm, options) {
           var queryString = $.param(formData);
-          alert('BeforeSend method: \n\nAbout to submit: \n\n' + queryString);
-          return true;
+          // alert('BeforeSend method: \n\nAbout to submit: \n\n' + queryString);
+          // 先如此這般檢查副檔名...
+          var extention = $("input[name=casedata]").val().split(".");
+          if(extention[extention.length - 1] != "csv"){
+            alert("請上傳csv檔!!");
+            return false;
+          } else { return true; }
         }
 
         function AjaxError() {

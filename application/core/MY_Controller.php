@@ -13,7 +13,6 @@ class MY_Controller extends CI_Controller {
 								} else{
 									$this->finaldata["adminID"] = $this->session->admin_name;
 									$this->finaldata["total_privilege"] = $this->session->total_privilege;
-
 								 }
 									$this->groupname = array("群組一","群組二","群組三","群組四","群組五",
 																					"群組六","群組七","群組八","群組九","群組十",
@@ -55,7 +54,6 @@ class MY_Controller extends CI_Controller {
 									foreach ($page_privilege as $key => $value) {
 										$this->finaldata["page_privilege"][ $value["page_part_description"] ] = $value["privilege_id"];
 									}
-
         }
 
 

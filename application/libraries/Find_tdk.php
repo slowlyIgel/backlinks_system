@@ -25,32 +25,31 @@ class Find_tdk {
 
                     // 借用
               // $this_header = array("charset=UTF-8");
-          $ch = curl_init();
+              $ch = curl_init();
               $timeout = 5;
               // curl_setopt($ch,CURLOPT_HTTPHEADER,$this_header);
               curl_setopt($ch, CURLOPT_URL, $Url);
               curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
               curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+              curl_setopt($ch, CURLOPT_USERAGENT, "Google Bot");
               $html = curl_exec($ch);
               $httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
               curl_close($ch);
               $test["case_alive"] = $httpCode;
-              # Create a DOM parser object
               $dom = new DOMDocument();
               # Parse the HTML from Google.
               # The @ before the method call suppresses any warnings that
               # loadHTML might throw because of invalid HTML in the page.
               $coding = mb_detect_encoding($html);
+
               @$dom->loadHTML('<?xml encoding="UTF-8">' .$html);
               foreach ($dom->childNodes as $item)
                   if ($item->nodeType == XML_PI_NODE)
                       $dom->removeChild($item); // remove hack
               $dom->encoding = 'UTF-8'; // insert proper
               $f=0; //flag for error output
-              # Iterate over all the <a> tags
               foreach($dom->getElementsByTagName('title') as $link) {
-                      # Show the <a href>
                       $test["case_title"] = $link->nodeValue;
                       if($coding != "UTF-8"){
                         $test["case_title"] = mb_convert_encoding($test["case_title"], "UTF-8", "auto");
@@ -59,7 +58,6 @@ class Find_tdk {
               }
 
               foreach($dom->getElementsByTagName('script') as $link) {
-                      # Show the <a href>
                       $script = $link->nodeValue;
                       $test["case_gacode_check"] = 0;
                       if (preg_match($gacode,$script)) {
@@ -70,7 +68,6 @@ class Find_tdk {
               }
 
               foreach($dom->getElementsByTagName('meta') as $link) {
-                      # Show the <a href>
                       if( strtolower($link->getAttribute('name')) == 'description'){
               		 $test["case_description"] = $link->getAttribute('content');
                    if($coding != "UTF-8"){
@@ -93,6 +90,7 @@ class Find_tdk {
                 $test["case_description"] = "error";
                 $test["case_keyword"] = "error";
               }
+
               return $test;
 
         }

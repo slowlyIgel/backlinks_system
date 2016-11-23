@@ -14,9 +14,9 @@ table tr td{padding:5px;text-align:center;}
     <li><input type="text" name="gacode" value="{{casedetail["case_gacode"]}}" disabled></li>
   </ul>
   <ul>
-    <li><input type="text" value="{{casedetail["case_title"]}}"></li>
-    <li><input type="text" value="{{casedetail["case_description"]}}"></li>
-    <li><input type="text" value="{{casedetail["case_keyword"]}}"></li>
+    <li><input type="text"  name="title" value="{{casedetail["case_title"]}}" disabled></li>
+    <li><input type="text"  name="description" value="{{casedetail["case_description"]}}" disabled></li>
+    <li><input type="text"  name="keyword" value="{{casedetail["case_keyword"]}}" disabled></li>
   </ul>
   <ul>
     <li><button type="button">歷史紀錄</button></li>
@@ -45,7 +45,9 @@ table tr td{padding:5px;text-align:center;}
   {% endfor %}
 <div>
   <button type="button" style="float:right;" onclick="submit_casedata()">送出</button>
+  {% if total_privilege and  page_privilege["editCaseData"] %}
   <button type="button" onclick="startedit()" style="float:right;">開始修改</button>
+  {% endif %}
 </div>
 </div>
 
@@ -85,7 +87,10 @@ table tr td{padding:5px;text-align:center;}
         "case_gacode" : $("input[name=gacode]").val(),
         "case_industry" : $("select[name=industry]").val(),
         "case_level" : $("select[name=level]").val(),
-        "case_program" : $("select[name=program]").val()
+        "case_program" : $("select[name=program]").val(),
+        "case_title" : $("input[name=title]").val(),
+        "case_description" : $("input[name=description]").val(),
+        "case_keyword" : $("input[name=keyword]").val()
       }
     };
     $.post("/ajax/submit_casedata",{casedata:caseData},function(data){

@@ -15,7 +15,7 @@
   </head>
   <body>
   <header>
-    page_name
+    {{page_name}}
     {% block header %}
     {% endblock %}
   </header>
@@ -25,7 +25,7 @@
         <li><a href="/">客戶管理</a></li>
         <li><a href="/backlink">外鏈管理</a></li>
         <li><a href="/tdkcheck">網站檢查</a></li>
-        {% if total_privilege b-and  page_privilege["editAll"] %}
+        {% if total_privilege and  page_privilege["editAll"] %}
         <li><a href="/manage">分類管理</a></li>
         <li><a href="#">權限/人員管理</a></li>
         {% endif %}

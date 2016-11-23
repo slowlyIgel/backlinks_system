@@ -120,7 +120,7 @@ class Ajax extends MY_Controller {
 				$this->db->where("auto_id",$_POST["caseID"])
 								 ->update("case_table",$tdk);
 								//  print_r($tdk);
-								if ($tdk["case_gacode_check"] ===1) {
+								if (!empty($tdk["case_gacode_check"]) && $tdk["case_gacode_check"] ===1) {
 									$tdk["case_gacode_check"] = "是";
 								} else{ $tdk["case_gacode_check"] = "否"; }
 				$this->output->set_output(json_encode($tdk));

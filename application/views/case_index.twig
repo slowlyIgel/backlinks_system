@@ -9,7 +9,7 @@
       <td>方案</td>
       <td>產業</td>
       <td></td>
-      {% if total_privilege b-and page_privilege["DeleteCase"] %}
+      {% if total_privilege and page_privilege["DeleteCase"] %}
       <td></td>
       {% endif %}
     </tr>
@@ -23,7 +23,7 @@
       <td>{{program_tpyeName[eachcase["case_program"]]}}</td>
       <td>{{industry_tpyeName[eachcase["case_industry"]]}}</td>
       <td><button type="button" onclick="goto_caseLinkedit(this)">連結管理</button></td>
-      {% if total_privilege b-and page_privilege["DeleteCase"] %}
+      {% if total_privilege and page_privilege["DeleteCase"] %}
       <td><button type="button" name="button" onclick="delete_case(this)">刪除</button><br></td>
       {% endif %}
 

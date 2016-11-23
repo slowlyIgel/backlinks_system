@@ -9,13 +9,13 @@ td, th {padding:5px;}
 {% for eachtype in backlink_typeName %}
     <button type="button" name="OnlyShowthisType" onclick="showDatabyType(this)">{{eachtype}}</button>
 {% endfor %}
-{% if page_privilege["backlinkExport"] b-and total_privilege %}
+{% if page_privilege["backlinkExport"] and total_privilege %}
   <br><input type="checkbox" name="allselect" value="" checked>
 {% endif %}
 <table id="recordTable" class="tablesorter">
   <thead>
     <tr>
-      {% if page_privilege["backlinkExport"] b-and total_privilege %}
+      {% if page_privilege["backlinkExport"] and total_privilege %}
       <th>選擇匯出</th>
       {% endif %}
       <th>勾選日期</th>
@@ -30,7 +30,7 @@ td, th {padding:5px;}
   <tbody>
     {% for eachSubmitRecord in everySubmitRecord %}
     <tr case_id="{{eachSubmitRecord["case_id"]}}" group_id="{{eachSubmitRecord["backlinkGroup_id"]}}">
-      {% if page_privilege["backlinkExport"] b-and total_privilege %}
+      {% if page_privilege["backlinkExport"] and total_privilege %}
       <td>
         <input type="checkbox" name="selectexport" value="" checked="checked">
       </td>
@@ -48,7 +48,7 @@ td, th {padding:5px;}
     </tbody>
 </table>
 <div id="forexportContent"></div>
-{% if page_privilege["backlinkExport"] b-and total_privilege %}
+{% if page_privilege["backlinkExport"] and total_privilege %}
 <div class="export">
   <label>拆檔:</label><input type="text" id="SeperateToNFile" value=""><br><br>
   <button type="button" onclick="create_export_file()">匯出</button>
@@ -91,7 +91,9 @@ $(function(){
     } else if ($.isNumeric(seperateint) && datacount < seperateint) {
       alert("拆檔數大於總比數，請重新輸入");
       return false;
-    }  else {
+    }  else if (seperateint != "" && !$.isNumeric(seperateint)) {
+      alert("請輸入數字");
+    }else {
       var ContentIndex = "<form  action=\"\/export\/backlink_one\" method=\"post\">";
     }
     var i = 0;

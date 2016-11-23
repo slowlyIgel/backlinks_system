@@ -24,20 +24,20 @@
 		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">GA碼</font></td>
 		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">GA碼相符</font></td>
 		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">網站存活</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">本次(2016-11-08)查詢-title</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">本次(2016-11-08)查詢-descriptions</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">本次(2016-11-08)查詢-keywords</font></td>
+		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">本次查詢-title</font></td>
+		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">本次查詢-descriptions</font></td>
+		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">本次查詢-keywords</font></td>
 	</tr>
 	{% for item in data %}
 	<tr>
 		<td height="19" align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_name"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_address"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_gacode"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_gacode_check"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_alive"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_title"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_description"]}}</font></td>
-		<td align="center" valign=middle bgcolor="#FFCC99"><font face="微軟正黑體" color="#000000">{{item["case_keyword"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_address"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_gacode"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_gacode_check"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_alive"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_title"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_description"]}}</font></td>
+		<td align="center" valign=middle ><font face="微軟正黑體" color="#000000">{{item["case_keyword"]}}</font></td>
 	</tr>
 	{% endfor %}
 
