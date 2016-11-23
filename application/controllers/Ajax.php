@@ -163,4 +163,16 @@ class Ajax extends MY_Controller {
 			}
 		}
 
+
+		public function case_search_bygroup(){
+			if($_POST["search_key"]){
+				$this->db->select("case_name, auto_id")
+								 ->from("case_table")
+								 ->where($_POST["search_key"]);
+				$data = $this->db->get()->result_array();
+				$this->output->set_output(json_encode($data));
+
+			}
+		}
+
 }

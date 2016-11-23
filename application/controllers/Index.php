@@ -170,6 +170,10 @@ class Index extends MY_Controller {
 	public function add_casedata(){
 		$this->twig->display("case_dataadd",$this->finaldata);
 	}
+
+	public function case_search_bygroup(){
+		$this->twig->display("case_search_bygroup",$this->finaldata);
+	}
 	public function logout(){
 		$this->session->sess_destroy();
 		header("location: /");
