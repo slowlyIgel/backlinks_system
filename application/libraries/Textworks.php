@@ -10,8 +10,10 @@ class Textworks {
           $content = "";
           foreach ($to_txt_array as $key => $eachgroup) {
             $content .= $eachgroup["CaseName"]."\r\n\r\n";
+            $content .= "標題:"."\r\n";
+            $content .= $eachgroup["title"]."\r\n";
             $content .= "描述:"."\r\n";
-            $content .= $eachgroup["description"]."\r\n";
+            $content .= $eachgroup["description"]."\r\n\r\n";
             $content .= "連結原始碼:"."\r\n";
             foreach ($eachgroup["linkContent"] as $key2 => $eachlink) {
               $content .= $eachlink."\r\n";

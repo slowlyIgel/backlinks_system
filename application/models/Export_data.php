@@ -44,7 +44,7 @@ class Export_data extends CI_Model {
 
 			$this->db->flush_cache()
 							 ->start_cache()
-							 ->select("auto_id, case_description")
+							 ->select("auto_id, case_description, case_title")
 							 ->from("case_table")
 							 ->stop_cache();
 			foreach ($allindex as $key => $eachGroupinCase) {
@@ -67,6 +67,7 @@ class Export_data extends CI_Model {
 				foreach ($description_data as $key3 => $value3) {
 					if ($value3["auto_id"] === $eachGroupinCase["case_id"]) {
 						$prefinaldata[$groupkey]["description"] = $value3["case_description"];
+						$prefinaldata[$groupkey]["title"] = $value3["case_title"];
 						break;
 					}
 				}
