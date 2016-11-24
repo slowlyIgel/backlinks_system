@@ -17,7 +17,7 @@
   <tbody>
     {% for eachcase in everycase %}
     <tr class="caseindex_btnarea" case_id="{{eachcase["auto_id"]}}">
-      <td onclick="goto_casedataedit(this)">{{eachcase["case_name"]}}</td>
+      <td><a href="/index/casedata_edit/{{eachcase["auto_id"]}}">{{eachcase["case_name"]}}</a></td>
       <td>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</td>
       <td>{{level_tpyeName[ eachcase["case_level"] ]}}</td>
       <td>{{program_tpyeName[eachcase["case_program"]]}}</td>
@@ -46,11 +46,6 @@ $(function(){
 function goto_caseLinkedit(field){
   var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
   location.href = "/index/case_linkgroupedit/"+case_id;
-}
-
-function goto_casedataedit(field){
-  var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
-  location.href = "/index/casedata_edit/"+case_id;
 }
 
 function delete_case(field){
