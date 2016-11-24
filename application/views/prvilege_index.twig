@@ -21,8 +21,12 @@ div[page=admindata_edit]{display:none;}
 <div page="admindata_edit">
   {% for eachaccount in adminData %}
     <p>帳號:<span>{{eachaccount["admin_name"]}}</span></p>
+    <button type="button" name="ChangeAccountPW">修改密碼</button>
+    {% if eachaccount["admin_name"] != "admin" %}
+    <button type="button" name="DeleteThisAccount">刪除此帳號</button>
+    {% endif %}
   {% endfor %}
-
+  <br><button type="button" name="AddNewAccount">新增帳號</button>
 </div>
 {% endblock %}
 
@@ -48,6 +52,25 @@ $("button[name=changeprivilege]").click(function(){
   $.post("/ajax/privilege_upload",{"privilege":everyAccount},function(data){
     location.href ="/privilege";
   });
+});
+
+
+$("button[name=ChangeAccountPW]").click(function(){
+  var enterOldPassword = $("<label>請輸入舊密碼:</label><input type=\"text\" value=\"\">");
+  $(this).before(enterOldPassword);
+  $(this).attr("name","checkOldPWCorrect");
+  $(this).html("確認");
+});
+
+$("button[name=AddNewAccount]").click(function(){
+  var prvilegearea = $("div[total_privilege]:first-child").html();
+  var newAccountderPrivilege = $("<div></div>");
+  newAccountderPrivilege.append(prvilegearea);
+  newAccountderPrivilege.children("input").prop("checked",false);
+  newAccountderPrivilege.find("span").html("<input type=\"text\" value=\"\">");
+  newAccountderPrivilege.children("p").after("<label>密碼:</label><input type=\"text\" value=\"\"><br>權限:<br>");
+  newAccountderPrivilege.append("<br><button type=\"button\">放棄新增</button>");
+  $(this).before(newAccountderPrivilege);
 });
 
 </script>
