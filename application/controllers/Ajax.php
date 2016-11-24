@@ -79,9 +79,12 @@ class Ajax extends MY_Controller {
 					$this->db->select("auto_id, case_name")
 									 ->from("case_table")
 									 ->like("case_name",$_POST["searchKey"]);
-					$this->output->set_output(json_encode(array("status"=>"success","print"=>json_encode($this->db->get()->result_array()))));
-			} else {
-				$this->output->set_output(json_encode(array("status"=>"fail","print"=>"請輸入關鍵字")));
+					$data = $this->db->get()->result_array();
+					if(!empty($data)){
+						$this->output->set_output(json_encode(array("status"=>"success","print"=>json_encode($data))));
+					} else {
+						$this->output->set_output(json_encode(array("status"=>"fail","print"=>"查無此資料")));
+					}
 			}
 		}
 

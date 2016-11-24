@@ -9,7 +9,7 @@
 {% block script_stage %}
 <script type="text/javascript">
   function search_case(){
-    if ($("input[name=case]").val()) {
+    if ($("input[name=case]").val().length > 0) {
       var searchKey = $("input[name=case]").val();
       $.post("/ajax/case_search",{"searchKey":searchKey},function(data){
         var json = $.parseJSON(data);
@@ -25,10 +25,10 @@
             $(".result").append(link);
             $(".result").append(groupedit);
           });
-        } else{
-            alert(json.print); //待改
-        }
+        } else{alert(json.print);}
       });
+    } else{
+        alert("請輸入關鍵字"); //待改
     }
   }
 </script>
