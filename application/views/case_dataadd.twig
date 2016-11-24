@@ -11,20 +11,25 @@
     <label>網址:</label><input type="text" name="address" value=""><br><br>
     <label>GA碼:</label><input type="text" name="gacode" value=""><br><br>
     <label>產業:</label><select name="industy">
+      <option value=""></option>
       {% for industrykey,each_industry in industry_tpyeName %}
       <option value="{{industrykey}}">{{each_industry}}</option>
       {% endfor %}
     </select>
     <label>操作等級:</label><select name="level">
+      <option value=""></option>
       {% for levelkey,each_level in level_tpyeName %}
       <option value="{{levelkey}}">{{each_level}}</option>
       {% endfor %}
     </select>
     <label>方案:</label><select name="program">
+      <option value=""></option>
     {% for programkey,each_program in program_tpyeName %}
     <option value="{{programkey}}">{{each_program}}</option>
     {% endfor %}
     </select>
+    <br>
+    <input type="checkbox" mark="dontcheck"><label>例外案件</label>
     <br><br>
   </div>
   <button type="button" onclick="add_anthorcase(this)">繼續新增案件</button>
@@ -63,7 +68,24 @@
 
   function submitnewcase(){
     var totalNewCase = [];
+    var falseFlag = false;
     $(".each_newcase").each(function(){
+
+      if ($("input[mark]").is(":checked")) {
+        var checkchild = "input[type=text]";
+      } else{ var checkchild = "input[type=text], select";}
+      
+      $(this).children(checkchild).each(function(){
+        if ($(this).val().length == 0 ) {
+          alert("請填入所有資訊");
+          $(this).focus();
+          falseFlag = true;
+          return false;
+        }
+      });
+      if (falseFlag) {
+        return false;
+      }
       var NewCase = {
         "case_name" : $(this).children("input[name=case_name]").val(),
         "case_address" : $(this).children("input[name=address]").val(),
@@ -74,6 +96,9 @@
       };
       totalNewCase.push(NewCase);
     });
+    if (falseFlag) {
+      return false;
+    }
     $.post("/ajax/add_newcase",{newcasedata:totalNewCase},function(data){
       alert(data);
       location.href = "/index/add_casedata";
