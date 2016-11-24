@@ -20,7 +20,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
   <input type="text" value="{{backlinktype}}" inTpyeID="{{backlinkKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
 </div>
 {% endfor %}
-<input type="text" value=""><button type="button">新增</button>
+<input type="text" value=""><button type="button" name="addNewtype">新增</button>
 </div>
 
 <div manageGroup="type_industry">
@@ -31,7 +31,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
   <input type="text" value="{{industrytype}}" inTpyeID="{{industryKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
 </div>
 {% endfor %}
-<input type="text" value=""><button type="button">新增</button>
+<input type="text" value=""><button type="button" name="addNewtype">新增</button>
 </div>
 
 <div manageGroup="type_level">
@@ -42,7 +42,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
   <input type="text" value="{{leveltype}}" inTpyeID="{{levelKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
 </div>
 {% endfor %}
-<input type="text" value=""><button type="button">新增</button>
+<input type="text" value=""><button type="button" name="addNewtype">新增</button>
 </div>
 
 <div manageGroup="type_program">
@@ -53,7 +53,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
   <input type="text" value="{{programtype}}" inTpyeID="{{programKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
 </div>
 {% endfor %}
-<input type="text" value=""><button type="button">新增</button>
+<input type="text" value=""><button type="button" name="addNewtype">新增</button>
 </div>
 
 {% endblock %}
@@ -65,6 +65,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
     var deleteID = $(this).prev("input[inTpyeID]").attr("inTpyeID");
     $.post("/ajax/manage_delete",{"manageFocus":group,"idFocus":deleteID},function(data){
       alert(data);
+      location.href = "/manage/index";
     });
   });
 
@@ -73,8 +74,9 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
     var renameID = $(this).prevAll("input[inTpyeID]").attr("inTpyeID");
     var rename = $(this).prevAll("input[inTpyeID]").val();
     // 檢查輸入名稱非空值
-    $.post("/ajax/manage_rename",{"manageFocus":group,"idFocus":renameID,"nameFocus":rename},function(data){
-      console.log(data);
+    $.post("/ajax/manage_rename",{"manageFocus":group,"idFocus":renameID,"nameFocus":rename},function(){
+      alert("更改完畢");
+      location.href = "/manage/index";
     });
   });
 
@@ -82,6 +84,17 @@ $("button[goto]").click(function(){
   var area = $(this).attr("goto");
   $("div[manageGroup]").hide();
   $("div[manageGroup="+area+"]").show();
+});
+
+$("button[name=addNewtype]").click(function(){
+  var addname = $(this).prev("input").val();
+  if(addname.length > 0){
+    var group = $(this).parents("div[manageGroup]").attr("manageGroup");
+    $.post("/ajax/manage_add",{"manageFocus":group,"nameFocus":addname},function(){
+      alert("新增完畢");
+      location.href = "/manage/index";
+    });
+  } else{ alert("請輸入分類名稱"); }
 });
 
 </script>

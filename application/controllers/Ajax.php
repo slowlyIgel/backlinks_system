@@ -134,9 +134,14 @@ class Ajax extends MY_Controller {
 		public function manage_delete(){
 			if ($_POST["manageFocus"]) {
 				$table = $_POST["manageFocus"];
-				$incase = str_replace("type","case",$_POST["manageFocus"]);
-				$this->db->from("case_table")
-								 ->where($incase,$_POST["idFocus"]);
+				if ($_POST["manageFocus"] == "type_backlink") {
+					$this->db->from("backlink_submit_record")
+									 ->where("linktype_thisweek",$_POST["idFocus"]);
+				} else{
+					$incase = str_replace("type","case",$_POST["manageFocus"]);
+					$this->db->from("case_table")
+									 ->where($incase,$_POST["idFocus"]);
+				}
 				$data = $this->db->get();
 				if ($data->num_rows()) {
 					echo "還有資料屬於這個分類，不可刪除";
@@ -144,10 +149,7 @@ class Ajax extends MY_Controller {
 					$this->db->where("auto_typeID",$_POST["idFocus"])
 									 ->delete($table);
 					echo "分類已刪除";
-				}
-				}
-				if ($_POST["manageFocus"] == "type_backlink") {
-					echo "hi";
+					}
 				}
 			}
 
@@ -163,6 +165,13 @@ class Ajax extends MY_Controller {
 									 ->update($table,array("Type_name"=>$_POST["nameFocus"]));
 
 				}
+			}
+		}
+
+		public function manage_add(){
+			if ($_POST["manageFocus"]) {
+				$table = $_POST["manageFocus"];
+				$this->db->insert($table,array("Type_name"=>$_POST["nameFocus"]));
 			}
 		}
 
