@@ -12,7 +12,7 @@ class MY_Controller extends CI_Controller {
 										header("location: /login/login_page");
 								} else{
 									$this->finaldata["adminID"] = $this->session->admin_name;
-									$this->finaldata["total_privilege"] = $this->session->total_privilege;
+									$this->finaldata["total_privilege"] = intval($this->session->total_privilege);
 								 }
 									$this->groupname = array("群組一","群組二","群組三","群組四","群組五",
 																					"群組六","群組七","群組八","群組九","群組十",
@@ -52,7 +52,7 @@ class MY_Controller extends CI_Controller {
 									$this->db->from("page_privilege");
 									$page_privilege = $this->db->get()->result_array();
 									foreach ($page_privilege as $key => $value) {
-										$this->finaldata["page_privilege"][ $value["page_part_description"] ] = $value["privilege_id"];
+										$this->finaldata["page_privilege"][ $value["page_part_description"] ] = intval($value["privilege_id"]);
 									}
         }
 

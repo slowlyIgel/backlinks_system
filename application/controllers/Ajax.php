@@ -187,4 +187,11 @@ class Ajax extends MY_Controller {
 			}
 		}
 
+
+		public function privilege_upload(){
+			if ($_POST["privilege"]) {
+				$this->db->update_batch("admin_privilege",$_POST["privilege"],"admin_id");
+			}
+		}
+
 }

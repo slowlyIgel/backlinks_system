@@ -1,0 +1,54 @@
+{% extends 'privilege_model.twig' %}
+{% block style %}
+div[page=admindata_edit]{display:none;}
+{% endblock %}
+
+{% block main_stage %}
+<button type="button" goto="privilege_edit">修改帳號權限</button>
+<button type="button" goto="admindata_edit">修改帳號資料</button>
+<div page="privilege_edit">
+  {% for eachaccount in adminData %}
+      <div total_privilege="{{eachaccount["total_privilege"]}}">
+        <p>帳號:<span accountID="{{eachaccount["admin_id"]}}">{{eachaccount["admin_name"]}}</span></p>
+        {% for eachpart in page_privilegeData %}
+            <input type="checkbox" name="pagePrvilege" value="{{eachpart["privilege_id"]}}"{% if eachpart["privilege_id"]  b-and  eachaccount["total_privilege"]%}checked{% endif %}>
+            <label>{{eachpart["page_description_chinese"]}}</label>
+        {% endfor %}
+      </div>
+  {% endfor %}
+  <button type="button" name="changeprivilege">修改</button>
+</div>
+<div page="admindata_edit">
+  {% for eachaccount in adminData %}
+    <p>帳號:<span>{{eachaccount["admin_name"]}}</span></p>
+  {% endfor %}
+
+</div>
+{% endblock %}
+
+{% block script_stage %}
+<script type="text/javascript">
+  $("button[goto]").click(function(){
+    $("div[page]").hide();
+    $("div[page="+$(this).attr("goto")+"]").show();
+  });
+
+$("button[name=changeprivilege]").click(function(){
+  var everyAccount = [];
+  $(this).siblings("div[total_privilege]").each(function(){
+    var account = parseInt($(this).find("span[accountID]").attr("accountID"));
+    var new_total_privilege = 0;
+    $(this).children("input:checked").each(function(){
+      new_total_privilege += parseInt($(this).val());
+    });
+      var eachAccount = {"admin_id":account,"total_privilege":new_total_privilege};
+      everyAccount.push(eachAccount);
+  });
+  console.log(everyAccount);
+  $.post("/ajax/privilege_upload",{"privilege":everyAccount},function(data){
+    location.href ="/privilege";
+  });
+});
+
+</script>
+{% endblock %}
