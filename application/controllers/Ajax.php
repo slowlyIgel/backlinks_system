@@ -175,6 +175,18 @@ class Ajax extends MY_Controller {
 			}
 		}
 
+		public function manage_checkoldpw(){
+			if ($_POST["password"]) {
+				$this->db->from("admin_privilege")
+								 ->where("admin_id",$_POST["account"]);
+				$data = $this->db->get()->result_array();
+				if(count($data) == 1 && password_verify($_POST["password"],$data[0]["admin_pw"])){
+					echo "good";
+				}
+			}
+		}
+
+
 
 		public function case_search_bygroup(){
 			if($_POST["search_key"]){

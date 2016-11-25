@@ -20,11 +20,16 @@ div[page=admindata_edit]{display:none;}
 </div>
 <div page="admindata_edit">
   {% for eachaccount in adminData %}
-    <p>帳號:<span>{{eachaccount["admin_name"]}}</span></p>
+  <div>
+    <p>帳號:<span accountID="{{eachaccount["admin_id"]}}">{{eachaccount["admin_name"]}}</span>
+      {% if eachaccount["admin_name"] != "admin" %}
+      <button type="button" name="DeleteThisAccount">刪除此帳號</button>
+      {% endif %}
+    </p>
     <button type="button" name="ChangeAccountPW">修改密碼</button>
-    {% if eachaccount["admin_name"] != "admin" %}
-    <button type="button" name="DeleteThisAccount">刪除此帳號</button>
-    {% endif %}
+
+  </div>
+
   {% endfor %}
   <br><button type="button" name="AddNewAccount">新增帳號</button>
 </div>
@@ -56,10 +61,9 @@ $("button[name=changeprivilege]").click(function(){
 
 
 $("button[name=ChangeAccountPW]").click(function(){
-  var enterOldPassword = $("<label>請輸入舊密碼:</label><input type=\"text\" value=\"\">");
+  var enterOldPassword = $("<label>請輸入舊密碼:</label><input type=\"text\" value=\"\"><button type=\"button\" name=\"checkOldPWCorrect\" onclick=\"checkOldPWCorrect(this)\">確認</button>");
   $(this).before(enterOldPassword);
-  $(this).attr("name","checkOldPWCorrect");
-  $(this).html("確認");
+  $(this).remove();
 });
 
 $("button[name=AddNewAccount]").click(function(){
@@ -69,9 +73,26 @@ $("button[name=AddNewAccount]").click(function(){
   newAccountderPrivilege.children("input").prop("checked",false);
   newAccountderPrivilege.find("span").html("<input type=\"text\" value=\"\">");
   newAccountderPrivilege.children("p").after("<label>密碼:</label><input type=\"text\" value=\"\"><br>權限:<br>");
-  newAccountderPrivilege.append("<br><button type=\"button\">放棄新增</button>");
+  newAccountderPrivilege.append("<br><button type=\"button\" name=\"dropNewAccount\" onclick=\"dropNewAccount(this)\">放棄新增</button>");
+  newAccountderPrivilege.append("<button type=\"button\" name=\"submitNewAccount\" onclick=\"submitNewAccount(this)\">確定新增</button>");
   $(this).before(newAccountderPrivilege);
+  $(this).hide();
 });
+
+function dropNewAccount(field){
+  $(field).parent("div").remove();
+  $("button[name=AddNewAccount]").show();
+}
+function checkOldPWCorrect(field){
+  var oldPW = $(field).prev("input").val();
+  var account = $(field).parent("div").find("span").attr("accountID");
+  if (oldPW.length > 0) {
+    console.log(account);
+    $.post("ajax/manage_checkoldpw",{"password" : oldPW, "account" : account},function(data){
+      console.log(data);
+    });
+  } else{alert("請輸入密碼");}
+}
 
 </script>
 {% endblock %}
