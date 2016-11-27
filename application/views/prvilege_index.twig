@@ -4,8 +4,6 @@ div[page=admindata_edit]{display:none;}
 {% endblock %}
 
 {% block main_stage %}
-<button type="button" goto="privilege_edit">修改帳號權限</button>
-<button type="button" goto="admindata_edit">修改帳號資料</button>
 <div page="privilege_edit">
   {% for eachaccount in adminData %}
       <div total_privilege="{{eachaccount["total_privilege"]}}">
@@ -18,30 +16,11 @@ div[page=admindata_edit]{display:none;}
   {% endfor %}
   <button type="button" name="changeprivilege">修改</button>
 </div>
-<div page="admindata_edit">
-  {% for eachaccount in adminData %}
-  <div>
-    <p>帳號:<span accountID="{{eachaccount["admin_id"]}}">{{eachaccount["admin_name"]}}</span>
-      {% if eachaccount["admin_name"] != "admin" %}
-      <button type="button" name="DeleteThisAccount">刪除此帳號</button>
-      {% endif %}
-    </p>
-    <button type="button" name="ChangeAccountPW">修改密碼</button>
-
-  </div>
-
-  {% endfor %}
-  <br><button type="button" name="AddNewAccount">新增帳號</button>
-</div>
 {% endblock %}
 
 {% block script_stage %}
+{{ parent() }}
 <script type="text/javascript">
-  $("button[goto]").click(function(){
-    $("div[page]").hide();
-    $("div[page="+$(this).attr("goto")+"]").show();
-  });
-
 $("button[name=changeprivilege]").click(function(){
   var everyAccount = [];
   $(this).siblings("div[total_privilege]").each(function(){
@@ -59,40 +38,6 @@ $("button[name=changeprivilege]").click(function(){
   });
 });
 
-
-$("button[name=ChangeAccountPW]").click(function(){
-  var enterOldPassword = $("<label>請輸入舊密碼:</label><input type=\"text\" value=\"\"><button type=\"button\" name=\"checkOldPWCorrect\" onclick=\"checkOldPWCorrect(this)\">確認</button>");
-  $(this).before(enterOldPassword);
-  $(this).remove();
-});
-
-$("button[name=AddNewAccount]").click(function(){
-  var prvilegearea = $("div[total_privilege]:first-child").html();
-  var newAccountderPrivilege = $("<div></div>");
-  newAccountderPrivilege.append(prvilegearea);
-  newAccountderPrivilege.children("input").prop("checked",false);
-  newAccountderPrivilege.find("span").html("<input type=\"text\" value=\"\">");
-  newAccountderPrivilege.children("p").after("<label>密碼:</label><input type=\"text\" value=\"\"><br>權限:<br>");
-  newAccountderPrivilege.append("<br><button type=\"button\" name=\"dropNewAccount\" onclick=\"dropNewAccount(this)\">放棄新增</button>");
-  newAccountderPrivilege.append("<button type=\"button\" name=\"submitNewAccount\" onclick=\"submitNewAccount(this)\">確定新增</button>");
-  $(this).before(newAccountderPrivilege);
-  $(this).hide();
-});
-
-function dropNewAccount(field){
-  $(field).parent("div").remove();
-  $("button[name=AddNewAccount]").show();
-}
-function checkOldPWCorrect(field){
-  var oldPW = $(field).prev("input").val();
-  var account = $(field).parent("div").find("span").attr("accountID");
-  if (oldPW.length > 0) {
-    console.log(account);
-    $.post("ajax/manage_checkoldpw",{"password" : oldPW, "account" : account},function(data){
-      console.log(data);
-    });
-  } else{alert("請輸入密碼");}
-}
 
 </script>
 {% endblock %}

@@ -182,7 +182,13 @@ class Ajax extends MY_Controller {
 				$data = $this->db->get()->result_array();
 				if(count($data) == 1 && password_verify($_POST["password"],$data[0]["admin_pw"])){
 					echo "good";
-				}
+				} else{echo "somthing wrong";}
+			}
+		}
+
+		public function manage_changepassword(){
+			if($_POST["newone"]){
+				echo "good";
 			}
 		}
 
@@ -203,6 +209,15 @@ class Ajax extends MY_Controller {
 		public function privilege_upload(){
 			if ($_POST["privilege"]) {
 				$this->db->update_batch("admin_privilege",$_POST["privilege"],"admin_id");
+			}
+		}
+
+
+		public function manage_deleteaccount(){
+			if ($_POST["deleteAccount"]) {
+				$this->db->where("admin_id",$_POST["deleteAccount"])
+								 ->delete("admin_privilege");
+
 			}
 		}
 

@@ -23,30 +23,38 @@ class Privilege extends MY_Controller {
     {
         parent::__construct();
 
+				$this->db->select("admin_id, admin_name, total_privilege")
+								 ->from("admin_privilege");
+				$adminData = $this->db->get()->result_array();
+
+				$this->db->from("page_privilege");
+				$page_privilege = $this->db->get()->result_array();
+
+				foreach ($adminData as $key => $value) {
+					$key2 = array_search("adminderadmin",$value);
+					if($key2 != ""){unset($adminData[$key]);break;}
+					$adminData[$key]["total_privilege"] = intval($value["total_privilege"]);
+				}
+
+				foreach ($page_privilege as $key => $value) {
+					$page_privilege[$key]["privilege_id"] = intval($value["privilege_id"]);
+				}
+
+				$this->finaldata["adminData"] = $adminData;
+				$this->finaldata["page_privilegeData"] = $page_privilege;
+
+
     }
 
 	public function index()
 	{
-		$this->db->select("admin_id, admin_name, total_privilege")
-						 ->from("admin_privilege");
-		$adminData = $this->db->get()->result_array();
-
-		$this->db->from("page_privilege");
-		$page_privilege = $this->db->get()->result_array();
-
-		foreach ($adminData as $key => $value) {
-			$key2 = array_search("adminderadmin",$value);
-			if($key2 != ""){unset($adminData[$key]);break;}
-			$adminData[$key]["total_privilege"] = intval($value["total_privilege"]);
-		}
-
-		foreach ($page_privilege as $key => $value) {
-			$page_privilege[$key]["privilege_id"] = intval($value["privilege_id"]);
-		}
-
-		$this->finaldata["adminData"] = $adminData;
-		$this->finaldata["page_privilegeData"] = $page_privilege;
 		$this->twig->display("prvilege_index",$this->finaldata);
 	}
+
+	public function edit()
+	{
+		$this->twig->display("privilege_edit",$this->finaldata);
+	}
+
 
 }

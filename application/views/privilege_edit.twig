@@ -1,0 +1,95 @@
+{% extends 'privilege_model.twig' %}
+{% block style %}
+div.checkOldPassword, div.checkNewPassword, div.AddNewAccount {display:none;}
+{% endblock %}
+{% block main_stage %}
+<div page="admindata_edit">
+  {% for eachaccount in adminData %}
+  <div>
+    <p>帳號:<span accountID="{{eachaccount["admin_id"]}}">{{eachaccount["admin_name"]}}</span>
+      {% if eachaccount["admin_name"] != "admin" %}
+      <button type="button" name="DeleteThisAccount">刪除此帳號</button>
+      {% endif %}
+    </p>
+    <button type="button" goto="checkOldPassword">修改密碼</button>
+      <div class="checkOldPassword">
+        <label>輸入舊密碼：</label>
+        <input type="password" name="oldpw" value=""><button type="button" goto="checkNewPassword">確認</button>
+        <div class="checkNewPassword">
+          <label>輸入新密碼：</label><input type="password" name="newpw" value=""><br>
+          <label>確認新密碼：</label><input type="password" name="newpwconfirm" value=""><br>
+          <button type="button" name="submitNewPassword">確認</button>
+        </div>
+      </div>
+
+  </div>
+
+  {% endfor %}
+  <br><button type="button" goto="AddNewAccount">新增帳號</button>
+  <div class="AddNewAccount">
+    <label>名稱：</label><input type="text" name="newaccountname" value=""><br>
+    <label>密碼：</label><input type="password" name="newaccountpw" value="">
+    <label>確認密碼：</label><input type="password" name="newaccountpwconfirm" value=""><br>
+    <label>權限：</label><br>
+    {% for eachpart in page_privilegeData %}
+        <input type="checkbox" name="pagePrvilege" value="{{eachpart["privilege_id"]}}">
+        <label>{{eachpart["page_description_chinese"]}}</label>
+    {% endfor %}
+
+    <button type="button">確認新增</button>
+  </div>
+</div>
+{% endblock %}
+{% block script_stage %}
+{{ parent() }}
+<script type="text/javascript">
+
+$("button[goto=checkOldPassword]").click(function(){
+  $(this).siblings("div.checkOldPassword").show();
+  $(this).hide();
+});
+
+$("button[goto=AddNewAccount]").click(function(){
+  $(this).siblings("div.AddNewAccount").show();
+});
+
+$("button[goto=checkNewPassword]").click(function(){
+  var thisis = $(this);
+  var oldPW = thisis.prev("input").val();
+  var account = thisis.parents("div").find("span").attr("accountID");
+  if (oldPW.length > 0) {
+    // console.log(account);
+    $.post("/ajax/manage_checkoldpw",{"password" : oldPW, "account" : account},function(data){
+      if(data =="good"){
+        thisis.siblings().hide();
+        thisis.siblings("div.checkNewPassword").show();
+        thisis.hide();
+      } else{alert("密碼錯誤請重新輸入");}
+    });
+  } else{alert("請輸入密碼");}
+});
+
+$("button[name=submitNewPassword]").click(function(){
+  var newpw = $(this).siblings("input[name=newpw]").val();
+  var newpwconfirm = $(this).siblings("input[name=newpwconfirm]").val();
+  if (newpw != newpwconfirm | newpw.length == 0) { alert("密碼不一致！"); return false; }
+  $.post("/ajax/manage_changepassword",{"newone" : newpw},function(data){
+    alert(data); //還沒寫加密修改進資料庫的部分
+  });
+});
+
+
+$("button[name=DeleteThisAccount]").click(function(){
+  if(confirm("確定要刪除此帳號??")){
+    if (confirm("真的真的要刪除??")) {
+      var thisAccount = $(this).prev("span").attr("accountID");
+      $.post("/ajax/manage_deleteaccount",{"deleteAccount" : thisAccount},function(){
+        alert("已刪除");
+        location.href = "/privilege";
+      });
+    }
+  }
+});
+
+</script>
+{% endblock %}
