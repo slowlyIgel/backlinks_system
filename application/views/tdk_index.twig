@@ -1,7 +1,7 @@
 {% extends 'page_model.twig' %}
 {% block style %}
-section.side{width:12%;}
-section.main{width:85%;}
+section.side{float:none;}
+section.main{float:none;width:100%;}
 table{ border-collapse:collapse;}
 td{border: 1px solid #000;}
 td[name] {font-size:10px;}
@@ -21,6 +21,7 @@ td[name] {font-size:10px;}
       <td>T</td>
       <td>D</td>
       <td>K</td>
+      <td>前次檢查時間</td>
       <td>
 
       </td>
@@ -36,6 +37,7 @@ td[name] {font-size:10px;}
         <td name="title">{{eachcase["case_title"]}}</td>
         <td name="description">{{eachcase["case_description"]}}</td>
         <td name="keyword">{{eachcase["case_keyword"]}}</td>
+        <td name="check_time">{{eachcase["last_check_time"]}}</td>
         <td>
           <button type="button" class="tdk" onclick="test(this)">比對tdk</button>
         </td>
@@ -72,6 +74,7 @@ function test(field){
     $(field).parents("tr").children("td[name=description]").html(json.case_description);
     $(field).parents("tr").children("td[name=keyword]").html(json.case_keyword);
     $(field).parents("tr").children("td[name=gacode_check]").html(json.case_gacode_check);
+    $(field).parents("tr").children("td[name=check_time]").html(json.last_check_time);
     // alert(data);
     console.log(data);
     if($(field).is($("button.tdk:last"))){

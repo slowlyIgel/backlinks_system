@@ -120,12 +120,15 @@ class Ajax extends MY_Controller {
 		public function checkTDK(){
 			if ($_POST["caseAddress"] && $_POST["caseID"]) {
 				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"],$_POST["gacode"]);
+				$tdk["last_check_time"] = time();
 				$this->db->where("auto_id",$_POST["caseID"])
 								 ->update("case_table",$tdk);
 								//  print_r($tdk);
 								if (!empty($tdk["case_gacode_check"]) && $tdk["case_gacode_check"] ===1) {
 									$tdk["case_gacode_check"] = "是";
 								} else{ $tdk["case_gacode_check"] = "否"; }
+				$tdk["last_check_time"] = date("Y-n-d",$tdk["last_check_time"]);
+
 				$this->output->set_output(json_encode($tdk));
 			}
 		}

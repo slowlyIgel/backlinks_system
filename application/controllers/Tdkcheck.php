@@ -26,13 +26,14 @@ class Tdkcheck extends MY_Controller {
 
 	public function index()
 	{
-    $this->db->select("auto_id, case_name, case_address, case_industry, case_alive, case_gacode, case_title, case_description, case_keyword, case_gacode_check")
+    $this->db->select("auto_id, case_name, case_address, case_industry, case_alive, case_gacode, case_title, case_description, case_keyword, case_gacode_check, last_check_time")
              ->from("case_table");
     $this->finaldata["TDKdata"] = $this->db->get()->result_array();
 		foreach ($this->finaldata["TDKdata"] as $key => $value) {
 			if ($value["case_gacode_check"] === "1") {
 				$this->finaldata["TDKdata"][$key]["case_gacode_check"] = "是";
 			} else{ $this->finaldata["TDKdata"][$key]["case_gacode_check"] = "否";}
+			$this->finaldata["TDKdata"][$key]["last_check_time"] = date("Y-n-d",$value["last_check_time"]);
 		}
     $this->twig->display("tdk_index",$this->finaldata);
 	}
