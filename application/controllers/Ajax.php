@@ -121,8 +121,26 @@ class Ajax extends MY_Controller {
 			if ($_POST["caseAddress"] && $_POST["caseID"]) {
 				$tdk = $this->find_tdk->get_tdktest($_POST["caseAddress"],$_POST["gacode"]);
 				$tdk["last_check_time"] = time();
+				$this->db->select("case_title, case_description, case_keyword")
+								 ->from("case_table")
+								 ->where("auto_id",$_POST["caseID"]);
+				$lastWeekData = $this->db->get()->result_array();
+				$lastWeekData["last_week_title"] = $lastWeekData[0]["case_title"];
+				$lastWeekData["last_week_description"] = $lastWeekData[0]["case_description"];
+				$lastWeekData["last_week_keyword"] = $lastWeekData[0]["case_keyword"];
+				unset($lastWeekData[0]);
+
+				$this->db->where("auto_id",$_POST["caseID"])
+								 ->update("case_table",$lastWeekData);
+
 				$this->db->where("auto_id",$_POST["caseID"])
 								 ->update("case_table",$tdk);
+
+
+				foreach ($lastWeekData as $key => $value) {
+					$tdk[$key] = $value;
+				}
+				unset($lastWeekData);
 								//  print_r($tdk);
 								if (!empty($tdk["case_gacode_check"]) && $tdk["case_gacode_check"] ===1) {
 									$tdk["case_gacode_check"] = "是";
