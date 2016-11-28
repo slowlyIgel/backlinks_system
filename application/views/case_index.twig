@@ -18,7 +18,7 @@
     {% for eachcase in everycase %}
     <tr class="caseindex_btnarea" case_id="{{eachcase["auto_id"]}}">
       <td><a href="/index/casedata_edit/{{eachcase["auto_id"]}}">{{eachcase["case_name"]}}</a></td>
-      <td>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}最近下外鏈日期(包含未匯出){% endif %}</td>
+      <td>{% if eachcase["submit_time"] != "" %}{{eachcase["submit_time"]}}{% else %}---{% endif %}</td>
       <td>{{level_tpyeName[ eachcase["case_level"] ]}}</td>
       <td>{{program_tpyeName[eachcase["case_program"]]}}</td>
       <td>{{industry_tpyeName[eachcase["case_industry"]]}}</td>
@@ -37,28 +37,9 @@
 {% block script_stage %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
 <script type="text/javascript">
-
 $(function(){
   $("#caseIndexTable").tablesorter();
 });
-
-
-function goto_caseLinkedit(field){
-  var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
-  location.href = "/index/case_linkgroupedit/"+case_id;
-}
-
-function delete_case(field){
-  if (confirm("確定要刪除案件嗎??刪除了就沒救了喔")) {
-    if (confirm("確定確定要刪除??")) {
-      var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
-      $.post("/ajax/delete_case",{case_id:case_id},function(result){
-        var json = $.parseJSON(result);
-        alert(json.alert);
-        if (json.status == "success") { location.href = "/"; }
-      });
-    }
-  }
-}
 </script>
+<script src="/includes/js/case_index.js"></script>
 {% endblock %}

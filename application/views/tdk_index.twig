@@ -7,6 +7,8 @@ table{ border-collapse:collapse;}
 .different{color:red;}
 td{border: 1px solid #000;}
 td[name] {font-size:10px;}
+td div.thisweek{height:50%;}
+td div.lastweek{border-top:1px dotted #000;height:50%;}
 {% endblock %}
 {% block main_stage %}
 
@@ -30,23 +32,27 @@ td[name] {font-size:10px;}
   </thead>
   {% for eachcase in TDKdata %}
       <tr case_id="{{eachcase["auto_id"]}}" case_address="{{eachcase["case_address"]}}">
-        <td rowspan="2">{{eachcase["case_name"]}}</td>
-        <td rowspan="2">{{industry_tpyeName[ eachcase["case_industry"] ]}}</td>
-        <td rowspan="2" name="gacode">{{eachcase["case_gacode"]}}</td>
-        <td rowspan="2" name="gacode_check">{{eachcase["case_gacode_check"]}}</td>
-        <td rowspan="2" name="status">{{eachcase["case_alive"]}}</td>
-        <td name="title" {% if eachcase["t_different"] %}class="different"{% endif %}>{{eachcase["case_title"]}}</td>
-        <td name="description" {% if eachcase["d_different"] %}class="different"{% endif %}>{{eachcase["case_description"]}}</td>
-        <td name="keyword" {% if eachcase["k_different"] %}class="different"{% endif %}>{{eachcase["case_keyword"]}}</td>
-        <td rowspan="2" name="check_time">{{eachcase["last_check_time"]}}</td>
-        <td rowspan="2">
-          <button type="button" class="tdk" onclick="findtdk(this)">比對tdk</button>
-        </td>
-      </tr>
-      <tr>
-        <td name="last_week_title">{{eachcase["last_week_title"]}}</td>
-        <td name="last_week_description">{{eachcase["last_week_description"]}}</td>
-        <td name="last_week_keyword">{{eachcase["last_week_keyword"]}}</td>
+          <td>{{eachcase["case_name"]}}</td>
+          <td>{{industry_tpyeName[ eachcase["case_industry"] ]}}</td>
+          <td name="gacode">{{eachcase["case_gacode"]}}</td>
+          <td name="gacode_check">{{eachcase["case_gacode_check"]}}</td>
+          <td name="status">{{eachcase["case_alive"]}}</td>
+          <td name="title" {% if eachcase["t_different"] %}class="different"{% endif %}>
+            <div class="thisweek">{{eachcase["case_title"]}}</div>
+            <div class="lastweek">{{eachcase["last_week_title"]}}</div>
+          </td>
+          <td name="description" {% if eachcase["d_different"] %}class="different"{% endif %}>
+            <div class="thisweek">{{eachcase["case_description"]}}</div>
+            <div class="lastweek">{{eachcase["last_week_description"]}}</div>
+          </td>
+          <td name="keyword" {% if eachcase["k_different"] %}class="different"{% endif %}>
+            <div class="thisweek">{{eachcase["case_keyword"]}}</div>
+            <div class="lastweek">{{eachcase["last_week_keyword"]}}</div>
+          </td>
+          <td name="check_time">{{eachcase["last_check_time"]}}</td>
+          <td>
+            <button type="button" class="tdk" onclick="findtdk(this)">比對tdk</button>
+          </td>
       </tr>
   {% endfor %}
 </table>
@@ -76,26 +82,24 @@ function findtdk(field){
     var json = $.parseJSON(data);
     var thiscase = $(field).parents("tr");
     thiscase.children("td[name=status]").html(json.case_alive);
-    thiscase.children("td[name=title]").html(json.case_title);
-    thiscase.children("td[name=description]").html(json.case_description);
-    thiscase.children("td[name=keyword]").html(json.case_keyword);
+    thiscase.children("td[name=title]").children("div.thisweek").html(json.case_title);
+    thiscase.children("td[name=title]").children("div.lastweek").html(json.last_week_title);
+    thiscase.children("td[name=description]").children("div.thisweek").html(json.case_description);
+    thiscase.children("td[name=description]").children("div.lastweek").html(json.last_week_description);
+    thiscase.children("td[name=keyword]").children("div.thisweek").html(json.case_keyword);
+    thiscase.children("td[name=keyword]").children("div.lastweek").html(json.last_week_keyword);
     thiscase.children("td[name=gacode_check]").html(json.case_gacode_check);
     thiscase.children("td[name=check_time]").html(json.last_check_time);
 
-    var lastweedTR = thiscase.next("tr");
-    lastweedTR.children("td[name=last_week_title]").html(json.last_week_title);
     if (json.case_title != json.last_week_title) {
       thiscase.children("td[name=title]").css("color","red");
     }
-    lastweedTR.children("td[name=last_week_description]").html(json.last_week_description);
     if (json.case_description != json.last_week_description) {
       thiscase.children("td[name=description]").css("color","red");
     }
-    lastweedTR.children("td[name=last_week_keyword]").html(json.last_week_keyword);
     if (json.case_keyword != json.last_week_keyword) {
       thiscase.children("td[name=keyword]").css("color","red");
     }
-
     if($(field).is($("button.tdk:last"))){
       location.href = "/export/tdkexcel";
     }

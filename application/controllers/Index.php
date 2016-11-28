@@ -52,7 +52,7 @@ class Index extends MY_Controller {
 	}
 
 	public function case_search(){
-		$this->twig->display("case_search");
+		$this->twig->display("case_search",$this->finaldata);
 	}
 	public function casedata_edit($id){
 		//案件資料
@@ -129,12 +129,15 @@ class Index extends MY_Controller {
 		$this->db->select("case_backlink, case_name")
 						 ->from("case_table")
 						 ->where("auto_id",$case_id);
-		$data = $this->db->get()->result_array();
-		$this->finaldata["original_data"] = $data[0]["case_backlink"];
+		$data = $this->db->get();
+		if ($data->num_rows() > 0 ) {
+			$data = $data->result_array()[0];
+		}
 
 		if (empty($new_backlink)) {
 			// 區分群組
-			$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["case_backlink"]);
+			$this->finaldata["original_data"] = $data["case_backlink"];
+			$eachgroup = explode("Seperate%%GROUP%%Here",$data["case_backlink"]);
 			foreach ($eachgroup as $groupkey => $everyUrlinGroup) {
 				preg_match_all("/<a([^>]*)>([^<]*)<\/a>/",$everyUrlinGroup,$eachUrl[$groupkey]);
 				foreach ($eachUrl[$groupkey][2] as $eachUrlKeyinGroup => $eachUrlValueinGroup) {
@@ -162,7 +165,7 @@ class Index extends MY_Controller {
 
 		}
 		$this->finaldata["case_id"] = $case_id;
-		$this->finaldata["case_name"] = $data[0]["case_name"];
+		$this->finaldata["case_name"] = $data["case_name"];
 		$this->finaldata["groupChinese"] = $this->groupname;
 		$this->twig->display("case_linkgroupedit",$this->finaldata);
 	}

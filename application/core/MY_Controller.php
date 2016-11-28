@@ -45,7 +45,7 @@ class MY_Controller extends CI_Controller {
 									$this->db->from("type_program");
 									$program = $this->db->get()->result_array();
 									foreach ($program as $key => $value) {
-										$this->finaldata["program_tpyeName"][ $value["auto_programID"] ] = $value["program_name"];
+										$this->finaldata["program_tpyeName"][ $value["auto_typeID"] ] = $value["Type_name"];
 									}
 
 									// 共用權限內容

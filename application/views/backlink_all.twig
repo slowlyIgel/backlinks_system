@@ -58,57 +58,9 @@ td, th {padding:5px;}
 {% block script_stage %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
 <script type="text/javascript">
-
-
-
 $(function(){
   $("#recordTable").tablesorter();
 });
-
-
-
-  $("input[name=allselect]").click(function(){
-    if(this.checked){ $("input[type=checkbox]").prop("checked",true) ;}
-    else { $("input[type=checkbox]").prop("checked",false) ; }
-  });
-
-  function showDatabyType(field){
-    var type = $(field).html();
-    $("tr[case_id][group_id]").hide();
-    $("td[name=LinkType]:contains("+type+")").parents("tr[case_id][group_id]").show();
-  }
-
-  function showAllTypes(){
-    $("tr[case_id][group_id]").show();
-  }
-
-  function create_export_file(){
-    var datacount = $("tr[case_id][group_id]:visible").has("input:checked").length;
-    var seperateint = $("#SeperateToNFile").val();
-    if ($.isNumeric(seperateint) && datacount >= seperateint ) {
-      var ContentIndex = "<form  action=\"\/export\/backlink_multi\" method=\"post\">";
-      ContentIndex += "<input type=\"hidden\" name=\"SeperateTo\" value="+seperateint+">";
-    } else if ($.isNumeric(seperateint) && datacount < seperateint) {
-      alert("拆檔數大於總比數，請重新輸入");
-      return false;
-    }  else if (seperateint != "" && !$.isNumeric(seperateint)) {
-      alert("請輸入數字");
-    }else {
-      var ContentIndex = "<form  action=\"\/export\/backlink_one\" method=\"post\">";
-    }
-    var i = 0;
-    $("tr[case_id][group_id]:visible").has("input:checked").each(function(){
-      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][case_id]\" value="+$(this).attr("case_id")+">";
-      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][group_id_incase]\" value="+$(this).attr("group_id")+">";
-      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][submit_time]\" value="+$(this).children("td[time]").attr("time")+">";
-      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][CaseName]\" value="+$(this).children("td[name=caseName]").children("a").html()+">";
-      ContentIndex += "<input type=\"hidden\" name=\"ContentIndex["+ i +"][LinkType]\" value="+$(this).children("td[name=LinkType]").attr("type_id")+">";
-      i += 1;
-    });
-
-    ContentIndex += "<\/form>";
-    $(ContentIndex).submit();
-  }
-
 </script>
+<script src="/includes/js/backlink_all.js"></script>
 {% endblock %}
