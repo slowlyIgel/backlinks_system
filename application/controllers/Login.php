@@ -43,7 +43,9 @@ class Login extends CI_Controller {
 	}
 
 	public function XXX(){
-		echo password_hash("engineer",PASSWORD_DEFAULT);
+		echo password_hash("test",PASSWORD_DEFAULT);
+		echo "<br>";
+		echo password_verify("test",'$2y$10$qotnFT5pJCI1feoiPSJrnOu7iuSsk1ujnLqJWRZj/WxWt9tQcxrcS');
 	}
 
 }

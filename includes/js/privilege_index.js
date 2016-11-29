@@ -9,7 +9,6 @@ $("button[name=changeprivilege]").click(function(){
       var eachAccount = {"admin_id":account,"total_privilege":new_total_privilege};
       everyAccount.push(eachAccount);
   });
-  console.log(everyAccount);
   $.post("/ajax/privilege_upload",{"privilege":everyAccount},function(data){
     location.href ="/privilege";
   });

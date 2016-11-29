@@ -203,13 +203,26 @@ class Ajax extends MY_Controller {
 				$data = $this->db->get()->result_array();
 				if(count($data) == 1 && password_verify($_POST["password"],$data[0]["admin_pw"])){
 					echo "good";
-				} else{echo "somthing wrong";}
+				} else{print_r($data[0]["admin_pw"]);}
 			}
 		}
 
 		public function manage_changepassword(){
 			if($_POST["newone"]){
-				echo "good";
+				$this->db->where("admin_id",$_POST["thisadmin"])
+								 ->update("admin_privilege",array("admin_pw"=> password_hash($_POST["newone"],PASSWORD_DEFAULT)));
+								 echo "changed";
+			}
+		}
+
+
+		public function manage_addAccount(){
+			if(count($_POST) === 3){
+				$data["admin_name"] = $_POST["accountName"];
+				$data["admin_pw"] = password_hash($_POST["accountPW"],PASSWORD_DEFAULT);
+				$data["total_privilege"] = intval($_POST["accountPrivilege"]);
+				$this->db->insert("admin_privilege",$data);
+				echo "done!!";
 			}
 		}
 

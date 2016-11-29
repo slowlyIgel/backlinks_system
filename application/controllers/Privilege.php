@@ -48,7 +48,7 @@ class Privilege extends MY_Controller {
 
 	public function index()
 	{
-		$this->twig->display("prvilege_index",$this->finaldata);
+		$this->twig->display("privilege_index",$this->finaldata);
 	}
 
 	public function edit()

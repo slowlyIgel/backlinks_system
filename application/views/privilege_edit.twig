@@ -5,8 +5,8 @@ div.checkOldPassword, div.checkNewPassword, div.AddNewAccount {display:none;}
 {% block main_stage %}
 <div page="admindata_edit">
   {% for eachaccount in adminData %}
-  <div>
-    <p>帳號:<span accountID="{{eachaccount["admin_id"]}}">{{eachaccount["admin_name"]}}</span>
+  <div accountID="{{eachaccount["admin_id"]}}">
+    <p>帳號:<span>{{eachaccount["admin_name"]}}</span>
       {% if eachaccount["admin_name"] != "admin" %}
       <button type="button" name="DeleteThisAccount">刪除此帳號</button>
       {% endif %}
@@ -36,7 +36,7 @@ div.checkOldPassword, div.checkNewPassword, div.AddNewAccount {display:none;}
         <label>{{eachpart["page_description_chinese"]}}</label>
     {% endfor %}
 
-    <button type="button">確認新增</button>
+    <button type="button" name="submitNewAccount">確認新增</button>
   </div>
 </div>
 {% endblock %}
