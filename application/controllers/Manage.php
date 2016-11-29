@@ -23,6 +23,7 @@ class Manage extends MY_Controller {
         parent::__construct();
     }
     public function index(){
+			$this->finaldata["page_name"] = "分類管理";
       $this->twig->display("manage_index",$this->finaldata);
     }
 }

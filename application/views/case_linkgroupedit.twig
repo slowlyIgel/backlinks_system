@@ -14,6 +14,7 @@ input[name=keywords] {width:25%;}
 .submit_link table{margin:auto;}
 .submit_link button{display:block;margin:auto;}
 .otherFunction button{display:block;margin:auto;}
+.alreadyclickthisweek {color:#aaa;}
 {% endblock %}
 {% block main_stage %}
 <div class="main_block">
@@ -84,7 +85,9 @@ input[name=keywords] {width:25%;}
 </div>
 {% endblock %}
 {% block addition %}
+{% if thisweekRecord is defined %}
 <div class="thisweekRecord">
+  本周已提交
   {% for record in thisweekRecord %}
       <p alreadysubmitgroup_id="{{record["backlinkGroup_id"]}}" alreadysubmittype_id="{{record["linktype_thisweek"]}}">
       {{groupChinese[ record["backlinkGroup_id"] ]}}
@@ -92,6 +95,7 @@ input[name=keywords] {width:25%;}
       </p>
   {% endfor %}
 </div>
+{% endif %}
 
 <div class="submit_link">
   <table id="submit_preview">

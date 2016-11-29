@@ -26,8 +26,7 @@ class Index extends MY_Controller {
 
 	public function index()
 	{
-		print_r($this->session->admin);
-
+			$this->finaldata["page_name"] = "客戶總覽";
 			$this->db->select("auto_id,case_name, case_industry, case_program, case_level")
 							 ->from("case_table")
 							 ->order_by("auto_id","DESC");
@@ -52,9 +51,11 @@ class Index extends MY_Controller {
 	}
 
 	public function case_search(){
+		$this->finaldata["page_name"] = "案件搜尋";
 		$this->twig->display("case_search",$this->finaldata);
 	}
 	public function casedata_edit($id){
+		$this->finaldata["page_name"] = "案件編輯";
 		//案件資料
 		$this->db->select("auto_id, case_name, case_address, case_gacode, case_industry, case_level, case_program, case_title, case_description, case_keyword")
 						 ->from("case_table")
@@ -108,6 +109,9 @@ class Index extends MY_Controller {
 	// 	$this->twig->display("case_linkgroupedit",$this->finaldata);
 	// }
 	public function case_linkgroupedit($case_id){
+
+		$this->finaldata["page_name"] = "連結管理";
+
 		$thismonday = strtotime("Monday this Week",time());
 		$thissunday = strtotime("Sunday this Week",time());
 
@@ -123,7 +127,9 @@ class Index extends MY_Controller {
 						 ->where("submit_time >",$thismonday)
 						 ->where("submit_time <",$thissunday);
 		$AlreadySubmitGroup = $this->db->get()->result_array();
-		$this->finaldata["thisweekRecord"] = $AlreadySubmitGroup;
+		if (count($AlreadySubmitGroup) > 0) {
+			$this->finaldata["thisweekRecord"] = $AlreadySubmitGroup;
+		}
 
 		// 舊版外鏈群組資料
 		$this->db->select("case_backlink, case_name")
@@ -134,7 +140,7 @@ class Index extends MY_Controller {
 			$data = $data->result_array()[0];
 		}
 
-		if (empty($new_backlink)) {
+		if (empty($new_backlink) && !empty($data["case_backlink"])) {
 			// 區分群組
 			$this->finaldata["original_data"] = $data["case_backlink"];
 			$eachgroup = explode("Seperate%%GROUP%%Here",$data["case_backlink"]);
@@ -150,7 +156,6 @@ class Index extends MY_Controller {
 
 		} else {
 			// print_r($new_backlink);
-			echo "test";
 			foreach ($new_backlink as $groupkey => $eachBacklinkGroup) {
 				$this->finaldata["group"][$groupkey]["remark"] = $eachBacklinkGroup["remark_content"];
 				$eachLinkinGroup = explode("Seperate%%EachLink%%Here",$eachBacklinkGroup["backlink_content"]);
@@ -171,10 +176,14 @@ class Index extends MY_Controller {
 	}
 
 	public function add_casedata(){
+		$this->finaldata["page_name"] = "新增案件";
+
 		$this->twig->display("case_dataadd",$this->finaldata);
 	}
 
 	public function case_search_bygroup(){
+		$this->finaldata["page_name"] = "分類搜尋";
+
 		$this->twig->display("case_search_bygroup",$this->finaldata);
 	}
 	public function logout(){

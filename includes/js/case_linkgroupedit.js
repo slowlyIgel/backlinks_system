@@ -2,16 +2,19 @@ $(document).ready(function(){
     $("p[alreadysubmitgroup_id]").each(function(){
       var selectedOne = $(".eachLinkGroup[group_id="+$(this).attr("alreadysubmitgroup_id")+"]").find("input[name=backlink_tpye][value="+$(this).attr("alreadysubmittype_id")+"]");
       selectedOne.prop("disabled",true);
-      selectedOne.next("label").css("color","#aaa");
+      selectedOne.next("label").addClass("alreadyclickthisweek");
     });
 });
 
   function showhelp(){
     $(".original").show();
   }
-  function addUrl(filed){
-    var Urldiv = "<div class=\"eachUrl\"><input type=\"text\" name=\"url\" value=\"\"><input type=\"text\" name=\"keywords\" value=\"\"><button type=\"button\" onclick=\"removeUrl(this)\">刪除</button></div>";
-    $(filed).parents(".eachLinkGroup").children(".GroupContent").append(Urldiv);
+  function addUrl(field){
+    var Url = $(field).parents("div.eachLinkGroup").find(".eachUrl:first-child").html();
+    var Urldiv = $("<div class=\"eachUrl\">");
+    Urldiv.append(Url);
+    Urldiv.find("input").val("");
+    $(field).parents(".eachLinkGroup").children(".GroupContent").append(Urldiv);
   }
   function removeUrl(field){
     $(field).parents(".eachUrl").remove();

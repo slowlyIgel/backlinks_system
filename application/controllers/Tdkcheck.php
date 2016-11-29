@@ -26,6 +26,8 @@ class Tdkcheck extends MY_Controller {
 
 	public function index()
 	{
+		$this->finaldata["page_name"] = "網站檢查";
+
     $this->db->select("auto_id, case_name, case_address, case_industry, case_alive, case_gacode, case_title, case_description, case_keyword, case_gacode_check, last_check_time, last_week_title, last_week_description, last_week_keyword")
              ->from("case_table");
     $this->finaldata["TDKdata"] = $this->db->get()->result_array();

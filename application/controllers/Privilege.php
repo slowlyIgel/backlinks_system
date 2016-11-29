@@ -48,11 +48,15 @@ class Privilege extends MY_Controller {
 
 	public function index()
 	{
+		$this->finaldata["page_name"] = "權限編輯";
+
 		$this->twig->display("privilege_index",$this->finaldata);
 	}
 
 	public function edit()
 	{
+		$this->finaldata["page_name"] = "帳號資料編輯";
+
 		$this->twig->display("privilege_edit",$this->finaldata);
 	}
 
