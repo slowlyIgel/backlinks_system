@@ -157,8 +157,8 @@ class Export extends MY_Controller {
 			}
 
 
-			$this->output->set_header("Content-type: text/plain");
-			$this->output->set_header("Content-Disposition: attachment; filename=".$filename.".txt");
+			header("Content-type: text/plain");
+			header("Content-Disposition: attachment; filename=".$filename.".txt");
 			readfile("upload/".$filename.".txt");
 			unlink("upload/".$filename.".txt");
 
@@ -211,9 +211,9 @@ class Export extends MY_Controller {
 
 
 			ob_end_clean();
-			$this->output->set_header('Content-type: application/octet-stream');
-			$this->output->set_header('Content-Transfer-Encoding: Binary');
-			$this->output->set_header('Content-disposition: attachment; filename=Link.zip');
+			header('Content-type: application/octet-stream');
+			header('Content-Transfer-Encoding: Binary');
+			header('Content-disposition: attachment; filename=Link.zip');
 
 			readfile($file);
 			unlink($file);
