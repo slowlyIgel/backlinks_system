@@ -1,28 +1,28 @@
 {% extends 'case_model.twig' %}
 {% block main_stage %}
-<p>以產業搜尋:</p>
+<p class="search">以產業搜尋:
 <select name="industry">
   <option value=""></option>
   {% for industrykey,industry in industry_tpyeName %}
       <option value="{{industrykey}}">{{industry}}</option>
   {% endfor %}
-</select>
+</select></p>
 
-<p>以方案搜尋:</p>
+<p class="search">以方案搜尋:
 <select name="program">
   <option value=""></option>
   {% for programkey,program in program_tpyeName %}
       <option value="{{programkey}}">{{program}}</option>
   {% endfor %}
-</select>
+</select></p>
 
-<p>以操作等級搜尋:</p>
+<p class="search">以操作等級搜尋:
 <select name="level">
   <option value=""></option>
   {% for levelkey,level in level_tpyeName %}
       <option value="{{levelkey}}">{{level}}</option>
   {% endfor %}
-</select>
+</select></p>
 
 <button type="button" id="select_bygroup">送出</button>
 
@@ -61,15 +61,16 @@
           alert("查無此資料");
         } else{
           for(var k in json) {
-            var resultshow = $("<a href=\"\"></a><br>");
+            var resultshow = $("<a href=\"\"></a>");
             resultshow.attr("href","/index/casedata_edit/"+json[k]["auto_id"]);
             resultshow.html(json[k]["case_name"]);
 
-            var resultshowtolink = $("<a href=\"\"></a><br><br>");
+            var resultshowtolink = $("<a href=\"\"></a>");
             resultshowtolink.attr("href","/index/casedata_edit/"+json[k]["auto_id"]);
             resultshowtolink.html("修改外鏈資料");
             $("#result").append(resultshow);
             $("#result").append(resultshowtolink);
+
           }
         }
       });

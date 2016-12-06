@@ -6,15 +6,16 @@ function search_case(){
       var json = $.parseJSON(data);
       if (json.status == "success") {
         $.each($.parseJSON(json.print),function(){
-          var link = $("<a href=\"\"></a><br>");
+          var link = $("<a href=\"\"></a>");
           link.attr("href","/index/casedata_edit/"+this.auto_id);
           link.html(this.case_name);
 
-          var groupedit = $("<a href=\"\"></a><br><br>");
+          var groupedit = $("<a href=\"\"></a>");
           groupedit.attr("href","/index/case_linkgroupedit/"+this.auto_id);
           groupedit.html("修改外鏈群組");
           $("#result").append(link);
           $("#result").append(groupedit);
+
         });
       } else{alert(json.print);}
     });
