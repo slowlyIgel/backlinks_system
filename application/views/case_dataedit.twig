@@ -1,18 +1,19 @@
 {% extends 'case_model.twig' %}
 {% block style %}
+#group_pie_chart{width:50%;margin:auto;}
 {% endblock %}
 {% block main_stage %}
 <div class="case_data" case_id="{{case_id}}">
   {% for casedetail in casedata %}
   <ul>
-    <li><input type="text" name="name" value="{{casedetail["case_name"]}}" disabled></li>
-    <li><input type="text" name="address" value="{{casedetail["case_address"]}}" disabled></li>
-    <li><input type="text" name="gacode" value="{{casedetail["case_gacode"]}}" disabled></li>
+    <li><input type="text" name="name" value="{{casedetail["case_name"]}}" disabled placeholder="案件名稱"></li>
+    <li><input type="text" name="address" value="{{casedetail["case_address"]}}" disabled placeholder="案件網址"></li>
+    <li><input type="text" name="gacode" value="{{casedetail["case_gacode"]}}" disabled placeholder="GA碼"></li>
   </ul>
   <ul>
-    <li><input type="text"  name="title" value="{{casedetail["case_title"]}}" disabled></li>
-    <li><input type="text"  name="description" value="{{casedetail["case_description"]}}" disabled></li>
-    <li><input type="text"  name="keyword" value="{{casedetail["case_keyword"]}}" disabled></li>
+    <li><input type="text"  name="title" value="{{casedetail["case_title"]}}" disabled  placeholder="title"></li>
+    <li><input type="text"  name="description" value="{{casedetail["case_description"]}}" disabled placeholder="description"></li>
+    <li><input type="text"  name="keyword" value="{{casedetail["case_keyword"]}}" disabled placeholder="keyword"></li>
   </ul>
   <ul>
     <li><button type="button">歷史紀錄</button></li>
@@ -40,8 +41,8 @@
   </ul>
   {% endfor %}
 <div>
-  <button type="button" style="float:right;" onclick="submit_casedata()">送出</button>
   {% if total_privilege b-and  page_privilege["editCaseData"] %}
+  <button type="button" style="float:right;" onclick="submit_casedata()">送出</button>
   <button type="button" onclick="startedit()" style="float:right;">開始修改</button>
   {% endif %}
 </div>
@@ -49,12 +50,15 @@
 <div class="backlink_history_info">
 
 <div class="backlink_history">
-  <table>
+  <table id="group_recordTable" class="tablesorter">
+    <thead>
     <tr>
-      <td>日期(是提交不是匯出)</td>
+      <td>提交日期</td>
       <td>群組</th>
       <td>類型</th>
     </tr>
+    <thead>
+      <tbody>
     {% for eachRecord in linkRecord %}
     <tr>
       <td>{{eachRecord["submit_time"]}}</td>
@@ -62,12 +66,45 @@
       <td>{{eachRecord["Type_name"]}}</td>
     </tr>
     {% endfor %}
+  </tbody>
 	  </table>
 </div>
-<div class="div">Other</div></div>
+<div class="div">
+  <canvas id="group_pie_chart"></canvas>
+</div>
+</div>
 
 
 {% endblock %}
 {% block script_stage %}
 <script src ="/includes/js/case_dataedit.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#group_recordTable").tablesorter();
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  var case_id = $("div.case_data").attr("case_id");
+ $.post("/ajax/get_chart_data/"+case_id, function(data){
+   console.log(data);
+ });
+});
+var data = {
+    labels: [ "Red", "Blue","Yellow"],
+    datasets: [{
+            data: [300, 50, 100],
+            backgroundColor: ["#FF6384","#36A2EB", "#FFCE56" ],
+            hoverBackgroundColor: [ "#FF6384","#36A2EB","#FFCE56"]
+        }]
+};
+var ctx = $("#group_pie_chart");
+var myPieChart = new Chart(ctx,{
+  type: 'doughnut',
+  data: data,
+  // options: options
+});
+</script>
 {% endblock %}

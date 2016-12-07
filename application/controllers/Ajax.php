@@ -74,6 +74,17 @@ class Ajax extends MY_Controller {
 			}
 		}
 
+		public function get_chart_data($id){
+			$this->db->select("backlink_submit_record.backlinkGroup_id, COUNT(backlink_submit_record.backlinkGroup_id), backlink_content_group.pie_chart_color")
+							 ->from("backlink_submit_record")
+							 ->join("backlink_content_group","backlink_submit_record.backlinkGroup_id = backlink_content_group.group_id")
+							 ->group_by("backlink_submit_record.backlinkGroup_id")
+							 ->where("backlink_submit_record.case_id",$id)
+							 ->where("backlink_submit_record.export",1);
+			$group_chart_data = $this->db->get()->result_array();
+			echo json_encode($group_chart_data);
+		}
+
 		public function case_search(){
 			if (!empty($_POST["searchKey"])) {
 					$this->db->select("auto_id, case_name")

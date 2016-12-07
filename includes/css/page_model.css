@@ -45,7 +45,7 @@ td[name="keyword"]{ display: table-cell; width: 15%; background: #B02123; }*/
 .side ul{  width: 50%; margin: 160px auto 0;}
 .side li{ border-bottom: dashed 1px #979986; margin: 5px; padding: 5px;}
 .side li:last-child{ border-bottom: none; }
-.side a{ display: block; height: 36px; color: #000; text-decoration: none; font: normal 16px/36px meiryo,arial,微軟正黑體,sans-serif; 
+.side a{ display: block; height: 36px; color: #000; text-decoration: none; font: normal 16px/36px meiryo,arial,微軟正黑體,sans-serif;
 	border-color: #939393; border: 1px 1px 0 1px; text-align: center; }
 .side li:first { margin-top: 35px;}
 .side li::before{}
@@ -79,10 +79,10 @@ input[name="allselect"]{ width: 20px; height: 20px; margin: 10px 35px;}
 .backlink_history_info{ display: block; width: 100%; float: left;}
 
 .backlink_history { position: relative; float: left; width: 50%;}
-.backlink_history tr:first-child td{ font: 16px/30px meiryo,arial,微軟正黑體,sans-serif; background: #2b3741; color: #fff; }
+.backlink_history thead  tr td{ font: 16px/30px meiryo,arial,微軟正黑體,sans-serif; background: #2b3741; color: #fff; }
 .backlink_history table{}
 
-.div{ display: inline-flex; width: 50%; min-height: 150px; justify-content: center; align-items: center; background: #FFF; float: right; position: relative; }
+.div{ display: inline-flex; width: 25%; min-height: 150px; justify-content: center; align-items: center; float: right; position: relative; }
 
 .case_data input[type="text"]{font:16px/24px meiryo,arial,微軟正黑體,sans-serif; text-indent: 20px; padding: 8px 1%;}
 
@@ -117,13 +117,13 @@ table tr td{padding:5px;text-align:center;}
 
 
 div[page="privilege_edit"] div{ padding-bottom: 20px; margin-bottom: 20px; border-bottom: dashed 1px #979986; }
-div[page="privilege_edit"] p{ display: block; margin: 15px; font:18px/24px meiryo,arial,微軟正黑體,sans-serif; } 
+div[page="privilege_edit"] p{ display: block; margin: 15px; font:18px/24px meiryo,arial,微軟正黑體,sans-serif; }
 div[page="privilege_edit"] input[type="checkbox"]{ }
 div[page="privilege_edit"] label{ font:14px/24px meiryo,arial,微軟正黑體,sans-serif; margin-right: 15px;}
- 
- 
+
+
 div[page="admindata_edit"] div{ margin-bottom: 25px;}
-div[page="admindata_edit"] p{ display: block; margin:15px; font:18px/24px meiryo,arial,微軟正黑體,sans-serif; } 
+div[page="admindata_edit"] p{ display: block; margin:15px; font:18px/24px meiryo,arial,微軟正黑體,sans-serif; }
 div[page="admindata_edit"] span{ margin-right: 15px;}
 div[page="admindata_edit"] input[type="checkbox"]{ }
 div[page="admindata_edit"] label{ font:14px/24px meiryo,arial,微軟正黑體,sans-serif; margin-right: 15px;}
@@ -148,4 +148,3 @@ p.search{ float: left; margin: 0 15px 15px;}
 #result{ display: block; width: 95%; margin: 35px auto;}
 #result a{ display: inline-block; font:15px/24px meiryo,arial,微軟正黑體,sans-serif; margin-bottom: 5px; color:#191e22; text-decoration: none;  }
 #result a:nth-child(even){ color: #fff; background: #2b3741; display: block; margin-bottom: 25px; width: 100px; text-align: center; padding:2px 10px; border-radius:4px; }
-

@@ -14,14 +14,13 @@ class MY_Controller extends CI_Controller {
 									$this->finaldata["adminID"] = $this->session->admin_name;
 									$this->finaldata["total_privilege"] = intval($this->session->total_privilege);
 								 }
-									$this->groupname = array("群組一","群組二","群組三","群組四","群組五",
-																					"群組六","群組七","群組八","群組九","群組十",
-																					"群組十一","群組十二","群組十三","群組十四","群組十五",
-																					"群組十六","群組十七","群組十八","群組十九","群組二十",
-																					"群組二一","群組二二","群組二三","群組二四","群組二五",
-																					"群組二六","群組二七","群組二八","群組二九","群組三十");
+								 $this->db->select("group_id, chinese_groupname")
+								 				  ->from("backlink_content_group");
+									$groupname = $this->db->get()->result_array();
+									foreach ($groupname as $key => $value) {
+										$this->groupname[$value["group_id"]] = $value["chinese_groupname"];
+									}
 									$this->finaldata["groupChinese"] = $this->groupname;
-
 
 									// 共用所有下外鏈種類
 									$this->db->from("type_backlink");

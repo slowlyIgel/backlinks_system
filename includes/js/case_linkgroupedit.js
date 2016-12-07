@@ -61,6 +61,7 @@ $(document).ready(function(){
     console.log(allGroupStorge);
       $.post("/ajax/upload_linkgroupcontent/"+case_id,{allGroupStorge},function(data){
         alert("good");
+        location.href = "/index/case_linkgroupedit/"+case_id;
       });
   }
   function submit_original(){
@@ -68,6 +69,7 @@ $(document).ready(function(){
     var case_id = $("#case_id").attr("case_id");
       $.post("/ajax/upload_newtypelink_oldver/"+case_id,{change:original_data},function(){
         alert("good~~");
+        location.href = "/index/case_linkgroupedit/"+case_id;
       });
   }
   function removegroup(field){
