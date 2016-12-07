@@ -3,12 +3,12 @@
 td input{width:100%;}
 .otherFunction{margin:25px;}
 .original{display:none;}
-.original textarea{display:block;width:90%;height:300px;margin:auto;}
+.original textarea{display:block;width:100%;height:300px;margin:15px auto;}
 .right{float:right;}
 input[name=url] {width:65%;}
 input[name=keywords] {width:25%;}
 .eachLinkGroup{padding:50px; border:2px solid #aaa;margin:50px auto;}
-.remarks{display:table;margin:auto;}
+.remarks{display:table; width:90%;}
 .thisweekRecord{min-width:100px;min-height:100px;position:fixed;bottom:40%;left:0;padding:15px;}
 .submit_link{min-width:100px;min-height:100px;position:fixed;bottom:100px;left:0;padding:15px;}
 .submit_link table{margin:auto;}
@@ -31,8 +31,7 @@ input[name=keywords] {width:25%;}
         </div>
       </div>
           <div class="remarks">
-            <label>備註:</label><br>
-            <textarea name="remark"></textarea>
+            <textarea name="remark" placeholder="備註"></textarea>
           </div>
           <button class="right" type="button" onclick="addUrl(this)">新增</button>
       </div>
@@ -61,8 +60,7 @@ input[name=keywords] {width:25%;}
     {% endfor %}
   </div>
       <div class="remarks">
-        <label>備註:</label><br>
-        <textarea name="remark">{{everyUrliGroup["remark"]}}</textarea>
+        <textarea name="remark" placeholder="備註">{{everyUrliGroup["remark"]}}</textarea>
       </div>
       <button class="right" type="button" onclick="addUrl(this)">新增</button>
     </div>

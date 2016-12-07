@@ -1,14 +1,6 @@
 {% extends 'page_model.twig' %}
 {% block style %}
-section.side{float:none;width:100%;}
-section.side ul li {display:inline-block;}
-section.main{float:none;width:100%;}
-table{ border-collapse:collapse;}
-.different{color:red;}
-td{border: 1px solid #000;}
-td[name] {font-size:10px;}
-td div.thisweek{height:50%;}
-td div.lastweek{border-top:1px dotted #000;height:50%;}
+
 {% endblock %}
 {% block main_stage %}
 
@@ -32,25 +24,25 @@ td div.lastweek{border-top:1px dotted #000;height:50%;}
   </thead>
   {% for eachcase in TDKdata %}
       <tr case_id="{{eachcase["auto_id"]}}" case_address="{{eachcase["case_address"]}}">
-          <td>{{eachcase["case_name"]}}</td>
-          <td>{{industry_tpyeName[ eachcase["case_industry"] ]}}</td>
-          <td name="gacode">{{eachcase["case_gacode"]}}</td>
-          <td name="gacode_check">{{eachcase["case_gacode_check"]}}</td>
-          <td name="status">{{eachcase["case_alive"]}}</td>
-          <td name="title" {% if eachcase["t_different"] %}class="different"{% endif %}>
+          <td width="14%">{{eachcase["case_name"]}}</td>
+          <td width="7%">{{industry_tpyeName[ eachcase["case_industry"] ]}}</td>
+          <td width="12%" name="gacode">{{eachcase["case_gacode"]}}</td>
+          <td width="3%" name="gacode_check">{{eachcase["case_gacode_check"]}}</td>
+          <td width="4%" name="status">{{eachcase["case_alive"]}}</td>
+          <td width="15%" name="title" {% if eachcase["t_different"] %}class="different"{% endif %}>
             <div class="thisweek">{{eachcase["case_title"]}}</div>
             <div class="lastweek">{{eachcase["last_week_title"]}}</div>
           </td>
-          <td name="description" {% if eachcase["d_different"] %}class="different"{% endif %}>
+          <td width="15%" name="description" {% if eachcase["d_different"] %}class="different"{% endif %}>
             <div class="thisweek">{{eachcase["case_description"]}}</div>
             <div class="lastweek">{{eachcase["last_week_description"]}}</div>
           </td>
-          <td name="keyword" {% if eachcase["k_different"] %}class="different"{% endif %}>
+          <td width="15%" name="keyword" {% if eachcase["k_different"] %}class="different"{% endif %}>
             <div class="thisweek">{{eachcase["case_keyword"]}}</div>
             <div class="lastweek">{{eachcase["last_week_keyword"]}}</div>
           </td>
-          <td name="check_time">{{eachcase["last_check_time"]}}</td>
-          <td>
+          <td width="8%" name="check_time">{{eachcase["last_check_time"]}}</td>
+          <td width="7%">
             <button type="button" class="tdk" onclick="findtdk(this)">比對tdk</button>
           </td>
       </tr>

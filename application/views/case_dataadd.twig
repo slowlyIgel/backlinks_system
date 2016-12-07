@@ -4,40 +4,41 @@
 {% endblock %}
 {% block main_stage %}
 <button type="button" onclick="change_toWrite()">手動新增</button>
-<button type="button" onclick="change_toImport()">匯入新增</button><br><br>
+<button type="button" onclick="change_toImport()">匯入新增</button>
 <div class="write_area">
   <div class="each_newcase">
-    <label>案件名稱:</label><input type="text" name="case_name" value=""><br><br>
-    <label>網址:</label><input type="text" name="address" value=""><br><br>
-    <label>GA碼:</label><input type="text" name="gacode" value=""><br><br>
-    <label>產業:</label><select name="industy">
+  <ul>
+  <li><label>案件名稱:</label><input type="text" name="case_name" value=""></li>
+  <li><label>網址:</label><input type="text" name="address" value=""></li>
+  <li><label>GA碼:</label><input type="text" name="gacode" value=""></>
+  <li><label>產業:</label><select name="industy">
       <option value=""></option>
       {% for industrykey,each_industry in industry_tpyeName %}
       <option value="{{industrykey}}">{{each_industry}}</option>
       {% endfor %}
-    </select>
-    <label>操作等級:</label><select name="level">
+    </select></li>
+  <li><label>操作等級:</label><select name="level">
       <option value=""></option>
       {% for levelkey,each_level in level_tpyeName %}
       <option value="{{levelkey}}">{{each_level}}</option>
       {% endfor %}
-    </select>
-    <label>方案:</label><select name="program">
+    </select></li>
+   <li><label>方案:</label><select name="program">
       <option value=""></option>
     {% for programkey,each_program in program_tpyeName %}
     <option value="{{programkey}}">{{each_program}}</option>
     {% endfor %}
-    </select>
-    <br>
-    <input type="checkbox" mark="dontcheck"><label>例外案件</label>
-    <br><br>
+    </select></li>
+    
+   <li><input type="checkbox" mark="dontcheck"><label>例外案件</label></li></ul>
+    
   </div>
   <button type="button" onclick="add_anthorcase(this)">繼續新增案件</button>
   <button type="button" onclick="submitnewcase()">提交</button>
 </div>
 <div class="import_area">
   <form action="/import/casedata/" method="post" id="fileUploadForm" enctype="multipart/form-data">
-    <input type="file" name="casedata" value=""><br>
+    <input type="file" name="casedata" value="">
     <button type="submit" onclick="test()">送出</button>
 
   </form>

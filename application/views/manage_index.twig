@@ -13,8 +13,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
 <button type="button" goto="type_program">方案種類</button>
 
 <div manageGroup="type_backlink">
-  <br>
-  外鏈種類:
+  <p>外鏈種類:</p>
 {% for backlinkKey,backlinktype in backlink_typeName %}
 <div class="backlinkEdit">
   <input type="text" value="{{backlinktype}}" inTpyeID="{{backlinkKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
@@ -24,8 +23,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
 </div>
 
 <div manageGroup="type_industry">
-  <br>
-  產業分類:
+  <p>產業分類:</p>
 {% for industryKey,industrytype in industry_tpyeName %}
 <div class="industryEdit">
   <input type="text" value="{{industrytype}}" inTpyeID="{{industryKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
@@ -35,8 +33,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
 </div>
 
 <div manageGroup="type_level">
-  <br>
-  操作等級:
+  <p>操作等級:</p>
 {% for levelKey,leveltype in level_tpyeName %}
 <div class="levelEdit">
   <input type="text" value="{{leveltype}}" inTpyeID="{{levelKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
@@ -46,8 +43,7 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
 </div>
 
 <div manageGroup="type_program">
-  <br>
-  方案種類:
+  <p>方案種類:</p>
 {% for programKey,programtype in program_tpyeName %}
 <div class="programEdit">
   <input type="text" value="{{programtype}}" inTpyeID="{{programKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>

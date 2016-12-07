@@ -10,8 +10,8 @@ div.checkOldPassword, div.checkNewPassword, div.AddNewAccount {display:none;}
       {% if eachaccount["admin_name"] != "admin" %}
       <button type="button" name="DeleteThisAccount">刪除此帳號</button>
       {% endif %}
-    </p>
-    <button type="button" goto="checkOldPassword">修改密碼</button>
+    
+    <button type="button" goto="checkOldPassword">修改密碼</button></p>
       <div class="checkOldPassword">
         <label>輸入舊密碼：</label>
         <input type="password" name="oldpw" value=""><button type="button" goto="checkNewPassword">確認</button>

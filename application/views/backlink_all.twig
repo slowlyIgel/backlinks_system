@@ -1,8 +1,5 @@
 {% extends 'backlink_model.twig' %}
 {% block style %}
-.export{min-width:100px;min-height:100px;position:fixed;bottom:3%;left:0;padding:15px;}
-.export button {display:block;margin:auto;}
-td, th {padding:5px;}
 {% endblock %}
 {% block main_stage %}
 <button type="button" name="OnlyShowthisType" onclick="showAllTypes(this)">總覽</button>
@@ -16,15 +13,15 @@ td, th {padding:5px;}
   <thead>
     <tr>
       {% if page_privilege["backlinkExport"] b-and total_privilege %}
-      <th>選擇匯出</th>
+      <td>選擇匯出</td>
       {% endif %}
-      <th>勾選日期</th>
-      <th>案件名稱</th>
-      <th>外鏈群組</th>
-      <th>外鏈類型</th>
-      <th>案件產業</th>
-      <th>群組備註</th>
-      <th>已匯出</th>
+      <td>勾選日期</td>
+      <td>案件名稱</td>
+      <td>外鏈群組</td>
+      <td>外鏈類型</td>
+      <td>案件產業</td>
+      <td>群組備註</td>
+      <td>已匯出</td>
     </tr>
   </thead>
   <tbody>
@@ -50,7 +47,7 @@ td, th {padding:5px;}
 <div id="forexportContent"></div>
 {% if page_privilege["backlinkExport"] b-and total_privilege %}
 <div class="export">
-  <label>拆檔:</label><input type="text" id="SeperateToNFile" value=""><br><br>
+  <label>拆檔</label><input type="text" id="SeperateToNFile" value="">
   <button type="button" onclick="create_export_file()">匯出</button>
 </div>
 {% endif %}
