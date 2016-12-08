@@ -3,9 +3,35 @@
 <p>依案件名稱搜尋：
 <input type="text" name="case" value="">
 <button type="button" onclick="search_case()">送出</button></p>
-<div id="result"></div>
+<div id="result">
+  <table id="resultdable" class="tablesorter">
+    <thead>
+      <tr>
+        <td>案件名稱</td>
+        <td>最近下外鏈日期</td>
+        <td>操作等級</td>
+        <td>方案</td>
+        <td>產業</td>
+        <td></td>
+        {% if total_privilege b-and page_privilege["DeleteCase"] %}
+        <td></td>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
 {% endblock %}
 
 {% block script_stage %}
 <script src="/includes/js/case_search.js"></script>
+<script src="/includes/js/case_index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#resultdable").tablesorter();
+});
+</script>
+
 {% endblock %}

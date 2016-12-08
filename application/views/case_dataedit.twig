@@ -16,7 +16,7 @@
     <li><input type="text"  name="keyword" value="{{casedetail["case_keyword"]}}" disabled placeholder="keyword"></li>
   </ul>
   <ul>
-    <li><button type="button">歷史紀錄</button></li>
+    <li><button type="button" onclick="goto_history()">歷史紀錄</button></li>
     <li>
       <select name="industry" disabled>
       {% for industrykey,each_industry in industry_tpyeName %}
@@ -72,6 +72,17 @@
 <div class="div">
   <canvas id="group_pie_chart"></canvas>
 </div>
+<div class="source_history">
+  <table id="source_recordTable" class="tablesorter">
+    <thead>
+    <tr>
+      <td>資源站類型</td>
+      <td>外鏈數量</th>
+    </tr>
+    <thead>
+      <tbody>
+      </tbody>
+</div>
 </div>
 
 
@@ -83,6 +94,7 @@
 <script type="text/javascript">
 $(function(){
   $("#group_recordTable").tablesorter();
+  $("#source_recordTable").tablesorter();
 });
 </script>
 <script type="text/javascript">
@@ -93,17 +105,20 @@ $(document).ready(function(){
    var labels = [];
    var data = [];
    var backgroundColor = [];
+  //  var borderColor = [];
    $.each(json,function(){
      labels.push(this.chinese_groupname);
      data.push(parseInt(this.eachgroup_count));
      backgroundColor.push(this.pie_chart_color);
+    //  borderColor.push(this.pie_chart_color);
    });
    var datasets = [{data,backgroundColor}];
-   var chartdata = {labels,datasets};
+   var chartdata = {labels,datasets,"borderColor":["#eee"]};
    var ctx = $("#group_pie_chart");
    var myPieChart = new Chart(ctx,{
      type: 'doughnut',
      data: chartdata,
+     options:{"cutoutPercentage":[30]}
    });
 
  });

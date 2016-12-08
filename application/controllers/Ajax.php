@@ -91,11 +91,18 @@ class Ajax extends MY_Controller {
 
 		public function case_search(){
 			if (!empty($_POST["searchKey"])) {
-					$this->db->select("auto_id, case_name")
-									 ->from("case_table")
-									 ->like("case_name",$_POST["searchKey"]);
-					$data = $this->db->get()->result_array();
+				$this->load->model("case_model");
+				$data = $this->case_model->case_table_list($_POST["searchKey"]);
+					// $this->db->select("auto_id, case_name")
+					// 				 ->from("case_table")
+					// 				 ->like("case_name",$_POST["searchKey"]);
+					// $data = $this->db->get()->result_array();
 					if(!empty($data)){
+						foreach ($data as $key => $value) {
+							$data[$key]["case_industry"] = $this->finaldata["industry_tpyeName"][ $value["case_industry"] ];
+							$data[$key]["case_program"] = $this->finaldata["program_tpyeName"][ $value["case_program"] ];
+							$data[$key]["case_level"] = $this->finaldata["level_tpyeName"][ $value["case_level"] ];
+						}
 						$this->output->set_output(json_encode(array("status"=>"success","print"=>json_encode($data))));
 					} else {
 						$this->output->set_output(json_encode(array("status"=>"fail","print"=>"查無此資料")));
@@ -245,10 +252,18 @@ class Ajax extends MY_Controller {
 
 		public function case_search_bygroup(){
 			if($_POST["search_key"]){
-				$this->db->select("case_name, auto_id")
-								 ->from("case_table")
-								 ->where($_POST["search_key"]);
-				$data = $this->db->get()->result_array();
+				// $this->db->select("case_name, auto_id")
+				// 				 ->from("case_table")
+				// 				 ->where($_POST["search_key"]);
+				// $data = $this->db->get()->result_array();
+				$this->load->model("case_model");
+				$data = $this->case_model->case_table_list("",$_POST["search_key"]);
+				foreach ($data as $key => $value) {
+					$data[$key]["case_industry"] = $this->finaldata["industry_tpyeName"][ $value["case_industry"] ];
+					$data[$key]["case_program"] = $this->finaldata["program_tpyeName"][ $value["case_program"] ];
+					$data[$key]["case_level"] = $this->finaldata["level_tpyeName"][ $value["case_level"] ];
+				}
+
 				$this->output->set_output(json_encode($data));
 
 			}

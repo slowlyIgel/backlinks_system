@@ -4,7 +4,8 @@ function goto_caseLinkedit(field){
 }
 
 function delete_case(field){
-  if (confirm("確定要刪除案件嗎??刪除了就沒救了喔")) {
+  var case_name = $(field).parents(".caseindex_btnarea").find("a").html();
+  if (confirm("確定要刪除"+case_name+"嗎??刪除了就沒救了喔")) {
     if (confirm("確定確定要刪除??")) {
       var case_id = $(field).parents(".caseindex_btnarea").attr("case_id");
       $.post("/ajax/delete_case",{case_id:case_id},function(result){

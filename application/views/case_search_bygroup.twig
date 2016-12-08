@@ -27,15 +27,41 @@
 <button type="button" id="select_bygroup">送出</button>
 
 <div id="result">
-  <a href="#"></a>
+  <table id="resultdable" class="tablesorter">
+    <thead>
+      <tr>
+        <td>案件名稱</td>
+        <td>最近下外鏈日期</td>
+        <td>操作等級</td>
+        <td>方案</td>
+        <td>產業</td>
+        <td></td>
+        {% if total_privilege b-and page_privilege["DeleteCase"] %}
+        <td></td>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
 </div>
 {% endblock %}
 
 
 {% block script_stage %}
+<script src="/includes/js/case_index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#resultdable").tablesorter();
+});
+</script>
+
 <script type="text/javascript">
   $("#select_bygroup").click(function(){
-    $("#result").empty();
+    $("#resultdable").hide();
+    $("#resultdable").children("tbody").empty();
     var industry = $("select[name=industry]").val();
     var program = $("select[name=program]").val();
     var level = $("select[name=level]").val();
@@ -61,17 +87,17 @@
           alert("查無此資料");
         } else{
           for(var k in json) {
-            var resultshow = $("<a href=\"\"></a>");
-            resultshow.attr("href","/index/casedata_edit/"+json[k]["auto_id"]);
-            resultshow.html(json[k]["case_name"]);
-
-            var resultshowtolink = $("<a href=\"\"></a>");
-            resultshowtolink.attr("href","/index/casedata_edit/"+json[k]["auto_id"]);
-            resultshowtolink.html("修改外鏈資料");
-            $("#result").append(resultshow);
-            $("#result").append(resultshowtolink);
-
+            var resultTR = $("<tr class=\"caseindex_btnarea\" case_id=\""+json[k]["auto_id"]+"\"></tr>");
+            resultTR.append("<td><a href=\"/index/casedata_edit/"+json[k]["auto_id"]+"\">"+json[k]["case_name"]+"</td>");
+            resultTR.append("<td></td>");
+            resultTR.append("<td>"+json[k]["case_level"]+"</td>");
+            resultTR.append("<td>"+json[k]["case_program"]+"</td>");
+            resultTR.append("<td>"+json[k]["case_industry"]+"</td>");
+            resultTR.append("<td><button type=\"button\" onclick=\"goto_caseLinkedit(this)\">連結管理</button></td>");
+            resultTR.append("<td><button type=\"button\" name=\"button\" onclick=\"delete_case(this)\">刪除</button><br></td>");
+            $("#resultdable").children("tbody").append(resultTR);
           }
+          $("#resultdable").show();
         }
       });
     }

@@ -27,10 +27,8 @@ class Index extends MY_Controller {
 	public function index()
 	{
 			$this->finaldata["page_name"] = "客戶總覽";
-			$this->db->select("auto_id,case_name, case_industry, case_program, case_level")
-							 ->from("case_table")
-							 ->order_by("auto_id","DESC");
-			$this->finaldata["everycase"] = $this->db->get()->result_array();
+			$this->load->model("case_model");
+			$this->finaldata["everycase"] = $this->case_model->case_table_list();
 
 			// 取得最近下外鏈的日期
 			foreach ($this->finaldata["everycase"] as $key => $value) {

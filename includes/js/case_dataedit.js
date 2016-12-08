@@ -24,3 +24,8 @@ function submit_casedata(){
     location.href = "/index/casedata_edit/"+case_id;
   });
 }
+
+function goto_history(){
+  var case_id = $(".case_data").attr("case_id");
+  location.href = "/index/backlink_record_comeback/"+case_id;
+}
