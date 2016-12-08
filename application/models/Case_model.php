@@ -42,4 +42,19 @@ class Case_model extends CI_Model {
       return $data;
     }
 
+		public function get_last_submit_time($case_id){
+			$this->db->select("case_id, submit_time")
+							 ->from("backlink_submit_record")
+							 ->order_by("submit_time","DESC")
+							 ->limit(1)
+							 ->where("case_id",$case_id);
+			$data = $this->db->get()->result_array();
+
+			if(!empty($data)){
+				$timedata["case_id"] = $data[0]["case_id"];
+				$timedata["submit_time"] = date("Y-n-d",$data[0]["submit_time"]);
+				return $timedata;
+			} else{ return array();}
+		}
+
 }

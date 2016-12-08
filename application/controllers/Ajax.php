@@ -99,6 +99,11 @@ class Ajax extends MY_Controller {
 					// $data = $this->db->get()->result_array();
 					if(!empty($data)){
 						foreach ($data as $key => $value) {
+							$timedata = $this->case_model->get_last_submit_time($value["auto_id"]);
+							if (!empty($timedata)) {
+								$data[$key]["submit_time"] = $timedata["submit_time"];
+								unset($timedata);
+							}
 							$data[$key]["case_industry"] = $this->finaldata["industry_tpyeName"][ $value["case_industry"] ];
 							$data[$key]["case_program"] = $this->finaldata["program_tpyeName"][ $value["case_program"] ];
 							$data[$key]["case_level"] = $this->finaldata["level_tpyeName"][ $value["case_level"] ];
@@ -259,6 +264,11 @@ class Ajax extends MY_Controller {
 				$this->load->model("case_model");
 				$data = $this->case_model->case_table_list("",$_POST["search_key"]);
 				foreach ($data as $key => $value) {
+					$timedata = $this->case_model->get_last_submit_time($value["auto_id"]);
+					if(!empty($timedata)){
+						$data[$key]["submit_time"] = $timedata["submit_time"];
+						unset($timedata);
+					}
 					$data[$key]["case_industry"] = $this->finaldata["industry_tpyeName"][ $value["case_industry"] ];
 					$data[$key]["case_program"] = $this->finaldata["program_tpyeName"][ $value["case_program"] ];
 					$data[$key]["case_level"] = $this->finaldata["level_tpyeName"][ $value["case_level"] ];

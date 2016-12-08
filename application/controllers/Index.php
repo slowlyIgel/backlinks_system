@@ -31,17 +31,11 @@ class Index extends MY_Controller {
 			$this->finaldata["everycase"] = $this->case_model->case_table_list();
 
 			// 取得最近下外鏈的日期
+			$this->load->model("case_model");
 			foreach ($this->finaldata["everycase"] as $key => $value) {
-				$this->db->select("case_id, submit_time")
-								 ->from("backlink_submit_record")
-								 ->order_by("submit_time","DESC")
-								 ->limit(1)
-								 ->where("case_id",$value["auto_id"]);
-				 $data[] = $this->db->get()->result_array();
-			}
-			foreach ($data as $key => $value) {
-				if (!empty($value)) {
-					$this->finaldata["everycase"][$key]["submit_time"] = date("Y-n-d",$value[0]["submit_time"]);
+				$data = $this->case_model->get_last_submit_time($value["auto_id"]);
+				if (!empty($data)) {
+					$this->finaldata["everycase"][$key]["submit_time"] = $data["submit_time"];
 				}
 			}
 			$this->twig->display("case_index",$this->finaldata);
@@ -186,6 +180,7 @@ class Index extends MY_Controller {
 	}
 
 	public function backlink_record_comeback(){
+		$this->finaldata["page_name"] = "歷史紀錄";
 		$this->twig->display("backlink_record_comeback",$this->finaldata);
 	}
 	public function logout(){

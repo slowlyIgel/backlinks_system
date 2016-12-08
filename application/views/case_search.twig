@@ -5,7 +5,7 @@
 <button type="button" onclick="search_case()">送出</button></p>
 <div id="result">
   <table id="resultdable" class="tablesorter">
-    <thead>
+    <thead  {% if total_privilege b-and page_privilege["DeleteCase"] %} privilege="have" {% endif %}>
       <tr>
         <td>案件名稱</td>
         <td>最近下外鏈日期</td>
