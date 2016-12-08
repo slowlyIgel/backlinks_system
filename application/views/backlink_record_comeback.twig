@@ -1,0 +1,26 @@
+{% extends 'case_model.twig' %}
+{% block main_stage %}
+<div class="total_record_comeback">
+
+<table id="comebackRecordTable" class="tablesorter">
+  <thead>
+    <tr>
+      <td>資源站名稱</td>
+      <td>外鏈網址</td>
+      <td>匯入時間</td>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+</div>
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#comebackRecordTable").tablesorter();
+});
+</script>
+{% endblock %}

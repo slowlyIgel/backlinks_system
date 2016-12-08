@@ -184,6 +184,10 @@ class Index extends MY_Controller {
 
 		$this->twig->display("case_search_bygroup",$this->finaldata);
 	}
+
+	public function backlink_record_comeback(){
+		$this->twig->display("backlink_record_comeback",$this->finaldata);
+	}
 	public function logout(){
 		$this->session->sess_destroy();
 		header("location: /");
