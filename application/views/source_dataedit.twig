@@ -1,0 +1,65 @@
+{% extends 'source_model.twig' %}
+{% block style %}
+#source_record, div.record_chart{width:50%;}
+{% endblock %}
+{% block main_stage %}
+<div class="source_data_area">
+  <input type="text" name="" value="" placeholder="資源站名稱">
+  <input type="text" name="" value="" placeholder="資源站網址">
+  <input type="text" name="" value="" placeholder="資源站帳號">
+  <input type="text" name="" value="" placeholder="資源站密碼">
+  <select class="" name="">
+    <option value="" disabled selected>類別</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>狀態</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>使用中狀態</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>自建</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>網站主題</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>語言</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>錨文本</option>
+  </select>
+  <select class="" name="">
+    <option value="" disabled selected>網站類型</option>
+  </select>
+
+
+  <button type="button">送出</button>
+</div>
+
+<div class="source_data_record">
+  <div class="record_table">
+    <table id="source_record" class="tablesorter">
+      <thead>
+        <tr>
+          <td>客戶名稱</td>
+          <td>數量</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="record_chart">
+
+  </div>
+</div>
+
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#source_record").tablesorter();
+});
+</script>
+{% endblock %}
