@@ -1,0 +1,13 @@
+{% extends 'source_model.twig' %}
+{% block main_stage %}
+source
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#caseIndexTable").tablesorter();
+});
+</script>
+
+{% endblock %}
