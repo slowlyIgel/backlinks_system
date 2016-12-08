@@ -82,7 +82,7 @@ input[name="allselect"]{ width: 20px; height: 20px; margin: 10px 35px;}
 .backlink_history thead  tr td{ font: 16px/30px meiryo,arial,微軟正黑體,sans-serif; background: #2b3741; color: #fff; }
 .backlink_history table{}
 
-.div{ display: inline-flex; width: 25%; min-height: 150px; justify-content: center; align-items: center; float: right; position: relative; }
+.div{ display: inline-flex; width: 25%; min-height: 150px; justify-content: center; align-items: center; position: relative; margin-left: 12.5%;}
 
 .case_data input[type="text"]{font:16px/24px meiryo,arial,微軟正黑體,sans-serif; text-indent: 20px; padding: 8px 1%;}
 

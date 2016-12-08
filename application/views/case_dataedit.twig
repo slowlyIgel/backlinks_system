@@ -88,23 +88,25 @@ $(function(){
 <script type="text/javascript">
 $(document).ready(function(){
   var case_id = $("div.case_data").attr("case_id");
- $.post("/ajax/get_chart_data/"+case_id, function(data){
-   console.log(data);
+ $.post("/ajax/get_chart_data/"+case_id, function(result){
+   var json = $.parseJSON(result);
+   var labels = [];
+   var data = [];
+   var backgroundColor = [];
+   $.each(json,function(){
+     labels.push(this.chinese_groupname);
+     data.push(parseInt(this.eachgroup_count));
+     backgroundColor.push(this.pie_chart_color);
+   });
+   var datasets = [{data,backgroundColor}];
+   var chartdata = {labels,datasets};
+   var ctx = $("#group_pie_chart");
+   var myPieChart = new Chart(ctx,{
+     type: 'doughnut',
+     data: chartdata,
+   });
+
  });
-});
-var data = {
-    labels: [ "Red", "Blue","Yellow"],
-    datasets: [{
-            data: [300, 50, 100],
-            backgroundColor: ["#FF6384","#36A2EB", "#FFCE56" ],
-            hoverBackgroundColor: [ "#FF6384","#36A2EB","#FFCE56"]
-        }]
-};
-var ctx = $("#group_pie_chart");
-var myPieChart = new Chart(ctx,{
-  type: 'doughnut',
-  data: data,
-  // options: options
 });
 </script>
 {% endblock %}
