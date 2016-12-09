@@ -29,9 +29,9 @@
     <option value="{{programkey}}">{{each_program}}</option>
     {% endfor %}
     </select></li>
-    
-   <li><input type="checkbox" mark="dontcheck"><label>例外案件</label></li></ul>
-    
+
+   <!-- <li><input type="checkbox" mark="dontcheck"><label>例外案件</label></li></ul> -->
+
   </div>
   <button type="button" onclick="add_anthorcase(this)">繼續新增案件</button>
   <button type="button" onclick="submitnewcase()">提交</button>
@@ -40,8 +40,106 @@
   <form action="/import/casedata/" method="post" id="fileUploadForm" enctype="multipart/form-data">
     <input type="file" name="casedata" value="">
     <button type="submit" onclick="test()">送出</button>
-
   </form>
+  <div class="example">
+    <p>格式如下:</p>
+    <table border="1" style="border-collapse:collapse;">
+      <thead>
+        <tr>
+          <td>案件名稱</td>
+          <td>案件網址</td>
+          <td>舊外鏈資料(沒有就留空)</td>
+          <td>GA碼</td>
+          <td>方案編號</td>
+          <td>產業編號</td>
+          <td>等級編號</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>111-XXXXXXX</td>
+          <td>http://XXXXXX</td>
+          <td></td>
+          <td>UA-123456789</td>
+          <td>1</td>
+          <td>14</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>222-XXXXXXX</td>
+          <td>http://XXXXXX</td>
+          <td></td>
+          <td>UA-123456789</td>
+          <td>4</td>
+          <td>8</td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="types_now">
+    <p>現有資料表對照</p>
+    <div class="now_program">
+      <p>方案</p>
+      <table>
+        <thead>
+          <tr>
+            <td>方案</td>
+            <td>方案編號</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for programkey,each_program in program_tpyeName %}
+              <tr>
+                <td>{{each_program}}</td>
+                <td>{{programkey}}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="now_level">
+      <p>操作等級</p>
+      <table>
+        <thead>
+          <tr>
+            <td>等級</td>
+            <td>等級編號</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for levelkey,each_level in level_tpyeName %}
+              <tr>
+                <td>{{each_level}}</td>
+                <td>{{levelkey}}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="now_industry">
+      <p>產業</p>
+      <table>
+        <thead>
+          <tr>
+            <td>產業</td>
+            <td>產業編號</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for industrykey,each_industry in industry_tpyeName %}
+              <tr>
+                <td>{{each_industry}}</td>
+                <td>{{industrykey}}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
 </div>
 {% endblock %}
 {% block script_stage %}

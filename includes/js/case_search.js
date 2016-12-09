@@ -1,6 +1,6 @@
 function search_case(){
-  $("#resultdable").hide();
-  $("#resultdable").children("tbody").empty();
+  $("#resulttable").hide();
+  $("#resulttable").children("tbody").empty();
   if ($("input[name=case]").val().length > 0) {
     var searchKey = $("input[name=case]").val();
     $.post("/ajax/case_search",{"searchKey":searchKey},function(data){
@@ -18,12 +18,12 @@ function search_case(){
             resultTR.append("<td>"+this.case_program+"</td>");
             resultTR.append("<td>"+this.case_industry+"</td>");
             resultTR.append("<td><button type=\"button\" onclick=\"goto_caseLinkedit(this)\">連結管理</button></td>");
-            if($("#resultdable").children("thead").attr("privilege") == "have"){
+            if($("#resulttable").children("thead").attr("privilege") == "have"){
             resultTR.append("<td><button type=\"button\" name=\"button\" onclick=\"delete_case(this)\">刪除</button><br></td>");
             }
-            $("#resultdable").children("tbody").append(resultTR);
+            $("#resulttable").children("tbody").append(resultTR);
         });
-        $("#resultdable").show();
+        $("#resulttable").show();
       } else{alert(json.print);}
     });
   } else{

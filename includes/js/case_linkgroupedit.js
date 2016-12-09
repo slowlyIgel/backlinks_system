@@ -33,6 +33,7 @@ $(document).ready(function(){
       newGroup.find("input:checked").prop("disabled",true);
       newGroup.children(".GroupContent").before("<button type=\"button\" onclick=\"removegroup(this)\">刪除此群組</button><br>");
       $(".everyGroup").append(newGroup);
+      sort();
     } else {
       alert("已達群組數上限!!!想要增加群組去跟管理員說!!!");
     }

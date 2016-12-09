@@ -1,0 +1,16 @@
+{% extends 'manage_model.twig' %}
+{% block main_stage %}
+<div manageGroup="type_level">
+  <p>操作等級:</p>
+{% for levelKey,leveltype in level_tpyeName %}
+<div class="levelEdit">
+  <input type="text" value="{{leveltype}}" inTpyeID="{{levelKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
+</div>
+{% endfor %}
+<input type="text" value=""><button type="button" name="addNewtype">新增</button>
+</div>
+{% endblock %}
+
+{% block script_stage %}
+<script src="/includes/js/manage_index.js"></script>
+{% endblock %}

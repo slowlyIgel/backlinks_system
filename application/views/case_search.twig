@@ -4,7 +4,7 @@
 <input type="text" name="case" value="">
 <button type="button" onclick="search_case()">送出</button></p>
 <div id="result">
-  <table id="resultdable" class="tablesorter">
+  <table id="resulttable" class="tablesorter">
     <thead  {% if total_privilege b-and page_privilege["DeleteCase"] %} privilege="have" {% endif %}>
       <tr>
         <td>案件名稱</td>
@@ -30,7 +30,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
 <script type="text/javascript">
 $(function(){
-  $("#resultdable").tablesorter();
+  $("#resulttable").tablesorter();
 });
 </script>
 

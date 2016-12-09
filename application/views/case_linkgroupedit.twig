@@ -115,5 +115,14 @@ input[name=keywords] {width:25%;}
 </div>
 {% endblock %}
 {% block script_stage %}
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(sort());
+function sort() {
+  $( "div.GroupContent" ).sortable({
+    connectWith: ".GroupContent"
+  }).disableSelection();
+}
+</script>
 <script src="/includes/js/case_linkgroupedit.js"></script>
 {% endblock %}

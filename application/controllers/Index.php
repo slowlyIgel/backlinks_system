@@ -109,6 +109,7 @@ class Index extends MY_Controller {
 
 		// 先確認有沒有新版資料，如果沒有就用舊版的
 		$this->db->from("backlink_content_table")
+						 ->order_by("group_id_incase")
 						 ->where("case_id",$case_id);
 		$new_backlink = $this->db->get()->result_array();
 		// 選取這週勾選了那些群組和類型的資料
@@ -149,13 +150,13 @@ class Index extends MY_Controller {
 		} else {
 			// print_r($new_backlink);
 			foreach ($new_backlink as $groupkey => $eachBacklinkGroup) {
-				$this->finaldata["group"][$groupkey]["remark"] = $eachBacklinkGroup["remark_content"];
+				$this->finaldata["group"][ $eachBacklinkGroup["group_id_incase"] ]["remark"] = $eachBacklinkGroup["remark_content"];
 				$eachLinkinGroup = explode("Seperate%%EachLink%%Here",$eachBacklinkGroup["backlink_content"]);
 				foreach ($eachLinkinGroup as $eachUrlKeyinGroup => $seperate) {
 					preg_match_all("/<a([^>]*)>([^<]*)<\/a>/",$seperate,$eachUrl);
-					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrl[2][0];
+					$this->finaldata["group"][ $eachBacklinkGroup["group_id_incase"] ]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrl[2][0];
 					preg_match("/href=\"([^\"]*)\"/",$eachUrl[1][0],$urls);
-					$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
+					$this->finaldata["group"][ $eachBacklinkGroup["group_id_incase"] ]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
 				}
 			}
 			$this->finaldata["dataversion"] = "new";
@@ -187,5 +188,8 @@ class Index extends MY_Controller {
 		$this->session->sess_destroy();
 		header("location: /");
 
+	}
+	public function video(){
+		$this->twig->display("testvideo");
 	}
 }

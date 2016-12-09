@@ -43,7 +43,7 @@ class Import extends MY_Controller {
 						$casedata_withkey[$i]["case_level"] = $line[6];
 						$i ++;
 					}
-					// unset($casedata_withkey[0]);
+					unset($casedata_withkey[0]);
 					$this->db->insert_batch("case_table",$casedata_withkey);
 					fclose($file);
 					echo "done!!!";

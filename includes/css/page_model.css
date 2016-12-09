@@ -138,10 +138,11 @@ p.search{ float: left; margin: 0 15px 15px;}
 .each_newcase li:last-child { margin-left: 100px;}
 .each_newcase li:last-child label{ margin: 0 15px; width: inherit;  }
 .each_newcase label{font:16px/24px meiryo,arial,微軟正黑體,sans-serif; margin: 0 15px 0 25px; display: inline-flex; width: 100px; justify-content: flex-end;}
-
-
+div.example{width: 50%;margin: auto;}
+div.types_now{width: 100%;}
+.now_program, .now_level, .now_industry{display: inline-block;width: calc(100%/3 - 1%);}
 .groupname_chinese{font:16px/24px meiryo,arial,微軟正黑體,sans-serif; margin-bottom: 15px; }
-.eachUrl{ margin-bottom: 5px;}
+.eachUrl{ margin-bottom: 5px;padding: 5px;}
 .remarks textarea[name="remark"]{ width: 100%; padding-left: 7px;min-height: 150px; }
 
 
@@ -149,4 +150,4 @@ p.search{ float: left; margin: 0 15px 15px;}
 /*#result a{ display: inline-block; font:15px/24px meiryo,arial,微軟正黑體,sans-serif; margin-bottom: 5px; color:#191e22; text-decoration: none;  }*/
 /*#result a:nth-child(even){ color: #fff; background: #2b3741; display: block; margin-bottom: 25px; width: 100px; text-align: center; padding:2px 10px; border-radius:4px; }*/
 
-#resultdable{display: none;}
+#resulttable{display: none;}

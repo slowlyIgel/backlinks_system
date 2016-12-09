@@ -26,4 +26,26 @@ class Manage extends MY_Controller {
 			$this->finaldata["page_name"] = "分類管理";
       $this->twig->display("manage_index",$this->finaldata);
     }
+		public function backlink_type(){
+			$this->finaldata["page_name"] = "外鏈種類管理";
+			$this->twig->display("manage_backlink_type",$this->finaldata);
+		}
+		public function industry(){
+			$this->finaldata["page_name"] = "產業分類管理";
+			$this->twig->display("manage_industry",$this->finaldata);
+		}
+		public function program(){
+			$this->finaldata["page_name"] = "方案分類管理";
+			$this->twig->display("manage_program",$this->finaldata);
+		}
+		public function level(){
+			$this->finaldata["page_name"] = "操作等級管理";
+			$this->twig->display("manage_level",$this->finaldata);
+		}
+
+		public function grouplimit(){
+			$this->finaldata["page_name"] = "外鏈群組上限管理";
+			$this->twig->display("manage_grouplimit",$this->finaldata);
+		}
+
 }

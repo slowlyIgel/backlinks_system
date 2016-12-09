@@ -7,50 +7,12 @@ div[manageGroup=type_industry],div[manageGroup=type_level],div[manageGroup=type_
 
 
 {% block main_stage %}
-<button type="button" goto="type_backlink">外鏈種類</button>
+<!-- <button type="button" goto="type_backlink">外鏈種類</button>
 <button type="button" goto="type_industry">產業分類</button>
 <button type="button" goto="type_level">操作等級</button>
-<button type="button" goto="type_program">方案種類</button>
+<button type="button" goto="type_program">方案種類</button> -->
+分類提出，要放什麼可以再想
 
-<div manageGroup="type_backlink">
-  <p>外鏈種類:</p>
-{% for backlinkKey,backlinktype in backlink_typeName %}
-<div class="backlinkEdit">
-  <input type="text" value="{{backlinktype}}" inTpyeID="{{backlinkKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
-</div>
-{% endfor %}
-<input type="text" value=""><button type="button" name="addNewtype">新增</button>
-</div>
-
-<div manageGroup="type_industry">
-  <p>產業分類:</p>
-{% for industryKey,industrytype in industry_tpyeName %}
-<div class="industryEdit">
-  <input type="text" value="{{industrytype}}" inTpyeID="{{industryKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
-</div>
-{% endfor %}
-<input type="text" value=""><button type="button" name="addNewtype">新增</button>
-</div>
-
-<div manageGroup="type_level">
-  <p>操作等級:</p>
-{% for levelKey,leveltype in level_tpyeName %}
-<div class="levelEdit">
-  <input type="text" value="{{leveltype}}" inTpyeID="{{levelKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
-</div>
-{% endfor %}
-<input type="text" value=""><button type="button" name="addNewtype">新增</button>
-</div>
-
-<div manageGroup="type_program">
-  <p>方案種類:</p>
-{% for programKey,programtype in program_tpyeName %}
-<div class="programEdit">
-  <input type="text" value="{{programtype}}" inTpyeID="{{programKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
-</div>
-{% endfor %}
-<input type="text" value=""><button type="button" name="addNewtype">新增</button>
-</div>
 
 {% endblock %}
 

@@ -27,7 +27,7 @@
 <button type="button" id="select_bygroup">送出</button>
 
 <div id="result">
-  <table id="resultdable" class="tablesorter">
+  <table id="resulttable" class="tablesorter">
     <thead {% if total_privilege b-and page_privilege["DeleteCase"] %} privilege="have" {% endif %}>
       <tr>
         <td>案件名稱</td>
@@ -54,14 +54,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
 <script type="text/javascript">
 $(function(){
-  $("#resultdable").tablesorter();
+  $("#resulttable").tablesorter();
 });
 </script>
 
 <script type="text/javascript">
   $("#select_bygroup").click(function(){
-    $("#resultdable").hide();
-    $("#resultdable").children("tbody").empty();
+    $("#resulttable").hide();
+    $("#resulttable").children("tbody").empty();
     var industry = $("select[name=industry]").val();
     var program = $("select[name=program]").val();
     var level = $("select[name=level]").val();
@@ -98,12 +98,12 @@ $(function(){
             resultTR.append("<td>"+json[k]["case_program"]+"</td>");
             resultTR.append("<td>"+json[k]["case_industry"]+"</td>");
             resultTR.append("<td><button type=\"button\" onclick=\"goto_caseLinkedit(this)\">連結管理</button></td>");
-            if($("#resultdable").children("thead").attr("privilege") == "have"){
+            if($("#resulttable").children("thead").attr("privilege") == "have"){
             resultTR.append("<td><button type=\"button\" name=\"button\" onclick=\"delete_case(this)\">刪除</button><br></td>");
           }
-            $("#resultdable").children("tbody").append(resultTR);
+            $("#resulttable").children("tbody").append(resultTR);
           }
-          $("#resultdable").show();
+          $("#resulttable").show();
         }
       });
     }
