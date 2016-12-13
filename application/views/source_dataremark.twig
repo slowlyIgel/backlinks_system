@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <textarea id="remark" rows="20" cols="80"></textarea>
+    <button type="button" onclick="eee()">back</button>
+  </body>
+</html>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="/includes/tinymce/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+tinymce.init({
+  selector:'textarea',
+  plugins: [
+         "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+         "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
+         "table contextmenu directionality emoticons paste textcolor responsivefilemanager code"
+   ],
+  //  toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
+  //  toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
+  toolbar:  "responsivefilemanager | link | image",
+   image_advtab: true ,
+   relative_urls:false,
+
+   external_filemanager_path:"/includes/filemanager/filemanager/",
+   filemanager_title:"Responsive Filemanager" ,
+   external_plugins: { "filemanager" : "/includes/filemanager/filemanager/plugin.min.js"}
+
+ });
+function eee(){
+  var word = tinymce.get("remark").getContent();
+  console.log(word);
+  window.opener.gett(word);
+  window.close();
+}
+</script>

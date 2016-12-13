@@ -33,4 +33,7 @@ class Source extends MY_Controller {
       $this->finaldata["page_name"] = "資源站編輯";
       $this->twig->display("source_dataedit",$this->finaldata);
     }
+		public function source_dataremark($id){
+			$this->twig->display("source_dataremark",$this->finaldata);
+		}
 }

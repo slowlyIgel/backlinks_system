@@ -35,6 +35,8 @@
 
 
   <button type="button">送出</button>
+  <button type="button" onclick="userguide()">goto</button>
+  <div id="result"></div>
 </div>
 
 <div class="source_data_record">
@@ -61,5 +63,12 @@
 $(function(){
   $("#source_record").tablesorter();
 });
+
+function userguide(){
+  window.open("/source/source_dataremark/3","_blank","height=768, width=992, status=yes, toolbar=no, menubar=no, location=no,addressbar=no");
+}
+function gett(test){
+  $("#result").html(test);
+}
 </script>
 {% endblock %}
