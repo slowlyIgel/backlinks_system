@@ -138,6 +138,7 @@ p.search{ float: left; margin: 0 15px 15px;}
 .each_newcase li:last-child { margin-left: 100px;}
 .each_newcase li:last-child label{ margin: 0 15px; width: inherit;  }
 .each_newcase label{font:16px/24px meiryo,arial,微軟正黑體,sans-serif; margin: 0 15px 0 25px; display: inline-flex; width: 100px; justify-content: flex-end;}
+.each_newcase ul li input[name="case_name"] ,.each_newcase ul li input[name="address"] {width: 300px;}
 div.example{width: 50%;margin: auto;}
 div.types_now{width: 100%;}
 .now_program, .now_level, .now_industry{display: inline-block;width: calc(100%/3 - 1%);}

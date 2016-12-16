@@ -39,18 +39,19 @@ function submitnewcase(){
       return false;
     }
     var NewCase = {
-      "case_name" : $(this).children("input[name=case_name]").val(),
-      "case_address" : $(this).children("input[name=address]").val(),
-      "case_gacode" : $(this).children("input[name=gacode]").val(),
-      "case_industry" : $(this).children("select[name=industy]").val(),
-      "case_level" : $(this).children("select[name=level]").val(),
-      "case_program" : $(this).children("select[name=program]").val()
+      "case_name" : $(this).find("input[name=case_name]").val(),
+      "case_address" : $(this).find("input[name=address]").val(),
+      "case_gacode" : $(this).find("input[name=gacode]").val(),
+      "case_industry" : $(this).find("select[name=industy]").val(),
+      "case_level" : $(this).find("select[name=level]").val(),
+      "case_program" : $(this).find("select[name=program]").val()
     };
     totalNewCase.push(NewCase);
   });
   if (falseFlag) {
     return false;
   }
+  console.log(totalNewCase);
   $.post("/ajax/add_newcase",{newcasedata:totalNewCase},function(data){
     alert(data);
     location.href = "/index/add_casedata";

@@ -1,0 +1,51 @@
+{% extends 'source_index.twig' %}
+{% block main_stage %}
+<table id="sourceexportTable" class="tablesorter">
+  <thead>
+    <tr>
+      <td>資源站資訊</td>
+      <td>上次使用時間</td>
+      <td>級別</td>
+      <td>類別</td>
+      <td>狀態</td>
+      <td>使用中狀態</td>
+      <td>自建</td>
+      <td>網站主題</td>
+      <td>語言</td>
+      <td>錨文本</td>
+      <td>網站類型</td>
+      <td>匯出</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/source/source_dataedit/3">http://.....(連去資料頁)</a><br>帳號:kpnweb<br>密碼:1234</td>
+      <td>1970-1-1</td>
+      <td>級別</td>
+      <td>類別</td>
+      <td>狀態</td>
+      <td>使用中狀態</td>
+      <td>自建</td>
+      <td>網站主題</td>
+      <td>語言</td>
+      <td>錨文本</td>
+      <td>網站類型</td>
+      <td><input type="checkbox" name="" value=""></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div class="click_to_export">
+  <button type="button" name="button">匯出</button>
+</div>
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#sourceexportTable").tablesorter();
+});
+</script>
+
+{% endblock %}

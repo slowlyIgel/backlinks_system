@@ -36,4 +36,8 @@ class Source extends MY_Controller {
 		public function source_dataremark($id){
 			$this->twig->display("source_dataremark",$this->finaldata);
 		}
+		public function source_export(){
+			$this->finaldata["page_name"] = "資源站資料匯出";
+			$this->twig->display("source_exporttable",$this->finaldata);
+		}
 }
