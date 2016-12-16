@@ -1,16 +1,27 @@
+$(document).ready(function(){
+  count_totalselect_checkbox();
+});
+
+$("input[name=selectexport]").click(function(){
+  count_totalselect_checkbox();
+});
+
 $("input[name=allselect]").click(function(){
   if(this.checked){ $("input[type=checkbox]").prop("checked",true) ;}
   else { $("input[type=checkbox]").prop("checked",false) ; }
+  count_totalselect_checkbox();
 });
 
 function showDatabyType(field){
   var type = $(field).html();
   $("tr[case_id][group_id]").hide();
   $("td[name=LinkType]:contains("+type+")").parents("tr[case_id][group_id]").show();
+  count_totalselect_checkbox();
 }
 
 function showAllTypes(){
   $("tr[case_id][group_id]").show();
+  count_totalselect_checkbox();
 }
 
 function create_export_file(){
@@ -39,4 +50,9 @@ function create_export_file(){
 
   ContentIndex += "<\/form>";
   $(ContentIndex).submit();
+}
+
+function count_totalselect_checkbox(){
+  var checked = $("input[name=selectexport]:visible:checked").length;
+  $("span[name=countselect_checkbox]").html(checked);
 }
