@@ -49,8 +49,6 @@ class Source extends MY_Controller {
 				get_sourcetypeInfo("type_source_sitetype");
 				get_sourcetypeInfo("type_source_topic");
 
-
-
     }
 
     public function index(){
@@ -84,7 +82,7 @@ class Source extends MY_Controller {
 							 ->from("source_table")
 							 ->where("source_id",$id);
 			$this->finaldata["sourcedata"] = $this->db->get()->row_array();
-			$this->finaldata["sourcedata"]["times"] = $times; 
+			$this->finaldata["sourcedata"]["times"] = $times;
       $this->twig->display("source_dataedit",$this->finaldata);
     }
 
@@ -159,6 +157,15 @@ class Source extends MY_Controller {
 			);
 
 			$this->twig->display("source_analysis",$this->finaldata);
+		}
+
+		public function source_search(){
+			$this->finaldata["page_name"] = "資源站搜尋";
+
+		}
+
+		public function source_add(){
+			$this->finaldata["page_name"] = "新增資源站";
 		}
 
 }
