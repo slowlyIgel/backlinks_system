@@ -74,6 +74,18 @@ class Source extends MY_Controller {
 		}
 		public function source_export(){
 			$this->finaldata["page_name"] = "資源站資料匯出";
+
+			$thismonday = strtotime("Monday this Week",time());
+			$thissunday = strtotime("Sunday this Week",time());
+
+			$this->db->select("source_table.*, source_submit_record.submit_time")
+							 ->from("source_table")
+							 ->join("source_submit_record","source_table.source_id = source_submit_record.source_id")
+							 ->where("source_submit_record.submit_time >",$thismonday)
+							 ->where("source_submit_record.submit_time <",$thissunday);
+			$data = $this->db->get()->result_array();
+
+			$this->finaldata["export_thisweek"] = $data;
 			$this->twig->display("source_exporttable",$this->finaldata);
 		}
 

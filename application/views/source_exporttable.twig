@@ -1,16 +1,23 @@
 {% extends 'source_index.twig' %}
+{% block style %}
+#sourceexportTable p, #sourceexportTable a{margin:5px;text-align:center;}
+{% endblock %}
 {% block main_stage %}
+<p style="color:red;">僅顯示本週勾選的</p>
+<div class="click_to_export">
+  <button type="button" name="button">匯出</button>
+</div>
+
 <table id="sourceexportTable" class="tablesorter">
   <thead>
     <tr>
       <td>資源站資訊</td>
       <td>上次使用時間</td>
       <td>級別</td>
-      <td>類別</td>
+      <td>主題</td>
       <td>狀態</td>
-      <td>使用中狀態</td>
+      <td>索引狀態</td>
       <td>自建</td>
-      <td>網站主題</td>
       <td>語言</td>
       <td>錨文本</td>
       <td>網站類型</td>
@@ -18,27 +25,28 @@
     </tr>
   </thead>
   <tbody>
+    {% for each_source_thisweek in export_thisweek %}
     <tr>
-      <td><a href="/source/source_dataedit/3">http://.....(連去資料頁)</a><br>帳號:kpnweb<br>密碼:1234</td>
-      <td>1970-1-1</td>
-      <td>級別</td>
-      <td>類別</td>
-      <td>狀態</td>
-      <td>使用中狀態</td>
-      <td>自建</td>
-      <td>網站主題</td>
-      <td>語言</td>
-      <td>錨文本</td>
-      <td>網站類型</td>
+      <td>
+        <p><a href="/source/source_dataedit/{{each_source_thisweek["source_id"]}}">{{each_source_thisweek["source_address"]}}</a></p>
+        <p>{{each_source_thisweek["source_account"]}}</p>
+        <p>{{each_source_thisweek["source_password"]}}</p>
+      </td>
+      <td>{{each_source_thisweek["source_lastexport"] == 0 ? "---" : each_source_thisweek["source_lastexport"]|date("Y-n-d")}}</td>
+      <td>{{type_source_level[ type_source_sitetype[ each_source_thisweek["source_sitetype"] ]["Type_level"] ]["Type_name"]}}</td>
+      <td>{{type_source_topic[ each_source_thisweek["source_topic"] ]["Type_name"]}}</td>
+      <td>{{type_source_status[ each_source_thisweek["source_status"] ]["Type_name"]}}</td>
+      <td>{{type_source_indexstatus[ each_source_thisweek["source_indexstatus"] ]["Type_name"]}}</td>
+      <td>{{type_source_kpnbuild[ each_source_thisweek["source_kpnbuild"] ]["Type_name"]}}</td>
+      <td>{{type_source_lang[ each_source_thisweek["source_lang"] ]["Type_name"]}}</td>
+      <td>{{type_source_anchor[ each_source_thisweek["source_anchor"] ]["Type_name"]}}</td>
+      <td>{{type_source_sitetype[ each_source_thisweek["source_sitetype"] ]["Type_name"]}}</td>
       <td><input type="checkbox" name="" value=""></td>
     </tr>
+    {% endfor %}
+
   </tbody>
 </table>
-
-
-<div class="click_to_export">
-  <button type="button" name="button">匯出</button>
-</div>
 {% endblock %}
 {% block script_stage %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
