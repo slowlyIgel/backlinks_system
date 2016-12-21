@@ -8,12 +8,12 @@
   .login{ display: flex; justify-content: center; align-content: center; width: 100%; position: absolute; top: 35%; }
 
 .login input{font:13px/24px meiryo,arial,微軟正黑體,sans-serif; text-indent: 20px; margin:0 15px 0 0;  border-width: 0 0 1px 0;}
-  
-  
+
+
   </style>
   <body>
    <div class="login">
-    
+
     <input type="text" id="loginID" value="" placeholder="帳號">
     <input type="password" id="loginPW" value="" placeholder="密碼">
     <button type="button" name="button" onclick="go()">登入</button>
@@ -22,6 +22,11 @@
 </html>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
+ $("#loginPW").keypress(function(){
+   if (event.keyCode == 13 | event.which == 13) {
+     go();
+   }
+ });
   function go(){
     var loginID = $("#loginID").val();
     var password = $("#loginPW").val();
