@@ -67,9 +67,36 @@ class Source extends MY_Controller {
 
     public function source_dataedit($id){
       $this->finaldata["page_name"] = "資源站編輯";
+
+
+			$twomonthsago = strtotime("-2 months",time());
+			$thatmonday = strtotime("Monday this Week",$twomonthsago);
+
+			$this->db->select("COUNT(*)")
+							 ->from("source_submit_record")
+							 ->where("source_id",$id)
+							 ->where("submit_time >",$thatmonday);
+			$times = $this->db->get()->row_array();
+
+
+
+			$this->db->select()
+							 ->from("source_table")
+							 ->where("source_id",$id);
+			$this->finaldata["sourcedata"] = $this->db->get()->row_array();
+			$this->finaldata["sourcedata"]["times"] = $times; 
       $this->twig->display("source_dataedit",$this->finaldata);
     }
+
+
 		public function source_dataremark($id){
+			$this->db->select("source_guide")
+							 ->from("source_table")
+							 ->where("source_id",$id);
+			$guide = $this->db->get();
+			if ($guide->num_rows() > 0 ) {
+				$this->finaldata["guide"] = $guide->row()->source_guide;
+			}
 			$this->twig->display("source_dataremark",$this->finaldata);
 		}
 		public function source_export(){
