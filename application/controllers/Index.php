@@ -189,7 +189,4 @@ class Index extends MY_Controller {
 		header("location: /");
 
 	}
-	public function video(){
-		$this->twig->display("testvideo");
-	}
 }
