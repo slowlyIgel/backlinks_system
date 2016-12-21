@@ -1,0 +1,75 @@
+{% extends 'source_model.twig' %}
+{% block style %}
+.flexbox{display:flex;width:70%;margin:auto;}
+.table_area{width:70%;flex:1;}
+.chart_area{padding:10%;flex:1;}
+canvas[name=sourcetype_pie_chart]{width:200px;height:200px;}
+{% endblock %}
+{% block main_stage %}
+
+
+
+{% for category_name,each_category in all_category %}
+<div class="flexbox">
+
+  <div class="table_area">
+    <p></p>
+    <table id="{{category_name}}" name="sourceAnalysisTable" class="tablesorter">
+      <thead>
+        <tr>
+          <td>分類</td>
+          <td>數量</td>
+        </tr>
+      </thead>
+      <tbody>
+  {% for key,category_content in each_category %}
+  <tr name="content">
+    <td name="type_name">{{category_content["Type_name"]}}</td>
+    <td name="type_count">{{category_count[category_name][key] == 0 ? "---" :category_count[category_name][key]}}</td>
+  </tr>
+  {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart_area">
+    <canvas name="sourcetype_pie_chart"></canvas>
+  </div>
+
+</div>
+{% endfor %}
+
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+  $("table[name=sourceAnalysisTable]").tablesorter();
+
+  $(document).ready(function(){
+    $("table[name=sourceAnalysisTable]").each(function(){
+      var labels = [];
+      var data = [];
+      var backgroundColor = [];
+      $(this).find("tr[name=content]").each(function(){
+        if(parseInt($(this).children("td[name=type_count]").html())){
+          labels.push($(this).children("td[name=type_name]").html());
+          data.push(parseInt($(this).children("td[name=type_count]").html()));
+          backgroundColor.push("#777");
+        }
+      });
+      var datasets = [{data,backgroundColor}];
+      var chartdata = {labels,datasets};
+      var ctx = $(this).parent("div.table_area").next("div.chart_area").children("canvas[name=sourcetype_pie_chart]");
+      new Chart(ctx,{
+        type: 'doughnut',
+        data: chartdata,
+        options:{"cutoutPercentage":[30]}
+      });
+
+    });
+
+  });
+
+</script>
+{% endblock %}
