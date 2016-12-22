@@ -24,7 +24,7 @@ canvas[name=sourcetype_pie_chart]{width:200px;height:200px;}
       <tbody>
   {% for key,category_content in each_category %}
   <tr name="content">
-    <td name="type_name">{{category_content["Type_name"]}}</td>
+    <td name="type_name" color="{{category_content["Type_color"]}}">{{category_content["Type_name"]}}</td>
     <td name="type_count">{{category_count[category_name][key] == 0 ? "---" :category_count[category_name][key]}}</td>
   </tr>
   {% endfor %}
@@ -55,7 +55,7 @@ canvas[name=sourcetype_pie_chart]{width:200px;height:200px;}
         if(parseInt($(this).children("td[name=type_count]").html())){
           labels.push($(this).children("td[name=type_name]").html());
           data.push(parseInt($(this).children("td[name=type_count]").html()));
-          backgroundColor.push("#777");
+          backgroundColor.push($(this).children("td[name=type_name]").attr("color"));
         }
       });
       var datasets = [{data,backgroundColor}];

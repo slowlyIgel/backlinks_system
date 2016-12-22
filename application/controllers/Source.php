@@ -145,7 +145,29 @@ class Source extends MY_Controller {
 			get_count_each_category($dbarray);
 			unset($dbarray);
 
+
+			//等級的另外計算總數
+			// $this->db->select("source_table.COUNT(*), type_source_level.Type_name")
+			// 				 ->from("source_table")
+			// 				 ->join("type_source_sitetype","soruce_table.source_sitetype = type_source_sitetype.auto_typeID")
+			// 				 ->join("type_source_level","type_source_sitetype.Type_level = type_source_level.auto_typeID")
+			// 				 ->group_by("type_source_level.auto_typeID")
+			// 				 ->order_by("type_source_level.auto_typeID");
+			foreach ($this->finaldata["type_source_level"] as $key => $value) {
+				$this->finaldata["category_count"]["type_source_level"][$key] = 0;
+			}
+
+			foreach ($this->finaldata["type_source_sitetype"] as $key => $value) {
+				if (isset($this->finaldata["category_count"]["type_source_sitetype"][$key])) {
+					$this->finaldata["category_count"]["type_source_level"][ $value["Type_level"] ] += intval($this->finaldata["category_count"]["type_source_sitetype"][$key]);
+				}
+			}
+
+			// $leveldata = $this->db->get()->result_array();
+			// print_r($this->finaldata["category_count"]["type_source_level"]);
+
 			$this->finaldata["all_category"] = array(
+				"type_source_level" => $this->finaldata["type_source_level"],
 				"type_source_topic" => $this->finaldata["type_source_topic"],
 				"type_source_status" => $this->finaldata["type_source_status"],
 				"type_source_indexstatus" => $this->finaldata["type_source_indexstatus"],
@@ -153,7 +175,6 @@ class Source extends MY_Controller {
 				"type_source_lang" => $this->finaldata["type_source_lang"],
 				"type_source_anchor" => $this->finaldata["type_source_anchor"],
 				"type_source_sitetype" => $this->finaldata["type_source_sitetype"]
-
 			);
 
 			$this->twig->display("source_analysis",$this->finaldata);
@@ -162,10 +183,14 @@ class Source extends MY_Controller {
 		public function source_search(){
 			$this->finaldata["page_name"] = "資源站搜尋";
 
+			$this->twig->display("source_search",$this->finaldata);
+
 		}
 
 		public function source_add(){
 			$this->finaldata["page_name"] = "新增資源站";
+
+			$this->twig->display("source_add",$this->finaldata);
 		}
 
 }
