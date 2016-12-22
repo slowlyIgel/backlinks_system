@@ -5,8 +5,8 @@
     <title></title>
   </head>
   <body>
-    <textarea id="remark" rows="20" cols="80">{{guide}}</textarea>
-    <button type="button" onclick="eee()">back</button>
+    <textarea id="remark"  source_id="{{guide["source_id"]}}" rows="20" cols="80">{{guide["source_guide"]}}</textarea>
+    <button type="button" name="submitguide">submit&back</button>
   </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -30,10 +30,15 @@ tinymce.init({
    external_plugins: { "filemanager" : "/includes/filemanager/filemanager/plugin.min.js"}
 
  });
-function eee(){
-  var word = tinymce.get("remark").getContent();
-  console.log(word);
-  window.opener.gett(word);
-  window.close();
-}
+
+  $("button[name=submitguide]").click(function(){
+    var word = tinymce.get("remark").getContent();
+    $.post("/ajax_source/source_guideedit/"+$("textarea").attr("source_id"),{source_guide : word},function(){
+      alert("good");
+      window.close();
+    });
+
+  });
+  // window.opener.gett(word);
+
 </script>

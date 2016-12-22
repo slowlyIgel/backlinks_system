@@ -30,5 +30,11 @@ class Ajax_source extends MY_Controller {
       echo "good";
     }
 
+    public function source_guideedit($id){
+      $this->db->where("source_id",$id)
+               ->update("source_table",$_POST);
+      echo "good";
+    }
+
 
 }

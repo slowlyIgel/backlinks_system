@@ -88,12 +88,12 @@ class Source extends MY_Controller {
 
 
 		public function source_dataremark($id){
-			$this->db->select("source_guide")
+			$this->db->select("source_id, source_guide")
 							 ->from("source_table")
 							 ->where("source_id",$id);
 			$guide = $this->db->get();
 			if ($guide->num_rows() > 0 ) {
-				$this->finaldata["guide"] = $guide->row()->source_guide;
+				$this->finaldata["guide"] = $guide->row_array();
 			}
 			$this->twig->display("source_dataremark",$this->finaldata);
 		}
