@@ -158,7 +158,7 @@ class Source extends MY_Controller {
 			}
 
 			foreach ($this->finaldata["type_source_sitetype"] as $key => $value) {
-				if (isset($this->finaldata["category_count"]["type_source_sitetype"][$key])) {
+				if (isset($this->finaldata["category_count"]["type_source_sitetype"][$key]) && isset($this->finaldata["category_count"]["type_source_level"][ $value["Type_level"] ])) {
 					$this->finaldata["category_count"]["type_source_level"][ $value["Type_level"] ] += intval($this->finaldata["category_count"]["type_source_sitetype"][$key]);
 				}
 			}
