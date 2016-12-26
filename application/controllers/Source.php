@@ -87,7 +87,7 @@ class Source extends MY_Controller {
     }
 
 
-		public function source_dataremark($id){
+		public function source_dataremark($id = NULL){
 			$this->db->select("source_id, source_guide")
 							 ->from("source_table")
 							 ->where("source_id",$id);

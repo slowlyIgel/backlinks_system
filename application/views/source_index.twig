@@ -4,7 +4,7 @@
 {% endblock %}
 {% block main_stage %}
 <button type="button" name="button">編輯</button>
-<button type="button" name="button">提交</button>
+<button type="button" name="export">提交</button>
 <table id="sourceindexTable" class="tablesorter">
   <thead>
     <tr>
@@ -19,11 +19,12 @@
       <td>錨文本</td>
       <td>網站類型</td>
       <td>提交</td>
+      <td></td>
     </tr>
   </thead>
   <tbody>
     {% for eachsource in all_source %}
-      <tr>
+      <tr source_id="{{eachsource["source_id"]}}">
         <td>
           <p><a href="/source/source_dataedit/{{eachsource["source_id"]}}">{{eachsource["source_address"]}}</a></p>
           <p>{{eachsource["source_account"]}}</p>
@@ -38,7 +39,8 @@
         <td>{{type_source_lang[ eachsource["source_lang"] ]["Type_name"]}}</td>
         <td>{{type_source_anchor[ eachsource["source_anchor"] ]["Type_name"]}}</td>
         <td>{{type_source_sitetype[ eachsource["source_sitetype"] ]["Type_name"]}}</td>
-        <td><input type="checkbox" name="" value=""></td>
+        <td><input type="checkbox" name="wanttoexport" value="1"></td>
+        <td><button type="button" name="delete">刪除</button></td>
       </tr>
     {% endfor %}
   </tbody>
@@ -49,6 +51,32 @@
 <script type="text/javascript">
 $(function(){
   $("#sourceindexTable").tablesorter();
+});
+
+$("button[name=delete]").click(function(){
+  var dataID = $(this).parents("tr[source_id]").attr("source_id");
+  if (confirm("確定刪除"+$(this).parents("tr[source_id]").find("a").html()+"嗎??")) {
+    if (confirm("真的確定刪除???")) {
+      $.post("/ajax_source/delete_source",{"id" : dataID},function(data){
+        if (data.length == 0) {
+          location.reload();
+        }
+      });
+    }
+  }
+});
+
+
+$("button[name=export]").click(function(){
+  var exportIDs = [];
+  $("input[name=wanttoexport]:checked").each(function(){
+    exportIDs.push($(this).parents("tr[source_id]").attr("source_id"));
+  });
+  $.post("/ajax_source/export_list_thisweek",{"export_list":exportIDs},function(data){
+    if (data.length == 0) {
+      location.href = "/source/source_export";
+    }
+  });
 });
 </script>
 

@@ -36,5 +36,43 @@ class Ajax_source extends MY_Controller {
       echo "good";
     }
 
+		public function sourcedata_add(){
+			if ($_POST["newsourcedata"]) {
+				$this->db->insert("source_table",$_POST["newsourcedata"]);
+				$messege = $this->db->error();
+				if (!empty($messege["messege"])) {
+					echo $messege["messege"];
+				} else{ echo "good"; }
+			}
+		}
+
+		public function delete_source(){
+			if (is_numeric($_POST["id"])) {
+				$table = array("source_table","source_submit_record");
+				$this->db->where("source_id",$_POST["id"])
+								 ->delete($table);
+				$messege = $this->db->error();
+				if (!empty($messege["messege"])) {
+					echo $messege["messege"];
+				}
+			}
+		}
+
+		public function export_list_thisweek(){
+			if ($_POST["export_list"]) {
+				$submit_time = time();
+				foreach ($_POST["export_list"] as $key => $value) {
+					$data[$key]["source_id"] = $value;
+					$data[$key]["submit_time"] = $submit_time;
+				}
+				unset($_POST["export_list"]);
+				$this->db->insert_batch("source_submit_record",$data);
+				$messege = $this->db->error();
+				if (!empty($messege["messege"])) {
+					echo $messege["messege"];
+				}
+			}
+		}
+
 
 }

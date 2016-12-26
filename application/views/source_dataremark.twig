@@ -12,6 +12,12 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script src="/includes/tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+  if (localStorage.getItem("guide")) {
+    $("#remark").html(localStorage.getItem("guide"));
+  }
+});
+
 tinymce.init({
   selector:'textarea',
   plugins: [
@@ -19,10 +25,8 @@ tinymce.init({
          "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
          "table contextmenu directionality emoticons paste textcolor responsivefilemanager code"
    ],
-  //  toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-  //  toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
   toolbar:  "responsivefilemanager | link | image",
-   image_advtab: true ,
+   image_advtab: true,
    relative_urls:false,
 
    external_filemanager_path:"/includes/filemanager/filemanager/",
@@ -33,12 +37,17 @@ tinymce.init({
 
   $("button[name=submitguide]").click(function(){
     var word = tinymce.get("remark").getContent();
-    $.post("/ajax_source/source_guideedit/"+$("textarea").attr("source_id"),{source_guide : word},function(){
-      alert("good");
+    if ($("textarea").attr("source_id").length > 0) {
+      $.post("/ajax_source/source_guideedit/"+$("textarea").attr("source_id"),{source_guide : word},function(){
+        alert("good");
+        window.close();
+      });
+    } else{
+      window.opener.printedit(word);
+      localStorage.setItem("guide",word);
       window.close();
-    });
+    }
 
   });
-  // window.opener.gett(word);
 
 </script>
