@@ -62,8 +62,12 @@ class Async extends MY_Controller {
             $f=0; //flag for error output
 
             foreach($dom->getElementsByTagName('script') as $link) {
+										$skip = $link->getAttribute("src");
+										if($skip == "https://apis.google.com/js/platform.js" | $skip == "//apis.google.com/js/platform.js"){break;}
+										if($skip == "https://www.google-analytics.com/analytics.js" | $skip == "//www.google-analytics.com/analytics.js"){break;}
+
                     $script = $link->getAttributeNode("async")->nodeName;
-                    if (!empty($script)) {
+                    if (!empty($script) && empty($defer)) {
                       return "async";
                     }
             }
