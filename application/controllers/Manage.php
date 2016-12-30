@@ -45,6 +45,9 @@ class Manage extends MY_Controller {
 
 		public function grouplimit(){
 			$this->finaldata["page_name"] = "外鏈群組上限管理";
+			$this->db->select()
+							 ->from("backlink_content_group");
+			$this->finaldata["chinese_group"] = $this->db->get()->result_array();
 			$this->twig->display("manage_grouplimit",$this->finaldata);
 		}
 

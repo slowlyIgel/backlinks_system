@@ -1,8 +1,53 @@
 {% extends 'manage_model.twig' %}
 {% block main_stage %}
-<p>群組上限</p>
+<p>群組上限:</p>
+{% for eachGroup in chinese_group %}
+<div class="chinesegroup" inTpyeID="{{eachGroup["group_id"]}}">
+  中文名稱:<input type="text" value="{{eachGroup["chinese_groupname"]}}" column_name="chinese_name">
+  圓餅圖顏色:<input type="text" value="{{eachGroup["pie_chart_color"]}}" style="background-color:{{eachGroup["pie_chart_color"]}};" column_name="group_color">
+  <button type="button" name="change">修改</button>
+</div>
+{% endfor %}
+<br>
+<div>
+  中文名稱:<input type="text" value="" column_name="chinese_name">
+  圓餅圖顏色:<input type="text" value="" column_name="group_color">
+  <button type="button" name="addNewtype">新增</button>
+</div>
 {% endblock %}
 
 {% block script_stage %}
-<script src="/includes/js/manage_index.js"></script>
+<script type="text/javascript">
+
+
+$("button[name=change]").click(function(){
+  var renameID = $(this).parent("div").attr("inTpyeID");
+  var rename = $(this).parent("div").children("input[column_name=chinese_name]").val();
+  var recolor = $(this).parent("div").children("input[column_name=group_color]").val();
+  
+  $.post("/ajax_manage/chinesegroup_change",{"idFocus":renameID,"nameFocus":rename,"colorFocus":recolor},function(data){
+    if (data.length == 0) {
+      alert("修改完畢");
+    } else{alert(data);}
+    location.reload();
+  });
+});
+
+$("button[name=addNewtype]").click(function(){
+  var addname = $(this).parent("div").children("input[column_name=chinese_name]").val();
+  var addcolor = $(this).parent("div").children("input[column_name=group_color]").val();
+  if(addname.length == 0){alert("請輸入群組名稱"); return false;}
+  if(addcolor.length == 0){alert("請輸入群組色碼"); return false;}
+
+  var group = $(this).parents("div[manageGroup]").attr("manageGroup");
+  $.post("/ajax_manage/chinesegroup_add",{"nameFocus":addname,"colorFocus":addcolor},function(data){
+    if (data.length == 0) {
+      alert("新增完畢");
+    } else{alert(data);}
+    location.reload();
+  });
+
+});
+
+</script>
 {% endblock %}
