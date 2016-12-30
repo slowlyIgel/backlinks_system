@@ -18,10 +18,13 @@ class Source extends MY_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-   var $data = array();
     public function __construct()
     {
         parent::__construct();
+
+				$this->thismonday = strtotime("Monday this Week",time());
+				$this->thissunday = strtotime("Sunday this Week",time());
+
 
 				function get_sourcetypeInfo($dbname){
 					$ci = &get_instance();
@@ -58,7 +61,26 @@ class Source extends MY_Controller {
 			$this->db->select()
 							 ->from("source_table")
 							 ->order_by("source_id");
-			$this->finaldata["all_source"] = $this->db->get()->result_array();
+		  $all_source = $this->db->get()->result_array();
+
+			// 把最終資料的key值整理成source_id方便之後比對
+			foreach ($all_source as $key => $value) {
+				$this->finaldata["all_source"][ $value["source_id"] ] = $value;
+			}
+
+			//  取得本週已勾選的資源站列表
+			$this->db->select("source_id")
+							 ->from("source_submit_record")
+							 ->where("submit_time >",$this->thismonday)
+							 ->where("submit_time <",$this->thissunday);
+
+			// 勾選者在所有資源站資料裡標註起來
+			$submitdata_thisweek = $this->db->get();
+			if ($submitdata_thisweek->num_rows() > 0) {
+				foreach ($submitdata_thisweek->result_array() as $value) {
+					$this->finaldata["all_source"][ $value["source_id"] ]["already_submit_thisweek"] = true;
+				}
+			}
 
       $this->twig->display("source_index",$this->finaldata);
     }
@@ -70,6 +92,7 @@ class Source extends MY_Controller {
 			$twomonthsago = strtotime("-2 months",time());
 			$thatmonday = strtotime("Monday this Week",$twomonthsago);
 
+			// 取得兩個月內本資源站已勾選的次數
 			$this->db->select("COUNT(*)")
 							 ->from("source_submit_record")
 							 ->where("source_id",$id)
@@ -77,7 +100,7 @@ class Source extends MY_Controller {
 			$times = $this->db->get()->row_array();
 
 
-
+			// 本資源站的資料
 			$this->db->select()
 							 ->from("source_table")
 							 ->where("source_id",$id);
@@ -100,14 +123,11 @@ class Source extends MY_Controller {
 		public function source_export(){
 			$this->finaldata["page_name"] = "資源站資料匯出";
 
-			$thismonday = strtotime("Monday this Week",time());
-			$thissunday = strtotime("Sunday this Week",time());
-
-			$this->db->select("source_table.*, source_submit_record.submit_time")
+			$this->db->select("source_table.*, source_submit_record.submit_time, source_submit_record.export_time")
 							 ->from("source_table")
 							 ->join("source_submit_record","source_table.source_id = source_submit_record.source_id")
-							 ->where("source_submit_record.submit_time >",$thismonday)
-							 ->where("source_submit_record.submit_time <",$thissunday);
+							 ->where("source_submit_record.submit_time >",$this->thismonday)
+							 ->where("source_submit_record.submit_time <",$this->thissunday);
 			$data = $this->db->get()->result_array();
 
 			$this->finaldata["export_thisweek"] = $data;

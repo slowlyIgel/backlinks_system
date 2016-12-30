@@ -5,7 +5,7 @@
 {% block main_stage %}
 <p style="color:red;">僅顯示本週勾選的</p>
 <div class="click_to_export">
-  <button type="button" name="button">匯出</button>
+  <button type="button" name="finalexport">匯出</button>
 </div>
 
 <table id="sourceexportTable" class="tablesorter">
@@ -21,12 +21,13 @@
       <td>語言</td>
       <td>錨文本</td>
       <td>網站類型</td>
+      <td>本週已匯出</td>
       <td>匯出</td>
     </tr>
   </thead>
   <tbody>
     {% for each_source_thisweek in export_thisweek %}
-    <tr>
+    <tr source_id="{{each_source_thisweek["source_id"]}}">
       <td>
         <p><a href="/source/source_dataedit/{{each_source_thisweek["source_id"]}}">{{each_source_thisweek["source_address"]}}</a></p>
         <p>{{each_source_thisweek["source_account"]}}</p>
@@ -41,7 +42,8 @@
       <td>{{type_source_lang[ each_source_thisweek["source_lang"] ]["Type_name"]}}</td>
       <td>{{type_source_anchor[ each_source_thisweek["source_anchor"] ]["Type_name"]}}</td>
       <td>{{type_source_sitetype[ each_source_thisweek["source_sitetype"] ]["Type_name"]}}</td>
-      <td><input type="checkbox" name="" value=""></td>
+      <td>{{each_source_thisweek["export_time"] == 0 ? "否" : "是"}}</td>
+      <td><input type="checkbox" name="intoexportlist" value="1"></td>
     </tr>
     {% endfor %}
 
@@ -53,6 +55,18 @@
 <script type="text/javascript">
 $(function(){
   $("#sourceexportTable").tablesorter();
+});
+
+$("button[name=finalexport]").click(function(){
+  if ($("input[type=checkbox]:checked").length == 0) { return false; }
+
+  var fakeForm = $("<form>");
+  fakeForm.attr("action","/export/source_guide");
+  fakeForm.attr("method","post");
+  $("input[name=intoexportlist]:checked").each(function(){
+    fakeForm.append("<input type=\"text\" name=\"exportIDs[]\" value="+$(this).parents("tr[source_id]").attr("source_id")+">");
+  });
+  fakeForm.submit();
 });
 </script>
 

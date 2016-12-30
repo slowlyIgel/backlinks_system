@@ -39,7 +39,7 @@
         <td>{{type_source_lang[ eachsource["source_lang"] ]["Type_name"]}}</td>
         <td>{{type_source_anchor[ eachsource["source_anchor"] ]["Type_name"]}}</td>
         <td>{{type_source_sitetype[ eachsource["source_sitetype"] ]["Type_name"]}}</td>
-        <td><input type="checkbox" name="wanttoexport" value="1"></td>
+        <td><input type="checkbox" name="wanttoexport" value="1" {% if eachsource["already_submit_thisweek"] is defined %}disabled{% endif %}></td>
         <td><button type="button" name="delete">刪除</button></td>
       </tr>
     {% endfor %}

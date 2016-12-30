@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    {% for each_guide in guide %}
+        <p><a href="{{each_guide["source_address"]}}">{{each_guide["source_address"]}}</a></p>
+        <p>帳號:{{each_guide["source_account"]}}</p>
+        <p>密碼:{{each_guide["source_password"]}}</p>
+        <div>
+          {{each_guide["source_guide"]|raw}}
+        </div>
+        <p>--------------------------------------</p>
+    {% endfor %}
+  </body>
+</html>

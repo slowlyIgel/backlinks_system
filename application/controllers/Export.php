@@ -21,6 +21,10 @@ class Export extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
+
+				$this->thismonday = strtotime("Monday this Week",time());
+				$this->thissunday = strtotime("Sunday this Week",time());
+
     }
   //   public function backlink_data(){
   //     if ($_POST["ContentIndex"]) {
@@ -236,7 +240,26 @@ class Export extends MY_Controller {
 			$this->twig->display("export_xls",$this->finaldata);
 		}
 
+		public function source_guide(){
+			$today = date("Y-n-d");
+			$export_time = time();
+			$this->db->select("source_address, source_account, source_password, source_guide")
+							 ->from("source_table")
+							 ->where_in("source_id",$_POST["exportIDs"]);
+			$guide["guide"] = $this->db->get()->result_array();
 
+			$this->db->where("submit_time >",$this->thismonday)
+							 ->where("submit_time <",$this->thissunday)
+							 ->where_in("source_id",$_POST["exportIDs"])
+							 ->update("source_submit_record",array("export_time" => $export_time));
+
+
+			header("Content-type:text/html");
+			header("Content-Disposition: attachment; filename= guide".$today.".html");
+
+			$this->twig->display("export_source_guide",$guide);
+
+		}
 
 		public function testxlsexport(){
 			$this->output->set_header("Content-type:application/vnd.ms-excel");
