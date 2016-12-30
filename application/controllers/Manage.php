@@ -51,4 +51,70 @@ class Manage extends MY_Controller {
 			$this->twig->display("manage_grouplimit",$this->finaldata);
 		}
 
+		public function source_topic(){
+			$this->finaldata["page_name"] = "資源站類型管理";
+			$this->finaldata["table_name"] = "type_source_topic";
+			$this->db->select()
+							 ->from("type_source_topic");
+			$this->finaldata["source_type_manage"] = $this->db->get()->result_array();
+			$this->twig->display("manage_source",$this->finaldata);
+
+		}
+
+		public function source_status(){
+			$this->finaldata["page_name"] = "資源站狀態管理";
+			$this->finaldata["table_name"] = "type_source_status";
+			$this->db->select()
+							 ->from("type_source_status");
+			$this->finaldata["source_type_manage"] = $this->db->get()->result_array();
+			$this->twig->display("manage_source",$this->finaldata);
+
+		}
+
+		public function source_indexstatus(){
+			$this->finaldata["page_name"] = "資源站收錄狀態管理";
+			$this->finaldata["table_name"] = "type_source_indexstatus";
+			$this->db->select()
+							 ->from("type_source_indexstatus");
+			$this->finaldata["source_type_manage"] = $this->db->get()->result_array();
+			$this->twig->display("manage_source",$this->finaldata);
+
+		}
+
+		public function source_language(){
+			$this->finaldata["page_name"] = "資源站語言管理";
+			$this->finaldata["table_name"] = "type_source_lang";
+			$this->db->select()
+							 ->from("type_source_lang");
+			$this->finaldata["source_type_manage"] = $this->db->get()->result_array();
+			$this->twig->display("manage_source",$this->finaldata);
+
+		}
+
+		public function source_anchor(){
+			$this->finaldata["page_name"] = "資源站錨文本管理";
+			$this->finaldata["table_name"] = "type_source_anchor";
+			$this->db->select()
+							 ->from("type_source_anchor");
+			$this->finaldata["source_type_manage"] = $this->db->get()->result_array();
+			$this->twig->display("manage_source",$this->finaldata);
+
+		}
+
+		public function source_sitetype(){
+			$this->finaldata["page_name"] = "資源站網站類型管理";
+			$this->db->select()
+							 ->from("type_source_sitetype");
+			$this->finaldata["sitetype"] = $this->db->get()->result_array();
+
+			$this->db->select()
+							 ->from("type_source_level");
+			$data = $this->db->get()->result_array();
+			foreach ($data as $key => $value) {
+				$this->finaldata["site_level"][ $value["auto_typeID"] ] = $value["Type_name"];
+			}
+
+			$this->twig->display("manage_source_sitetype",$this->finaldata);
+
+		}
 }

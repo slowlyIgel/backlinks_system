@@ -1,0 +1,75 @@
+{% extends 'manage_model.twig' %}
+{% block main_stage %}
+<p>{{page_name}}:</p>
+{% for each_intype in sitetype %}
+<div intype_id="{{each_intype["auto_typeID"]}}">
+  分類名稱:<input type="text" name="type_name" value="{{each_intype["Type_name"]}}">
+  圓餅圖顏色:<input type="text" name="type_color" value="{{each_intype["Type_color"]}}" style="background-color:{{each_intype["Type_color"]}}">
+  等級:
+  <select name="level">
+    {% for levelkey,eachlevel in site_level %}
+        <option value="{{levelkey}}" {% if levelkey == each_intype["Type_level"] %}selected{% endif %}>{{eachlevel}}</option>
+    {% endfor %}
+  </select>
+  <button type="button" name="change">修改</button>
+  <button type="button" name="delete">刪除</button>
+</div>
+{% endfor %}
+<div>
+  <br>
+  分類名稱:<input type="text" name="type_name" value="">
+  圓餅圖顏色:<input type="text" name="type_color" value="">
+  等級:
+  <select name="level">
+    {% for levelkey,eachlevel in site_level %}
+        <option value="{{levelkey}}">{{eachlevel}}</option>
+    {% endfor %}
+  </select>
+  <button type="button" name="newone">新增</button>
+</div>
+{% endblock %}
+{% block script_stage %}
+<script type="text/javascript">
+$("button[name=change]").click(function(){
+  var reid = $(this).parent("div").attr("intype_id");
+  var rename = $(this).parent("div").children("input[name=type_name]").val();
+  var recolor = $(this).parent("div").children("input[name=type_color]").val();
+  var relevel = $(this).parent("div").children("select[name=level]").val();
+
+  $.post("/Ajax_manage/source_sitetype_change", {"idFocus":reid,"nameFocus":rename,"colorFocus":recolor,"levelFocus":relevel},function(data){
+    if (data.length != 0) {
+      alert(data);
+      return false;
+    }
+    location.reload();
+  });
+});
+
+$("button[name=delete]").click(function(){
+  var deleteid = $(this).parent("div").attr("intype_id");
+  $.post("/Ajax_manage/source_sitetype_delete", {"idFocus":deleteid},function(data){
+    if (data.length != 0) {
+      alert(data);
+      return false;
+    }
+    location.reload();
+  });
+});
+
+$("button[name=newone]").click(function(){
+  var table = $(this).parent("div").attr("type_category");
+  var newname = $(this).parent("div").children("input[name=type_name]").val();
+  var newcolor = $(this).parent("div").children("input[name=type_color]").val();
+  var newlevel = $(this).parent("div").children("select[name=level]").val();
+
+  $.post("/Ajax_manage/source_sitetype_add", {"nameFocus":newname,"colorFocus":newcolor,"levelFocus":newlevel},function(data){
+    if (data.length != 0) {
+      alert(data);
+      return false;
+    }
+    location.reload();
+  });
+
+});
+</script>
+{% endblock %}

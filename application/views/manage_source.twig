@@ -1,0 +1,63 @@
+{% extends 'manage_model.twig' %}
+{% block main_stage %}
+<p>{{page_name}}:</p>
+{% for each_intype in source_type_manage %}
+<div type_category="{{table_name}}" intype_id="{{each_intype["auto_typeID"]}}">
+  分類名稱:<input type="text" name="type_name" value="{{each_intype["Type_name"]}}">
+  圓餅圖顏色:<input type="text" name="type_color" value="{{each_intype["Type_color"]}}" style="background-color:{{each_intype["Type_color"]}}">
+  <button type="button" name="change">修改</button>
+  <button type="button" name="delete">刪除</button>
+</div>
+{% endfor %}
+<div type_category="{{table_name}}">
+  <br>
+  分類名稱:<input type="text" name="type_name" value="">
+  圓餅圖顏色:<input type="text" name="type_color" value="">
+  <button type="button" name="newone">新增</button>
+</div>
+{% endblock %}
+{% block script_stage %}
+<script type="text/javascript">
+  $("button[name=change]").click(function(){
+    var table = $(this).parent("div").attr("type_category");
+    var reid = $(this).parent("div").attr("intype_id");
+    var rename = $(this).parent("div").children("input[name=type_name]").val();
+    var recolor = $(this).parent("div").children("input[name=type_color]").val();
+
+    $.post("/Ajax_manage/source_type_change/"+table, {"idFocus":reid,"nameFocus":rename,"colorFocus":recolor},function(data){
+      if (data.length != 0) {
+        alert(data);
+        return false;
+      }
+      location.reload();
+    });
+  });
+
+  $("button[name=delete]").click(function(){
+    var table = $(this).parent("div").attr("type_category");
+    var deleteid = $(this).parent("div").attr("intype_id");
+    $.post("/Ajax_manage/source_type_delete/"+table, {"idFocus":deleteid},function(data){
+      if (data.length != 0) {
+        alert(data);
+        return false;
+      }
+      location.reload();
+    });
+  });
+
+  $("button[name=newone]").click(function(){
+    var table = $(this).parent("div").attr("type_category");
+    var newname = $(this).parent("div").children("input[name=type_name]").val();
+    var newcolor = $(this).parent("div").children("input[name=type_color]").val();
+    $.post("/Ajax_manage/source_type_add/"+table, {"nameFocus":newname,"colorFocus":newcolor},function(data){
+      if (data.length != 0) {
+        alert(data);
+        return false;
+      }
+      location.reload();
+    });
+
+  });
+
+</script>
+{% endblock %}

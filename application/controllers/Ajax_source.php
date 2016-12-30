@@ -39,9 +39,9 @@ class Ajax_source extends MY_Controller {
 		public function sourcedata_add(){
 			if ($_POST["newsourcedata"]) {
 				$this->db->insert("source_table",$_POST["newsourcedata"]);
-				$messege = $this->db->error();
-				if (!empty($messege["messege"])) {
-					echo $messege["messege"];
+				$message = $this->db->error();
+				if (!empty($message["message"])) {
+					echo $message["message"];
 				} else{ echo "good"; }
 			}
 		}
@@ -51,9 +51,9 @@ class Ajax_source extends MY_Controller {
 				$table = array("source_table","source_submit_record");
 				$this->db->where("source_id",$_POST["id"])
 								 ->delete($table);
-				$messege = $this->db->error();
-				if (!empty($messege["messege"])) {
-					echo $messege["messege"];
+				$message = $this->db->error();
+				if (!empty($message["message"])) {
+					echo $message["message"];
 				}
 			}
 		}
@@ -67,9 +67,9 @@ class Ajax_source extends MY_Controller {
 				}
 				unset($_POST["export_list"]);
 				$this->db->insert_batch("source_submit_record",$data);
-				$messege = $this->db->error();
-				if (!empty($messege["messege"])) {
-					echo $messege["messege"];
+				$message = $this->db->error();
+				if (!empty($message["message"])) {
+					echo $message["message"];
 				}
 			}
 		}
