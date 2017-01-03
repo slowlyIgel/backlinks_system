@@ -22,6 +22,22 @@ class Ajax_source extends MY_Controller {
     {
         parent::__construct();
 
+				$this->thismonday = strtotime("Monday this Week",time());
+				$this->thissunday = strtotime("Sunday this Week",time());
+
+
+				$this->load->model("source_model");
+				// 取得共用類別們
+				$this->finaldata["type_source_status"] = $this->source_model->get_sourcetypeInfo("type_source_status");
+				$this->finaldata["type_source_anchor"] = $this->source_model->get_sourcetypeInfo("type_source_anchor");
+				$this->finaldata["type_source_indexstatus"] = $this->source_model->get_sourcetypeInfo("type_source_indexstatus");
+				$this->finaldata["type_source_kpnbuild"] = $this->source_model->get_sourcetypeInfo("type_source_kpnbuild");
+				$this->finaldata["type_source_lang"] = $this->source_model->get_sourcetypeInfo("type_source_lang");
+				$this->finaldata["type_source_level"] = $this->source_model->get_sourcetypeInfo("type_source_level");
+				$this->finaldata["type_source_sitetype"] = $this->source_model->get_sourcetypeInfo("type_source_sitetype");
+				$this->finaldata["type_source_topic"] = $this->source_model->get_sourcetypeInfo("type_source_topic");
+
+
     }
 
     public function source_dataedit($id){
@@ -72,6 +88,38 @@ class Ajax_source extends MY_Controller {
 					echo $message["message"];
 				}
 			}
+		}
+
+		public function search_source(){
+			$this->load->model("source_model");
+
+			if (!empty($_POST["searchdata"]["source_address"])) {
+				$search_address = $_POST["searchdata"]["source_address"];
+				unset($_POST["searchdata"]["source_address"]);
+			} else{$search_address = NULL;}
+
+			$searchresult = $this->source_model->get_source_table_likeindex($search_address,$_POST["searchdata"]);
+			if(empty($searchresult)){	exit; }
+
+			foreach ($searchresult as $key => $value) {
+				$searchresult["$key"]["source_level"] = $this->finaldata["type_source_level"][ $this->finaldata["type_source_sitetype"][$value["source_sitetype"]]["Type_level"] ]["Type_name"];
+				$searchresult["$key"]["source_topic"] = $this->finaldata["type_source_topic"][$value["source_topic"]]["Type_name"];
+				$searchresult["$key"]["source_status"] = $this->finaldata["type_source_status"][$value["source_status"]]["Type_name"];
+				$searchresult["$key"]["source_indexstatus"] = $this->finaldata["type_source_indexstatus"][$value["source_indexstatus"]]["Type_name"];
+				$searchresult["$key"]["source_kpnbuild"] = $this->finaldata["type_source_kpnbuild"][$value["source_kpnbuild"]]["Type_name"];
+				$searchresult["$key"]["source_lang"] = $this->finaldata["type_source_lang"][$value["source_lang"]]["Type_name"];
+				$searchresult["$key"]["source_anchor"] = $this->finaldata["type_source_anchor"][$value["source_anchor"]]["Type_name"];
+				$searchresult["$key"]["source_sitetype"] = $this->finaldata["type_source_sitetype"][$value["source_sitetype"]]["Type_name"];
+
+				if (is_null($value["source_lastexport"])) {
+					$searchresult["$key"]["source_lastexport"] = "---";
+				} else{
+					$searchresult["$key"]["source_lastexport"] = date("Y-n-d",$value["source_lastexport"]);
+				}
+			}
+			print_r(json_encode($searchresult));
+
+
 		}
 
 

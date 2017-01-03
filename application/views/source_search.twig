@@ -1,1 +1,189 @@
 {% extends 'source_model.twig' %}
+{% block style %}
+div.search{column-count:2;}
+select{width:30%;}
+div p{margin:auto;}
+#result{display:none;}
+td p a{text-align:center;}
+{% endblock %}
+{% block main_stage %}
+<div class="search">
+
+以資源站網址搜尋:
+<input type="text" name="address" value=""><br>
+<div>
+  <p>以網站主題搜尋:</p>
+  <select class="" name="topic">
+    <option value="">---</option>
+    {% for topic_key,each_topic in type_source_topic %}
+    <option value="{{topic_key}}">{{each_topic["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+
+<div>
+  <p>以狀態搜尋:</p>
+  <select class="" name="status">
+    <option value="">---</option>
+    {% for status_key,each_status in type_source_status %}
+    <option value="{{status_key}}">{{each_status["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+
+<div>
+  <p>以收錄狀態搜尋:</p>
+  <select class="" name="indexstatus">
+    <option value="">---</option>
+    {% for indexstatus_key,each_indexstatus in type_source_indexstatus %}
+    <option value="{{indexstatus_key}}">{{each_indexstatus["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+
+<div>
+  <p>以自建搜尋:</p>
+  <select class="" name="kpnbuild">
+    <option value="">---</option>
+    {% for kpnbuild_key,each_kpnbuild in type_source_kpnbuild %}
+        <option value="{{kpnbuild_key}}">{{each_kpnbuild["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+
+<div>
+  <p>以網站類型搜尋:</p>
+  <select class="" name="sitetype">
+    <option value="">---</option>
+    {% for sitetype_key,each_sitetype in type_source_sitetype %}
+        <option value="{{sitetype_key}}">{{each_sitetype["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+
+<div>
+  <p>以語言搜尋:</p>
+  <select class="" name="lang">
+    <option value="">---</option>
+    {% for lang_key,each_lang in type_source_lang %}
+        <option value="{{lang_key}}">{{each_lang["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+
+<div>
+  <p>以錨文本搜尋:</p>
+  <select class="" name="anchor">
+    <option value="">---</option>
+    {% for anchor_key,each_anchor in type_source_anchor %}
+        <option value="{{anchor_key}}">{{each_anchor["Type_name"]}}</option>
+    {% endfor %}
+  </select>
+  <br>
+</div>
+</div>
+
+
+<button type="button" name="submit">送出</button>
+
+
+<div id="result">
+  <table id="sourcesearchTable" class="tablesorter">
+    <thead>
+      <tr>
+        <td>資源站資訊</td>
+        <td>上次使用時間</td>
+        <td>級別</td>
+        <td>主題</td>
+        <td>狀態</td>
+        <td>索引狀態</td>
+        <td>自建</td>
+        <td>語言</td>
+        <td>錨文本</td>
+        <td>網站類型</td>
+        <td>提交</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.js"></script>
+<script src="/includes/js/source_listedit.js"></script>
+<script type="text/javascript">
+$(function(){
+  $("#sourcesearchTable").tablesorter();
+});
+
+$("button[name=submit]").click(function(){
+  $("#result").hide();
+  $("button[name=export]").remove();
+  $("#sourcesearchTable").children("tbody").empty();
+
+  var search = {};
+  $("select").each(function(){
+    if ($(this).val().length == 0) { return true; }
+    var name = "source_"+$(this).attr("name");
+    search[name] = parseInt($(this).val());
+  });
+
+  if ($("input[name=address]").val().length != 0 ) {
+    search["source_address"] = $("input[name=address]").val();
+  }
+
+  if ($.isEmptyObject(search)) { alert("尚未選擇"); return false; }
+  $.post("/ajax_source/search_source",{"searchdata":search},function(data){
+    if ($.isEmptyObject(data)) {
+      alert("查無符合資料");
+      return false;
+    }
+    var data_injson = $.parseJSON(data);
+    for (var i in data_injson) {
+      var resultTR = $("<tr source_id="+data_injson[i]["source_id"]+">");
+
+      var infoTD = $("<td></td>");
+      infoTD.append("<p><a href=\"/source/source_dataedit/"+data_injson[i]["source_id"]+"\">"+data_injson[i]["source_address"]+"</a></p>");
+      infoTD.append("<p>"+data_injson[i]["source_account"]+"</p>");
+      infoTD.append("<p>"+data_injson[i]["source_password"]+"</p>");
+
+
+      resultTR.append(infoTD);
+      resultTR.append("<td>"+data_injson[i]["source_lastexport"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_level"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_topic"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_status"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_indexstatus"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_kpnbuild"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_lang"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_anchor"]+"</td>");
+      resultTR.append("<td>"+data_injson[i]["source_sitetype"]+"</td>");
+      resultTR.append("<td><input type=\"checkbox\" name=\"wanttoexport\" value=\"1\"></td>");
+      resultTR.append("<td><button type=\"button\" name=\"delete\">刪除</button></td>");
+
+      if (data_injson[i]["already_submit_thisweek"] == true) {
+        resultTR.find("input[type=checkbox]").prop("disabled",true);
+      }
+
+      $("#sourcesearchTable").append(resultTR);
+      $("#sourcesearchTable").before("<button type=\"button\" name=\"export\">提交</button>");
+    }
+
+    delete_source();
+    addto_exportlist();
+
+
+    $("#result").show();
+
+  });
+});
+</script>
+{% endblock %}

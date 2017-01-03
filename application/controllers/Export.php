@@ -253,6 +253,9 @@ class Export extends MY_Controller {
 							 ->where_in("source_id",$_POST["exportIDs"])
 							 ->update("source_submit_record",array("export_time" => $export_time));
 
+			$this->db->where("source_id",$_POST["exportIDs"])
+							 ->update("source_table",array("source_lastexport" => $export_time));
+
 
 			header("Content-type:text/html");
 			header("Content-Disposition: attachment; filename= guide".$today.".html");
