@@ -1,0 +1,8 @@
+{% extends 'case_model.twig' %}
+{% block main_stage %}
+
+<p>請匯入CSV檔</p>
+<form action="/import/add_backlink_insource_record" method="post">
+  <input type="file" name="link_insource" value="">
+</form>
+{% endblock %}
