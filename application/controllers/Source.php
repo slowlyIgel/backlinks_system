@@ -78,9 +78,9 @@ class Source extends MY_Controller {
 							 ->from("source_submit_record")
 							 ->where("source_id",$id)
 							 ->where("export_time !=",0)
-							 ->where("submit_time >",$thatmonday);
+							 ->where("submit_time >",$thatmonday); //每週勾選且匯出，當週多次匯出還是算一次
 			$times = $this->db->get()->row_array();
-			$this->finaldata["sourcedata"]["times"] = $times;
+			$this->finaldata["times"] = $times["COUNT(*)"];
 
 			// 本資源站的資料
 			$this->db->select()
