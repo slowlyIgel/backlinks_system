@@ -80,14 +80,23 @@ class Source extends MY_Controller {
 							 ->where("export_time !=",0)
 							 ->where("submit_time >",$thatmonday);
 			$times = $this->db->get()->row_array();
-
+			$this->finaldata["sourcedata"]["times"] = $times;
 
 			// 本資源站的資料
 			$this->db->select()
 							 ->from("source_table")
 							 ->where("source_id",$id);
 			$this->finaldata["sourcedata"] = $this->db->get()->row_array();
-			$this->finaldata["sourcedata"]["times"] = $times;
+
+			//取得本資源站下過的客戶紀錄
+			$this->db->select("COUNT(*), case_table.case_name")
+							 ->from("backlink_add_history")
+							 ->join("case_table","backlink_add_history.case_id = case_table.auto_id")
+							 ->where("backlink_add_history.source_id",$id)
+							 ->group_by("case_table.auto_id");
+
+			$this->finaldata["history"] = $this->db->get()->result_array();
+
       $this->twig->display("source_dataedit",$this->finaldata);
     }
 

@@ -1,64 +1,76 @@
 {% extends 'source_model.twig' %}
 {% block style %}
 #source_record, div.record_chart{width:50%;}
+.select_area div{width:calc(100%/3 - 5px); display:inline-block;}
+.select_area p {margin:5px;}
 {% endblock %}
 {% block main_stage %}
 <div class="source_data_area" source_id="{{sourcedata["source_id"]}}">
-  <!-- <input type="text" name="" value="" placeholder="資源站名稱"> -->
   <input type="text" name="address" value="{{sourcedata["source_address"]}}" placeholder="資源站網址">
   <input type="text" name="account" value="{{sourcedata["source_account"]}}" placeholder="資源站帳號">
   <input type="text" name="password" value="{{sourcedata["source_password"]}}" placeholder="資源站密碼">
-  <br>
+</div>
+<div class="select_area">
+
+<div>
   <p>網站主題</p>
   <select class="" name="topic">
     {% for topic_key,each_topic in type_source_topic %}
     <option value="{{topic_key}}" {% if topic_key == sourcedata["source_topic"] %}selected{% endif %} >{{each_topic["Type_name"]}}</option>
     {% endfor %}
   </select>
-  <br>
+</div>
+<div>
   <p>狀態</p>
   <select class="" name="status">
     {% for status_key,each_status in type_source_status %}
     <option value="{{status_key}}" {% if status_key == sourcedata["source_status"] %}selected{% endif %}>{{each_status["Type_name"]}}</option>
     {% endfor %}
   </select>
-  <br>
+</div>
+<div>
   <p>收錄狀態</p>
   <select class="" name="indexstatus">
     {% for indexstatus_key,each_indexstatus in type_source_indexstatus %}
     <option value="{{indexstatus_key}}" {% if indexstatus_key == sorucedata["source_indexstatus"] %}selected{% endif %}>{{each_indexstatus["Type_name"]}}</option>
     {% endfor %}
   </select>
-  <br>
+</div>
+<div>
   <p>自建</p>
   <select class="" name="kpnbuild">
     {% for kpnbuild_key,each_kpnbuild in type_source_kpnbuild %}
         <option value="{{kpnbuild_key}}" {% if kpnbuild_key == sourcedata["source_kpnbuild"] %}selected{% endif %}>{{each_kpnbuild["Type_name"]}}</option>
     {% endfor %}
   </select>
-  <br>
+</div>
+<div>
   <p>網站類型</p>
   <select class="" name="sitetype">
     {% for sitetype_key,each_sitetype in type_source_sitetype %}
         <option value="{{sitetype_key}}" {% if sitetype_key == sourcedata["source_sitetype"] %}selected{% endif %}>{{each_sitetype["Type_name"]}}</option>
     {% endfor %}
   </select>
-  <br>
+</div>
+<div>
   <p>語言</p>
   <select class="" name="lang">
     {% for lang_key,each_lang in type_source_lang %}
         <option value="{{lang_key}}" {% if lang_key == sourcedata["source_lang"] %}selected{% endif %}>{{each_lang["Type_name"]}}</option>
     {% endfor %}
   </select>
-  <br>
+</div>
+<div>
   <p>錨文本</p>
   <select class="" name="anchor">
     {% for anchor_key,each_anchor in type_source_anchor %}
         <option value="{{anchor_key}}" {% if anchor_key == sourcedata["source_anchor"] %}selected{% endif %}>{{each_anchor["Type_name"]}}</option>
     {% endfor %}
   </select>
+</div>
 
-  <br>
+</div>
+<div>
   <p>兩個月內使用次數:<span>{{sourcedata["times"]["COUNT(*)"]}}</span></p>
 
   <button type="button" name="submit">送出</button>
@@ -75,7 +87,14 @@
           <td>數量</td>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        {% for eachcase in history %}
+            <tr>
+              <td>{{eachcase["case_name"]}}</td>
+              <td>{{eachcase["COUNT(*)"]}}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
   <div class="record_chart">
