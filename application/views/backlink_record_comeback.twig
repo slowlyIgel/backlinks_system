@@ -5,12 +5,19 @@
 <table id="comebackRecordTable" class="tablesorter">
   <thead>
     <tr>
-      <td>資源站名稱</td>
+      <td>資源站網址</td>
       <td>外鏈網址</td>
       <td>匯入時間</td>
     </tr>
   </thead>
   <tbody>
+    {% for eachhistory in history %}
+        <tr>
+          <td>{{eachhistory["source_address"]}}</td>
+          <td>{{eachhistory["linkpage"]}}</td>
+          <td>{{import_date|date("Y-n-d")}}</td>
+        </tr>
+    {% endfor %}
   </tbody>
 </table>
 

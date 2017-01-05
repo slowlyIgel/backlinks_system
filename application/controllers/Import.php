@@ -54,6 +54,70 @@ class Import extends MY_Controller {
 
 
 		public function add_backlink_insource_record(){
-			
+			if ($_FILES) {
+				if (mb_check_encoding(file_get_contents($_FILES["link_insource"]["tmp_name"]), 'UTF-8')) {
+					$file = fopen($_FILES["link_insource"]["tmp_name"], 'r');
+
+					$case_list = fgetcsv($file);
+					unset($case_list[0]);
+					$case_count = count($case_list);
+					$this->db->select("auto_id")
+									 ->from("case_table")
+									 ->where_in("case_name",$case_list);
+					$get_case_autoid = $this->db->get();
+					if ($case_count != $get_case_autoid->num_rows()) {
+						echo "應搜尋到".$case_count."筆案件但只搜尋到".$get_case_autoid->num_rows()."筆";
+						exit;
+					}
+					foreach ($get_case_autoid->result_array() as $key => $eachcase) {
+						$caseid_thisweek[] = $eachcase;
+					}
+					// print_r($caseid_thisweek);
+
+				$sourcenum_incsv = 0;
+					while (($line = fgetcsv($file)) !== FALSE) {
+						$source_list[$sourcenum_incsv] = $line[0];
+						for ($i=0; $i < $case_count ; $i++) {
+							$link_incsv[$sourcenum_incsv][$i] = $line[($i+1)];
+						}
+						$sourcenum_incsv ++;
+					}
+					// print_r($source_list);
+					// print_r($link_incsv);
+
+
+					$source_count = count($source_list);
+					$this->db->select("source_id")
+									 ->from("source_table")
+									 ->where_in("source_address",$source_list);
+					$get_source_autoid = $this->db->get();
+					if ($source_count != $get_source_autoid->num_rows()) {
+						echo "應搜尋到".$source_count."筆資源站但只搜尋到".$get_source_autoid->num_rows()."筆";
+						exit;
+					}
+
+					foreach ($get_source_autoid->result_array() as $key => $eachsource) {
+						$sourceid_thisweek[] = $eachsource;
+					}
+
+					$importdate = time();
+
+					foreach ($link_incsv as $sourcekey => $links_eachsource) {
+						foreach ($links_eachsource as $casekey => $link_eachcase) {
+							if (strpos($link_eachcase,"ttp")) {
+										$finalinsert[] = array(
+											"case_id" => $caseid_thisweek[$casekey]["auto_id"],
+											"source_id" => $sourceid_thisweek[$sourcekey]["source_id"],
+											"linkpage" => $link_eachcase,
+											"import_date" => $importdate
+										);
+							}
+						}
+					}
+
+					$this->db->insert_batch("backlink_add_history",$finalinsert);
+					echo "done";
+				} else{ echo "請用UTF-8編碼儲存csv檔案並且重新上傳";}
+			}
 		}
 }

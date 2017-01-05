@@ -65,41 +65,20 @@ class Index extends MY_Controller {
 			$this->finaldata["linkRecord"][$key]["submit_time"] = date("Y-n-d",$eachRecord["submit_time"]);
 		}
 
+		// 案件外鏈歷史紀錄
+		$this->db->select("COUNT(*), source_table.source_sitetype, type_source_sitetype.Type_name, type_source_sitetype.Type_color")
+						 ->from("backlink_add_history")
+						 ->join("source_table","source_table.source_id = backlink_add_history.source_id")
+						 ->join("type_source_sitetype","source_table.source_sitetype = type_source_sitetype.auto_typeID")
+						 ->where("backlink_add_history.case_id",$id)
+						 ->group_by("source_table.source_sitetype");
+
+		$this->finaldata["history"] = $this->db->get()->result_array();
+
 		$this->finaldata["case_id"] = $id;
 		$this->twig->display("case_dataedit",$this->finaldata);
 	}
 
-	// public function case_linkgroupedit($case_id){
-	// 	// 所有外鏈群組資料
-	// 	$this->db->select("case_backlink, case_name")
-	// 					 ->from("case_table")
-	// 					 ->where("auto_id",$case_id);
-	// 	$data = $this->db->get()->result_array();
-	// 	// 可下外鏈種類資料
-	// 	$this->db->from("type_backlink");
-	// 	$backlink_type = $this->db->get()->result_array();
-	// 	$this->finaldata["backlink_type"] = $backlink_type;
-	// 	$this->finaldata["original_data"] = $data[0]["case_backlink"];
-	//
-	// 	// 區分群組
-	// 	$eachgroup = explode("Seperate%%GROUP%%Here",$data[0]["case_backlink"]);
-	// 	foreach ($eachgroup as $groupkey => $everyUrlinGroup) {
-	// 		preg_match_all("/<a([^>]*)>([^<]*)<\/a>/",$everyUrlinGroup,$eachUrl[$groupkey]);
-	// 		foreach ($eachUrl[$groupkey][2] as $eachUrlKeyinGroup => $eachUrlValueinGroup) {
-	// 			$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["keywords"] = $eachUrlValueinGroup;
-	// 			preg_match("/href=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$urls);
-	// 			preg_match("/title=\"([^\"]*)\"/",$eachUrl[$groupkey][1][$eachUrlKeyinGroup],$titles);
-	// 			$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["url"] = $urls[1];
-	// 			$this->finaldata["group"][$groupkey]["urlpart"][$eachUrlKeyinGroup]["title"] = $titles[1];
-	// 		}
-	// 		list($UrlPartinGroup[$groupkey],$RemarkPartinGroup[$groupkey]) = explode("Seperate%%REMARK%%Here",$everyUrlinGroup);
-	// 		$this->finaldata["group"][$groupkey]["remark"] = $RemarkPartinGroup[$groupkey];
-	// 	}
-	// 	$this->finaldata["case_id"] = $case_id;
-	// 	$this->finaldata["case_name"] = $data[0]["case_name"];
-	// 	$this->finaldata["groupChinese"] = $this->groupname;
-	// 	$this->twig->display("case_linkgroupedit",$this->finaldata);
-	// }
 	public function case_linkgroupedit($case_id){
 
 		$this->finaldata["page_name"] = "連結管理";
@@ -180,8 +159,18 @@ class Index extends MY_Controller {
 		$this->twig->display("case_search_bygroup",$this->finaldata);
 	}
 
-	public function backlink_record_comeback(){
+	public function backlink_record_comeback($id){
 		$this->finaldata["page_name"] = "歷史紀錄";
+
+		$this->db->select("backlink_add_history.linkpage, source_table.source_address, backlink_add_history.import_date")
+						 ->from("backlink_add_history")
+						 ->join("source_table","backlink_add_history.source_id = source_table.source_id")
+						 ->where("backlink_add_history.case_id",$id)
+						 ->order_by("backlink_add_history.source_id");
+
+		$this->finaldata["history"] = $this->db->get()->result_array();
+
+
 		$this->twig->display("backlink_record_comeback",$this->finaldata);
 	}
 	public function logout(){

@@ -2,7 +2,45 @@
 {% block main_stage %}
 
 <p>請匯入CSV檔</p>
-<form action="/import/add_backlink_insource_record" method="post">
+<form action="/import/add_backlink_insource_record" method="post" id="linkaddUpload">
   <input type="file" name="link_insource" value="">
+  <button type="submit" name="submit" onclick="test()">提交</button>
 </form>
+
+{% endblock %}
+{% block script_stage %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script type="text/javascript">
+
+
+
+function test(){
+  $('#linkaddUpload').ajaxForm({
+          beforeSubmit: ShowRequest,
+          success: SubmitSuccesful,
+          error: AjaxError
+        });
+}
+function ShowRequest(formData, jqForm, options) {
+        var queryString = $.param(formData);
+        console.log(queryString);
+        // 先如此這般檢查副檔名...
+        var extention = $("input[name=link_insource]").val().split(".");
+        if(extention[extention.length - 1] != "csv"){
+          alert("請上傳csv檔!!");
+          return false;
+        }
+      }
+
+      function AjaxError() {
+        alert("An AJAX error occured.");
+      }
+
+      function SubmitSuccesful(responseText, statusText) {
+        console.log(statusText);
+        console.log(responseText);
+
+      }
+
+</script>
 {% endblock %}

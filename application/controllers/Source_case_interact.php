@@ -26,4 +26,16 @@ class Source_case_interact extends MY_Controller {
     public function record(){
       $this->twig->display("source_record",$this->finaldata);
     }
+
+		public function test(){
+			$this->db->select("case_table.case_name, backlink_add_history.linkpage, source_table.source_address")
+							 ->from("backlink_add_history")
+							 ->join("case_table","backlink_add_history.case_id = case_table.auto_id")
+							 ->join("source_table","backlink_add_history.source_id = source_table.source_id")
+							 ->order_by("backlink_add_history.case_id");
+
+			$test = $this->db->get()->result_array();
+			print_r($test);
+
+		}
 }

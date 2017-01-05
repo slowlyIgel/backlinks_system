@@ -81,7 +81,17 @@
     </tr>
     <thead>
       <tbody>
+        {% for eachtype in history %}
+            <tr pie_color="{{eachtype["Type_color"]}}">
+              <td name="type_name">{{eachtype["Type_name"]}}</td>
+              <td name="type_count">{{eachtype["COUNT(*)"]}}</td>
+            </tr>
+        {% endfor %}
       </tbody>
+    </table>
+</div>
+<div class="div">
+  <canvas id="history_pie_chart"></canvas>
 </div>
 </div>
 
@@ -116,6 +126,30 @@ $(document).ready(function(){
    var chartdata = {labels,datasets,"borderColor":["#eee"]};
    var ctx = $("#group_pie_chart");
    var myPieChart = new Chart(ctx,{
+     type: 'doughnut',
+     data: chartdata,
+     options:{"cutoutPercentage":[30]}
+   });
+ });
+
+
+
+
+ $("#source_recordTable").each(function(){
+   var labels = [];
+   var data = [];
+   var backgroundColor = [];
+   $(this).find("tr[pie_color]").each(function(){
+     if(parseInt($(this).children("td[name=type_count]").html())){
+       labels.push($(this).children("td[name=type_name]").html());
+       data.push(parseInt($(this).children("td[name=type_count]").html()));
+       backgroundColor.push($(this).attr("pie_color"));
+     }
+   });
+   var datasets = [{data,backgroundColor}];
+   var chartdata = {labels,datasets};
+   var ctx = $("#history_pie_chart");
+   new Chart(ctx,{
      type: 'doughnut',
      data: chartdata,
      options:{"cutoutPercentage":[30]}
