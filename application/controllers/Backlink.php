@@ -91,7 +91,7 @@ class Backlink extends MY_Controller {
 	{
 		$this->finaldata["page_name"] = "本週總覽(預備)";
 		$thismonday = strtotime("Monday this Week",time());
-		$thissunday = strtotime("Sunday this Week",time());
+		$thissunday = strtotime("Monday next Week",time());
 		$this->db->select("backlink_submit_record.submit_time, backlink_submit_record.case_id, backlink_submit_record.backlinkGroup_id,backlink_submit_record.linktype_thisweek, backlink_submit_record.export, case_table.auto_id, case_table.case_name, case_table.case_industry")
 						 ->from("backlink_submit_record")
 						 ->join("case_table","case_table.auto_id = backlink_submit_record.case_id")

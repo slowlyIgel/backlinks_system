@@ -23,7 +23,7 @@ class Source extends MY_Controller {
         parent::__construct();
 
 				$this->thismonday = strtotime("Monday this Week",time());
-				$this->thissunday = strtotime("Sunday this Week",time());
+				$this->thissunday = strtotime("Monday next Week",time());
 
 
 				// function get_sourcetypeInfo($dbname){

@@ -84,7 +84,7 @@ class Index extends MY_Controller {
 		$this->finaldata["page_name"] = "連結管理";
 
 		$thismonday = strtotime("Monday this Week",time());
-		$thissunday = strtotime("Sunday this Week",time());
+		$thissunday = strtotime("Monday next Week",time());
 
 		// 先確認有沒有新版資料，如果沒有就用舊版的
 		$this->db->from("backlink_content_table")
