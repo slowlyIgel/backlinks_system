@@ -74,13 +74,14 @@ class Source extends MY_Controller {
 			$thatmonday = strtotime("Monday this Week",$twomonthsago);
 
 			// 取得兩個月內本資源站已匯出的次數
-			$this->db->select("COUNT(*)")
+			$this->db->select("SUM(export_times_perweek)")
 							 ->from("source_submit_record")
 							 ->where("source_id",$id)
 							 ->where("export_time !=",0)
-							 ->where("submit_time >",$thatmonday); //每週勾選且匯出，當週多次匯出還是算一次
-			$times = $this->db->get()->row_array();
-			$this->finaldata["times"] = $times["COUNT(*)"];
+							 ->where("submit_time >",$thatmonday); //每週勾選且匯出，當週多次匯出加總
+
+			$export_times = $this->db->get()->row_array();
+			$this->finaldata["times"] = $export_times["SUM(export_times_perweek)"];
 
 			// 本資源站的資料
 			$this->db->select()
