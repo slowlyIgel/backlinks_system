@@ -20,10 +20,10 @@ $(document).ready(function(){
     $(field).parents(".eachUrl").remove();
   }
   function addGroup(){
-    var countGroup = $(".eachLinkGroup").length;
-    if (countGroup < 30) {
+    var nextgroup_num = parseInt($(".eachLinkGroup").last().attr("group_id")) + 1;
+    if (nextgroup_num < 30) {
       var Groupdiv = $(".eachLinkGroup:first").html();
-      var newGroup = $("<div class=\"eachLinkGroup\" group_id="+(countGroup)+">");
+      var newGroup = $("<div class=\"eachLinkGroup\" group_id="+(nextgroup_num)+">");
       newGroup.html(Groupdiv);
       newGroup.find(".eachUrl:not(:first-child)").remove();
       newGroup.find(".groupname_chinese").remove();
