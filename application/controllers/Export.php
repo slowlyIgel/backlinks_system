@@ -127,24 +127,63 @@ class Export extends MY_Controller {
 		public function source_guide(){
 			$today = date("Y-n-d");
 			$export_time = time();
-			$this->db->select("source_address, source_account, source_password, source_guide")
+
+			// 備註的html檔寫入
+			$this->db->select("source_table.source_id, source_table.source_address, source_table.source_account, source_table.source_password, source_table.source_guide, source_submit_record.export_times_perweek")
 							 ->from("source_table")
-							 ->where_in("source_id",$_POST["exportIDs"]);
+							 ->join("source_submit_record","source_table.source_id = source_submit_record.source_id")
+							 ->where("source_submit_record.submit_time >",$this->thismonday)
+							 ->where("source_submit_record.submit_time <",$this->thissunday)
+							 ->where_in("source_table.source_id",$_POST["exportIDs"]);
 			$guide["guide"] = $this->db->get()->result_array();
+
+			foreach ($guide["guide"] as $key => $value) {
+				$update_after_guide[$key]["source_id"] = $value["source_id"];
+				$update_after_guide[$key]["export_time"] = $export_time;
+				$update_after_guide[$key]["export_times_perweek"] = intval($value["export_times_perweek"]) +1;
+			}
 
 			$this->db->where("submit_time >",$this->thismonday)
 							 ->where("submit_time <",$this->thissunday)
-							 ->where_in("source_id",$_POST["exportIDs"])
-							 ->update("source_submit_record",array("export_time" => $export_time));
+							 ->update_batch("source_submit_record",$update_after_guide,"source_id");
+			// $this->db->where("submit_time >",$this->thismonday)
+			// 				 ->where("submit_time <",$this->thissunday)
+			// 				 ->where_in("source_id",$_POST["exportIDs"])
+			// 				 ->update("source_submit_record",array("export_time" => $export_time));
 
 			$this->db->where_in("source_id",$_POST["exportIDs"])
 							 ->update("source_table",array("source_lastexport" => $export_time));
 
+			$guide_part = $this->twig->render("export_source_guide",$guide);
+			file_put_contents("upload/export_source_guide.html",$guide_part);
 
-			header("Content-type:text/html");
-			header("Content-Disposition: attachment; filename= guide".$today.".html");
+			// 給外包的excel檔寫入
+			$exl_part = $this->twig->render("export_source_exl",$guide);
+			file_put_contents("upload/export_source_exl.xls",$exl_part);
 
-			$this->twig->display("export_source_guide",$guide);
+			// 壓縮成zip檔
+			/*建立臨時壓縮檔*/
+			$guide_file = tempnam("tmp", "zip");
+			$zip = new ZipArchive;
+			$res = $zip->open($guide_file, ZipArchive::CREATE|ZipArchive::OVERWRITE);
+			if ($res!==true) { exit('壓縮錯誤');}
+
+			$zip->addFile("upload/export_source_guide.html", $today."_guide.html");
+			$zip->addFile("upload/export_source_exl.xls", $today."_report.xls");
+
+			$zip->close();
+
+			unlink("upload/export_source_guide.html");
+			unlink("upload/export_source_exl.xls");
+
+
+			ob_end_clean();
+			header('Content-type: application/octet-stream');
+			header('Content-Transfer-Encoding: Binary');
+			header('Content-disposition: attachment; filename=source_guide.zip');
+
+			readfile($guide_file);
+			unlink($guide_file);
 
 		}
 
