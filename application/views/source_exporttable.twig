@@ -43,7 +43,7 @@
       <td>{{type_source_anchor[ each_source_thisweek["source_anchor"] ]["Type_name"]}}</td>
       <td>{{type_source_sitetype[ each_source_thisweek["source_sitetype"] ]["Type_name"]}}</td>
       <td>{{each_source_thisweek["export_time"] == 0 ? "否" : "是"}}</td>
-      <td><input type="checkbox" name="intoexportlist" value="1"></td>
+      <td><input type="checkbox" name="intoexportlist" value="1" checked></td>
     </tr>
     {% endfor %}
 
