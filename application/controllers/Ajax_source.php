@@ -64,7 +64,7 @@ class Ajax_source extends MY_Controller {
 
 		public function delete_source(){
 			if (is_numeric($_POST["id"])) {
-				$table = array("source_table","source_submit_record");
+				$table = array("source_table","source_submit_record","backlink_add_history");
 				$this->db->where("source_id",$_POST["id"])
 								 ->delete($table);
 				$message = $this->db->error();

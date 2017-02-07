@@ -93,10 +93,6 @@ class Ajax extends MY_Controller {
 			if (!empty($_POST["searchKey"])) {
 				$this->load->model("case_model");
 				$data = $this->case_model->case_table_list($_POST["searchKey"]);
-					// $this->db->select("auto_id, case_name")
-					// 				 ->from("case_table")
-					// 				 ->like("case_name",$_POST["searchKey"]);
-					// $data = $this->db->get()->result_array();
 					if(!empty($data)){
 						foreach ($data as $key => $value) {
 							$timedata = $this->case_model->get_last_submit_time($value["auto_id"]);
@@ -130,9 +126,11 @@ class Ajax extends MY_Controller {
 			if (is_numeric($_POST["case_id"])) {
 				$table_array = array("backlink_content_table","backlink_submit_record");
 				$this->db->where("case_id",$_POST["case_id"])
-								 ->delete("backlink_content_table");
+								 ->delete("backlink_content_table"); //外鏈群組
 				$this->db->where("case_id",$_POST["case_id"])
-									->delete("backlink_content_table");
+									->delete("backlink_submit_record");//每週外鏈群組紀錄
+				$this->db->where("case_id",$_POST["case_id"])
+								 ->delete("backlink_add_history");//外鏈回報紀錄
 
 				$this->db->where("auto_id",$_POST["case_id"])
 									->delete("case_table");
