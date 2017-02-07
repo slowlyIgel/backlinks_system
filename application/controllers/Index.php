@@ -55,7 +55,7 @@ class Index extends MY_Controller {
 		$this->finaldata["casedata"] = $this->db->get()->result_array();
 
 		// 案件已下外鏈紀錄
-		$this->db->select("backlink_submit_record.backlinkGroup_id, backlink_submit_record.submit_time, type_backlink.Type_name")
+		$this->db->select("backlink_submit_record.backlinkGroup_id, backlink_submit_record.submit_time, type_backlink.Type_name, type_backlink.auto_typeID, type_backlink.Type_color")
 						 ->from("backlink_submit_record")
 						 ->join("type_backlink","backlink_submit_record.linktype_thisweek = type_backlink.auto_typeID")
 						 ->where("backlink_submit_record.case_id",$id)

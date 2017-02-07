@@ -41,7 +41,7 @@
   </ul>
   {% endfor %}
 <div>
-  {% if total_privilege b-and  page_privilege["editCaseData"] %}
+  {% if total_privilege b-and  page_privilege["caseedit_backlink_download"] %}
   <button type="button" style="float:right;" onclick="submit_casedata()">送出</button>
   <button type="button" onclick="startedit()" style="float:right;">開始修改</button>
   {% endif %}
@@ -63,7 +63,7 @@
     <tr>
       <td>{{eachRecord["submit_time"]}}</td>
       <td>{{groupChinese[ eachRecord["backlinkGroup_id"] ]}}</td>
-      <td>{{eachRecord["Type_name"]}}</td>
+      <td type_id="{{eachRecord["auto_typeID"]}}">{{eachRecord["Type_name"]}}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -71,6 +71,7 @@
 </div>
 <div class="div">
   <canvas id="group_pie_chart"></canvas>
+  <canvas id="type_pie_chart"></canvas>
 </div>
 <div class="source_history">
   <table id="source_recordTable" class="tablesorter">
@@ -156,6 +157,28 @@ $(document).ready(function(){
    });
 
  });
+
+if ($("#group_recordTable").find("td[type_id]").length > 0) {
+
+ var labels = [];
+ var data = [];
+ var backgroundColor = ["#d86f74","#ea8976","#ecb4b3"];
+ data.push($("#group_recordTable").find("td[type_id=1]").length);
+ data.push($("#group_recordTable").find("td[type_id=2]").length);
+ data.push($("#group_recordTable").find("td[type_id=3]").length);
+ labels.push($("#group_recordTable").find("td[type_id=1]").html());
+ labels.push($("#group_recordTable").find("td[type_id=2]").html());
+ labels.push($("#group_recordTable").find("td[type_id=3]").html());
+ var datasets = [{data,backgroundColor}];
+ var chartdata = {labels,datasets};
+ var ctx = $("#type_pie_chart");
+ new Chart(ctx,{
+   type: 'doughnut',
+   data: chartdata,
+   options:{"cutoutPercentage":[30]}
+ });
+}
+
 });
 </script>
 {% endblock %}

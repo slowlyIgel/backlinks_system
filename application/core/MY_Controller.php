@@ -27,6 +27,7 @@ class MY_Controller extends CI_Controller {
 									$backlink = $this->db->get()->result_array();
 									foreach ($backlink as $key => $value) {
 										$this->finaldata["backlink_typeName"][ $value["auto_typeID"] ] = $value["Type_name"];
+										$this->finaldata["backlink_typeName_color"][ $value["auto_typeID"] ] = $value["Type_color"];
 									}
 									// 共用所有產業分類
 									$this->db->from("type_industry");
