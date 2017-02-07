@@ -58,6 +58,7 @@ class Import extends MY_Controller {
 				if (mb_check_encoding(file_get_contents($_FILES["link_insource"]["tmp_name"]), 'UTF-8')) {
 					$file = fopen($_FILES["link_insource"]["tmp_name"], 'r');
 
+					// 檢查案件名稱是否存在於系統上
 					$case_list = fgetcsv($file);
 					unset($case_list[0]);
 					$case_count = count($case_list);
@@ -74,6 +75,7 @@ class Import extends MY_Controller {
 					}
 					// print_r($caseid_thisweek);
 
+					// 檢查資源站是否存在系統上
 				$sourcenum_incsv = 0;
 					while (($line = fgetcsv($file)) !== FALSE) {
 						$source_list[$sourcenum_incsv] = $line[0];
@@ -85,11 +87,22 @@ class Import extends MY_Controller {
 					// print_r($source_list);
 					// print_r($link_incsv);
 
+					// 檢查資源站清單有沒有重複網址，有的話停止匯入
+					$duplicate_source_check = array_filter(array_count_values($source_list),function($value){return ($value > 1);});
+					if (!empty($duplicate_source_check)) {
+							$alert = "";
+						foreach ($duplicate_source_check as $key => $value) {
+							$alert .= "於資源站上搜尋到".$value."筆".$key."\n";
+						}
+						echo $alert;
+						exit;
+					}
 
 					$source_count = count($source_list);
 					$this->db->select("source_id")
 									 ->from("source_table")
-									 ->where_in("source_address",$source_list);
+									 ->where_in("source_address",$source_list)
+									 ->order_by("source_id");//核對時按照順序排好連結才不會對錯
 					$get_source_autoid = $this->db->get();
 					if ($source_count != $get_source_autoid->num_rows()) {
 						echo "應搜尋到".$source_count."筆資源站但只搜尋到".$get_source_autoid->num_rows()."筆";
@@ -99,7 +112,7 @@ class Import extends MY_Controller {
 					foreach ($get_source_autoid->result_array() as $key => $eachsource) {
 						$sourceid_thisweek[] = $eachsource;
 					}
-
+					// print_r($sourceid_thisweek);
 					$importdate = time();
 
 					foreach ($link_incsv as $sourcekey => $links_eachsource) {
@@ -114,7 +127,6 @@ class Import extends MY_Controller {
 							}
 						}
 					}
-
 					$this->db->insert_batch("backlink_add_history",$finalinsert);
 					echo "done";
 				} else{ echo "請用UTF-8編碼儲存csv檔案並且重新上傳";}

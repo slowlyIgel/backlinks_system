@@ -134,7 +134,8 @@ class Export extends MY_Controller {
 							 ->join("source_submit_record","source_table.source_id = source_submit_record.source_id")
 							 ->where("source_submit_record.submit_time >",$this->thismonday)
 							 ->where("source_submit_record.submit_time <",$this->thissunday)
-							 ->where_in("source_table.source_id",$_POST["exportIDs"]);
+							 ->where_in("source_table.source_id",$_POST["exportIDs"])
+							 ->order_by("source_table.source_id"); //為了匯入紀錄時搜尋ID不會亂順序，這裡先按照順序排好，核對時才不會對錯
 			$guide["guide"] = $this->db->get()->result_array();
 
 			foreach ($guide["guide"] as $key => $value) {
