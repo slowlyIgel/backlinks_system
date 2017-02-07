@@ -3,10 +3,10 @@
 <ul>
   <li><a href="/index/case_search_bygroup">分類搜尋</a></li>
   <li><a href="/index/case_search">客戶搜尋</a></li>
-  {% if total_privilege b-and page_privilege["addCaseData"] %}
+  {% if total_privilege b-and page_privilege["addcase_manage"] %}
   <li><a href="/index/add_casedata">客戶資料匯入</a></li>
   {% endif %}
-  {% if total_privilege  b-and page_privilege["addBacklinkRecord"] %}
+  {% if total_privilege  b-and page_privilege["caseedit_backlink_download"] %}
   <li><a href="/source_case_interact/record">外鏈歷史紀錄匯入</a></li>
   {% endif %}
 </ul>

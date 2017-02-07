@@ -18,10 +18,14 @@
     <section class="side">
      <span class="title"> {{page_name}}</span>
       <ul>
+        {% if total_privilege b-and  page_privilege["backlink_case_left"] %}
         <li><a href="/">客戶管理</a></li>
+        {% endif %}
+        {% if total_privilege b-and  page_privilege["backlink_case_left"] %}
         <li><a href="/backlink">外鏈匯出管理</a></li>
+        {% endif %}
         <li><a href="/tdkcheck">網站檢查</a></li>
-        {% if total_privilege b-and  page_privilege["editAll"] %}
+        {% if total_privilege b-and  page_privilege["addcase_manage"] %}
         <li><a href="/manage">分類管理</a></li>
         <li><a href="/privilege">權限/人員管理</a></li>
         {% endif %}

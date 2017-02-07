@@ -39,6 +39,7 @@ function ShowRequest(formData, jqForm, options) {
       function SubmitSuccesful(responseText, statusText) {
         console.log(statusText);
         alert(responseText);
+        // console.log(responseText);
         if (responseText == "done") {
           location.reload();
         }

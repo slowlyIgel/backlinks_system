@@ -3,8 +3,11 @@
 #sourceindexTable p, #sourceindexTable a {margin:5px;text-align:center;}
 {% endblock %}
 {% block main_stage %}
-<button type="button" name="button">編輯</button>
+<!-- <button type="button" name="button">編輯</button> -->
+{% if total_privilege b-and  page_privilege["caseedit_backlink_download"] %}
 <button type="button" name="export">提交</button>
+{% endif %}
+
 <table id="sourceindexTable" class="tablesorter">
   <thead>
     <tr>

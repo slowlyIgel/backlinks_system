@@ -7,13 +7,13 @@
     <button type="button" name="OnlyShowthisType" onclick="showDatabyType(this)">{{eachtype}}</button>
 {% endfor %}
 <p>目前勾選總數:<span name="countselect_checkbox"></span></p>
-{% if page_privilege["backlinkExport"] b-and total_privilege %}
+{% if page_privilege["caseedit_backlink_download"] b-and total_privilege %}
   <br><input type="checkbox" name="allselect" value="" checked>
 {% endif %}
 <table id="recordTable" class="tablesorter">
   <thead>
     <tr>
-      {% if page_privilege["backlinkExport"] b-and total_privilege %}
+      {% if page_privilege["caseedit_backlink_download"] b-and total_privilege %}
       <td>選擇匯出</td>
       {% endif %}
       <td>勾選日期</td>
@@ -28,7 +28,7 @@
   <tbody>
     {% for eachSubmitRecord in everySubmitRecord %}
     <tr case_id="{{eachSubmitRecord["case_id"]}}" group_id="{{eachSubmitRecord["backlinkGroup_id"]}}">
-      {% if page_privilege["backlinkExport"] b-and total_privilege %}
+      {% if page_privilege["caseedit_backlink_download"] b-and total_privilege %}
       <td>
         <input type="checkbox" name="selectexport" value="" checked="checked">
       </td>
@@ -46,7 +46,7 @@
     </tbody>
 </table>
 <div id="forexportContent"></div>
-{% if page_privilege["backlinkExport"] b-and total_privilege %}
+{% if page_privilege["caseedit_backlink_download"] b-and total_privilege %}
 <div class="export">
   <label>拆檔</label><input type="text" id="SeperateToNFile" value="">
   <button type="button" onclick="create_export_file()">匯出</button>

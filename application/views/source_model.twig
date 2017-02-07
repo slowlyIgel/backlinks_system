@@ -1,9 +1,15 @@
 {% extends 'page_model.twig' %}
 {% block header %}
 <ul>
+  {% if total_privilege b-and  page_privilege["source_analysis"] %}
   <li><a href="/source/source_analysis">資源站分析</a></li>
+  {% endif %}
+
   <li><a href="/source/source_add">新增資源站</a></li>
   <li><a href="/source/source_search">搜尋資源站</a></li>
+  {% if total_privilege b-and  page_privilege["caseedit_backlink_download"] %}
   <li><a href="/source/source_export">教學匯出</a></li>
+  {% endif %}
+
 </ul>
 {% endblock %}
