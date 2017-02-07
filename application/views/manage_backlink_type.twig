@@ -3,10 +3,15 @@
 <div manageGroup="type_backlink">
   <p>外鏈種類:</p>
 {% for backlinkKey,backlinktype in backlink_typeName %}
+
 <div class="backlinkEdit">
-  <input type="text" value="{{backlinktype}}" inTpyeID="{{backlinkKey}}"><button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
+  <input type="text" value="{{backlinktype}}" inTpyeID="{{backlinkKey}}">
+  圓餅圖顏色:<input type="text" name="pie_chart_color" value="{{backlink_typeName_color[backlinkKey]}}" style="background-color:{{backlink_typeName_color[backlinkKey]}};">
+  <button type="button" name="delete_ingroup">刪除</button><button type="button" name="change_name">更名</button>
 </div>
+
 {% endfor %}
+
 <input type="text" value=""><button type="button" name="addNewtype">新增</button>
 </div>
 {% endblock %}
